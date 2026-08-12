@@ -1,10 +1,10 @@
 ---
 id: "04"
 titre: "Composants communs E3 : Nav, Footer, CtaBand, OfferCard, FactCard (tokens uniquement)"
-statut: pending
+statut: passed
 tentatives: 0
-depends_on: ["01", "02", "03"]
-ears: [EARS-6, EARS-7, EARS-8, EARS-10, EARS-51, EARS-52]
+depends_on: [ "01", "02", "03" ]
+ears: [ EARS-6, EARS-7, EARS-8, EARS-10, EARS-51, EARS-52 ]
 ---
 
 ## Objectif
