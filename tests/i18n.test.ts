@@ -26,6 +26,21 @@ describe('parité i18n EN/FR', () => {
     expect(site.fr.hero.title).not.toBe(site.en.hero.title);
     expect(site.fr.meta.description).not.toBe(site.en.meta.description);
   });
+
+  it('EARS-12 : meta.title et meta.description diffèrent entre EN et FR pour chaque page', () => {
+    type Meta = { title: string; description: string };
+    const metasDe = (copy: (typeof site)['en']): Record<string, Meta> => ({
+      home: copy.meta,
+      ...Object.fromEntries(Object.entries(copy.pages).map(([k, v]) => [k, v.meta] as [string, Meta])),
+    });
+    const pagesEn = metasDe(site.en);
+    const pagesFr = metasDe(site.fr);
+    expect(Object.keys(pagesEn).length).toBeGreaterThan(2);
+    for (const k of Object.keys(pagesEn)) {
+      expect(pagesFr[k].title, `title identique EN/FR sur ${k}`).not.toBe(pagesEn[k].title);
+      expect(pagesFr[k].description, `description identique EN/FR sur ${k}`).not.toBe(pagesEn[k].description);
+    }
+  });
 });
 
 describe('parité des routes EN/FR', () => {
