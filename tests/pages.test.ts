@@ -131,38 +131,70 @@ describe('CAP-2 — nav, footer et sélecteur de langue sur le HTML buildé', ()
 });
 
 describe('CAP-4 — home complète EN + FR (7 sections du wireframe validé)', () => {
-  it("EARS-18/19 : la home EN rend les 7 sections dans l'ordre et 3 cards indexées", () => {
-    const html = lirePage('index.html');
+  const HOMES: { page: string; locale: Locale }[] = [
+    { page: 'index.html', locale: 'en' },
+    { page: 'fr/index.html', locale: 'fr' },
+  ];
+
+  /** Échappement des nœuds texte Astro, pour comparer les chaînes de site.ts au HTML buildé. */
+  const enHtml = (s: string) =>
+    s
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+
+  it("EARS-18/19 : chaque home rend les 7 sections dans l'ordre et 3 cards indexées vers les packages", () => {
     const ordre = ['hero', 'offers', 'mechanism', 'proof', 'audiences', 'faq', 'cta-band'];
-    const positions = ordre.map((id) => html.indexOf(`data-section="${id}"`));
-    expect(positions.every((p, i) => p >= 0 && (i === 0 || p > positions[i - 1]))).toBe(true);
-    for (const idx of ['01', '02', '03']) expect(html).toContain(`data-card-index="${idx}"`);
-    expect(html).toMatch(/href="\/sprint\/"/);
-    expect(html).toMatch(/href="\/build\/"/);
-    expect(html).toMatch(/href="\/delivery\/"/);
+    for (const { page, locale } of HOMES) {
+      const html = lirePage(page);
+      const positions = ordre.map((id) => html.indexOf(`data-section="${id}"`));
+      expect(
+        positions.every((p, i) => p >= 0 && (i === 0 || p > positions[i - 1])),
+        `${page} : sections absentes ou hors ordre (${positions.join(', ')})`,
+      ).toBe(true);
+      for (const idx of ['01', '02', '03']) {
+        expect(html, `${page} : card ${idx}`).toContain(`data-card-index="${idx}"`);
+      }
+      for (const pkg of ['/sprint/', '/build/', '/delivery/']) {
+        expect(html, `${page} : lien package ${pkg}`).toContain(`href="${paire(pkg)[locale]}"`);
+      }
+    }
   });
 
-  it('EARS-20 : le mécanisme expose les 3 étapes et la punchline', () => {
-    const html = lirePage('index.html');
-    expect(html).toMatch(/frozen scope/i);
-    expect(html).toMatch(/nobody signs a big number blind/i);
+  it('EARS-20 : le mécanisme de chaque home expose les 3 étapes et la punchline', () => {
+    for (const { page, locale } of HOMES) {
+      const html = lirePage(page);
+      const mecanisme = site[locale].home.mechanism;
+      for (const titre of mecanisme.stepTitles) {
+        expect(html, `${page} : étape « ${titre} »`).toContain(enHtml(titre));
+      }
+      expect(html, `${page} : punchline`).toContain(enHtml(mecanisme.punchline));
+    }
   });
 
-  it('EARS-21 : la preuve mentionne le seul chiffre autorisé et lie vers founder', () => {
-    const html = lirePage('index.html');
-    expect(html).toMatch(/80,000 users/);
-    expect(html).toMatch(/href="\/founder\/"/);
+  it('EARS-21 : la preuve de chaque home mentionne le seul chiffre autorisé et lie vers founder', () => {
+    const chiffre: Record<Locale, RegExp> = { en: /80,000 users/, fr: /80 000 utilisateurs/ };
+    for (const { page, locale } of HOMES) {
+      const html = lirePage(page);
+      expect(html, `${page} : chiffre autorisé`).toMatch(chiffre[locale]);
+      expect(html, `${page} : lien founder`).toContain(`href="${paire('/founder/')[locale]}"`);
+    }
   });
 
-  it("EARS-22 : 4 entrées audience avec leur porte d'entrée", () => {
-    const html = lirePage('index.html');
-    expect((html.match(/data-audience=/g) ?? []).length).toBe(4);
+  it("EARS-22 : 4 entrées audience avec leur porte d'entrée sur chaque home", () => {
+    for (const { page } of HOMES) {
+      expect((lirePage(page).match(/data-audience=/g) ?? []).length, page).toBe(4);
+    }
   });
 
-  it('EARS-23 : la FAQ home compte 4 ou 5 entrées', () => {
-    const n = (lirePage('index.html').match(/data-faq-item/g) ?? []).length;
-    expect(n).toBeGreaterThanOrEqual(4);
-    expect(n).toBeLessThanOrEqual(5);
+  it('EARS-23 : la FAQ de chaque home compte 4 ou 5 entrées', () => {
+    for (const { page } of HOMES) {
+      const n = (lirePage(page).match(/data-faq-item/g) ?? []).length;
+      expect(n, page).toBeGreaterThanOrEqual(4);
+      expect(n, page).toBeLessThanOrEqual(5);
+    }
   });
 
   it("EARS-9 : l'ancre offers/offres existe sur chaque home", () => {
