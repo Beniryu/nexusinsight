@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { readdirSync, readFileSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
 const WOFF2 = [
@@ -22,6 +22,15 @@ describe('CAP-1 — fonts self-hostées', () => {
   it('EARS-1/EARS-2 : exactement les 6 woff2 attendus dans public/fonts', () => {
     const files = readdirSync('public/fonts').filter((f) => f.endsWith('.woff2'));
     expect(files.sort()).toEqual([...WOFF2].sort());
+  });
+
+  it('EARS-2 : chaque woff2 est un subset latin — plafond 40 Ko (les fichiers complets font ~92 Ko)', () => {
+    for (const f of WOFF2) {
+      const octets = statSync(join('public/fonts', f)).size;
+      expect(octets, `${f} : ${octets} octets — fichier complet non subsetté ?`).toBeLessThanOrEqual(
+        40 * 1024,
+      );
+    }
   });
 
   it('EARS-3 : 6 @font-face, chacune avec font-display: swap et une src locale', () => {

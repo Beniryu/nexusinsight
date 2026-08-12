@@ -8,7 +8,7 @@ reproduits ci-dessous, copiés tels quels depuis les archives officielles de dis
 |---|---|---|---|
 | Clash Display | Medium 500, Semibold 600 | Fontshare (Indian Type Foundry) — archive officielle `clash-display`, fontshare.com | ITF Free Font License (FFL) |
 | Switzer | Regular 400, Semibold 600 | Fontshare (Indian Type Foundry) — archive officielle `switzer`, fontshare.com | ITF Free Font License (FFL) |
-| JetBrains Mono | Regular 400, Medium 500 | GitHub `JetBrains/JetBrainsMono` v2.304 (webfonts officiels, non modifiés) | SIL Open Font License 1.1 (OFL) |
+| JetBrains Mono | Regular 400, Medium 500 | GitHub `JetBrains/JetBrainsMono` v2.304 (webfonts officiels, subsettés en latin via fontTools/pyftsubset : U+0000-00FF, U+0100-017F, U+2000-206F, U+20AC, U+2190-2199) | SIL Open Font License 1.1 (OFL) |
 
 ---
 
