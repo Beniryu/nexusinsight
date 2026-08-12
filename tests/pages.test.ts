@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { join, sep } from 'node:path';
 import { routes, paire } from '../src/content/routes';
 import { site, type Locale } from '../src/content/site';
 
@@ -15,6 +15,13 @@ function distHtml(path: string): string {
 /** Lit un fichier de dist/ par chemin relatif ('index.html', 'fr/index.html'). */
 function lirePage(rel: string): string {
   return readFileSync(join('dist', ...rel.split('/')), 'utf8');
+}
+
+/** Tous les .html buildés, chemins relatifs à dist/ en séparateurs POSIX. */
+function toutesLesPagesHtml(): string[] {
+  return readdirSync('dist', { recursive: true })
+    .map((f) => String(f).split(sep).join('/'))
+    .filter((f) => f.endsWith('.html'));
 }
 
 /**
@@ -213,5 +220,54 @@ describe('CAP-5 — pages packages ×6 sur le gabarit commun', () => {
   it('EARS-30 : cross-links Sprint→Build et Build→Delivery', () => {
     expect(lirePage('sprint/index.html')).toMatch(/data-section="crosslink"[\s\S]*?href="\/build\/"/);
     expect(lirePage('build/index.html')).toMatch(/data-section="crosslink"[\s\S]*?href="\/delivery\/"/);
+  });
+});
+
+describe('CAP-6/7/8/9 — pages secondaires (method, founder, contact, legal) + 404', () => {
+  it('EARS-31/32/33 : method expose jalons, stack et remote async', () => {
+    const html = lirePage('method/index.html');
+    for (const s of ['milestones', 'stack', 'remote']) expect(html).toContain(`data-section="${s}"`);
+    expect(html).toMatch(/two(-|\s)week/i);
+    expect(html).toMatch(/48\s?h/i);
+  });
+
+  it('EARS-34/35/36 : founder — honnêteté structurelle, preuves autorisées, lien perso', () => {
+    const html = lirePage('founder/index.html');
+    expect(html).toMatch(/kaankarabulut\.com/);
+    expect(html).toMatch(/The Node/);
+    expect(html).toMatch(/Drift/);
+    expect(html).not.toMatch(/<img[^>]*(portrait|team|photo)/i);
+  });
+
+  it('EARS-38/39 : contact = mailto seul, aucun <form> sur tout le site', () => {
+    expect(lirePage('contact/index.html')).toContain('mailto:kaan@nexusinsight.io');
+    for (const f of toutesLesPagesHtml()) {
+      expect(lirePage(f), `<form> trouvé dans ${f}`).not.toMatch(/<form[\s>]/i);
+    }
+  });
+
+  it('EARS-40/41 : bloc légal NexusEvo complet + nom commercial', () => {
+    for (const p of ['legal/index.html', 'fr/mentions-legales/index.html']) {
+      const html = lirePage(p);
+      expect(html).toMatch(/928 581 545/);
+      expect(html).toMatch(/RCS Bobigny/);
+      expect(html).toMatch(/FR95 928 581 545/);
+      expect(html).toMatch(/Capsulerie/);
+      expect(html).toMatch(/NexusEvo/);
+      expect(html).toMatch(/nom commercial|trade name/);
+    }
+  });
+
+  it('EARS-42 : noindex sur les 2 pages légales et NULLE part ailleurs', () => {
+    for (const f of toutesLesPagesHtml()) {
+      const attendu = f === 'legal/index.html' || f === 'fr/mentions-legales/index.html';
+      expect(/name="robots" content="noindex"/.test(lirePage(f)), f).toBe(attendu);
+    }
+  });
+
+  it('EARS-49/50 : 404.html buildée avec liens de reprise', () => {
+    const html = lirePage('404.html');
+    expect(html).toMatch(/href="\/"/);
+    expect(html).toMatch(/href="\/fr\/"/);
   });
 });
