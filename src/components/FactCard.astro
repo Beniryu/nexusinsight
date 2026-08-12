@@ -1,0 +1,52 @@
+---
+// Carte de faits du hero (signature E3) — lignes k/v sur graphite, clé mono uppercase.
+// Règle E3 : une seule valeur en cuivre par carte (copper: true sur une seule ligne).
+export interface FactRow {
+  k: string;
+  v: string;
+  copper?: boolean;
+}
+
+interface Props {
+  rows: FactRow[];
+}
+
+const { rows } = Astro.props;
+---
+
+<div class="fact" data-component="fact-card">
+  {
+    rows.map((row) => (
+      <div class="row">
+        <span class="k">{row.k}</span>
+        <span class:list={['v', { c: row.copper }]}>{row.v}</span>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .fact {
+    background: var(--nxi-graphite);
+    color: var(--nxi-fg);
+    padding: 26px 24px;
+    border-radius: var(--nxi-r-card);
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 0;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--nxi-line-dark);
+  }
+  .row:last-child { border-bottom: 0; }
+  .k {
+    font: 500 11px var(--nxi-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--nxi-muted-d);
+  }
+  .v { font-weight: 600; text-align: right; }
+  .v.c { color: var(--nxi-copper); }
+</style>

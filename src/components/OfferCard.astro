@@ -1,0 +1,74 @@
+---
+// Card d'offre E3 — graphite sur papier, tag mono cuivre « 0X · durée », prix Clash,
+// hover graphite-2 + lift 3px (neutralisé sous prefers-reduced-motion).
+interface Props {
+  index: string;
+  name: string;
+  duration: string;
+  price: string;
+  priceMeta: string;
+  blurb: string;
+  href: string;
+  /** Libellé du lien de détail — les pages FR passent leur pair idiomatique. */
+  linkLabel?: string;
+}
+
+const { index, name, duration, price, priceMeta, blurb, href, linkLabel = 'Details →' } =
+  Astro.props;
+---
+
+<article class="card" data-component="offer-card" data-card-index={index}>
+  <span class="tag">{index} · {duration}</span>
+  <h3>{name}</h3>
+  <p>{blurb}</p>
+  <div class="price">{price}<small>{priceMeta}</small></div>
+  <a class="go" href={href}>{linkLabel}</a>
+</article>
+
+<style>
+  .card {
+    background: var(--nxi-graphite);
+    color: var(--nxi-fg);
+    border-radius: var(--nxi-r-card);
+    padding: 24px 22px 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: 300px;
+  }
+  .card:hover { background: var(--nxi-graphite-2); }
+  .tag {
+    font: 500 var(--nxi-tag) var(--nxi-mono);
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--nxi-copper);
+  }
+  h3 {
+    font: 600 var(--nxi-h3) var(--nxi-display);
+    letter-spacing: var(--nxi-track-display);
+    margin-top: 12px;
+  }
+  p { margin-top: 10px; font-size: var(--nxi-desc); line-height: 1.55; color: var(--nxi-muted-d); }
+  .price { margin-top: auto; padding-top: 20px; font: 600 var(--nxi-price) var(--nxi-display); }
+  .price small {
+    display: block;
+    margin-top: 5px;
+    font: 500 var(--nxi-tag) var(--nxi-mono);
+    letter-spacing: 0.05em;
+    color: var(--nxi-copper);
+  }
+  .go {
+    margin-top: 14px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--nxi-copper);
+    text-decoration: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .card {
+      transition:
+        background var(--nxi-dur) var(--nxi-ease),
+        transform var(--nxi-dur) var(--nxi-ease);
+    }
+    .card:hover { transform: translateY(-3px); }
+  }
+</style>

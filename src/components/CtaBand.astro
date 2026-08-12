@@ -1,0 +1,48 @@
+---
+// Bande CTA graphite de pied de page (héritée du design D3, retenue dans E3).
+// Le bouton plein cuivre est l'exception bouton — le cuivre n'est jamais un fond de section.
+import { site, type Locale } from '../content/site';
+import { paire } from '../content/routes';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = site[locale].home.ctaBand;
+---
+
+<section class="band" data-component="cta-band">
+  <div class="inner">
+    <p>{t.text}</p>
+    <a class="btn" data-cta="contact" href={paire('/contact/')[locale]}>{t.cta}</a>
+  </div>
+</section>
+
+<style>
+  .band { background: var(--nxi-graphite); color: var(--nxi-fg); }
+  .inner {
+    max-width: var(--nxi-page-max);
+    margin: 0 auto;
+    padding: 52px var(--nxi-gutter);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  p { font: 500 22px var(--nxi-display); letter-spacing: var(--nxi-track-display); }
+  .btn {
+    margin-left: auto;
+    background: var(--nxi-copper);
+    color: var(--nxi-copper-fg);
+    padding: 11px 22px;
+    border-radius: var(--nxi-r-btn);
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+  }
+  @media (max-width: 900px) {
+    .inner { padding: 40px 20px; }
+    .btn { margin-left: 0; }
+  }
+</style>

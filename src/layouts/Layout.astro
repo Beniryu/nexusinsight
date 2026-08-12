@@ -1,9 +1,12 @@
 ---
 // Layout de base — canonical/hreflang/x-default dérivés du registre des routes, OG, favicon.
+// Toutes les pages héritent de la nav (avant le slot) et du footer (après).
 import '../styles/fonts.css';
 import '../styles/tokens.css';
 import type { Locale } from '../content/site';
 import { paire } from '../content/routes';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   locale: Locale;
@@ -38,6 +41,8 @@ const r = paire(path);
     <meta property="og:image" content={`${site}/og/og-${locale}.png`} />
   </head>
   <body>
+    <Nav locale={locale} path={path} />
     <slot />
+    <Footer locale={locale} />
   </body>
 </html>

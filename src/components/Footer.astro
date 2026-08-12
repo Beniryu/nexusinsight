@@ -1,0 +1,46 @@
+---
+// Footer commun — mention NexusEvo SARL, mentions légales de la locale,
+// contact direct et site personnel du fondateur.
+import { site, type Locale } from '../content/site';
+import { paire } from '../content/routes';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = site[locale].footer;
+---
+
+<footer data-component="footer">
+  <div class="inner">
+    <p class="company">{t.company}</p>
+    <div class="links">
+      <a href={paire('/legal/')[locale]}>{t.legal}</a>
+      <a href={`mailto:${t.contact}`}>{t.contact}</a>
+      <a href="https://kaankarabulut.com">{t.founderSite}</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer { border-top: 1px solid var(--nxi-line-light); }
+  .inner {
+    max-width: var(--nxi-page-max);
+    margin: 0 auto;
+    padding: 28px var(--nxi-gutter);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: var(--nxi-desc);
+    color: var(--nxi-muted-l);
+  }
+  .links { display: flex; gap: 22px; flex-wrap: wrap; }
+  .links a { color: var(--nxi-muted-l); text-decoration: none; }
+  .links a:hover { color: var(--nxi-ink); }
+  @media (max-width: 900px) {
+    .inner { padding: 24px 20px; }
+  }
+</style>
