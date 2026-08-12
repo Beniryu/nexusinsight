@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NexusInsight — 3 designs (base C1)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600&f[]=switzer@400,500,600&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#111; color:#ddd; font-family:'Switzer',system-ui,sans-serif; }
+  a { text-decoration:none; }
+
+  .meta-band { background:#111; color:#bbb; padding:26px 40px; border-top:1px solid #333;
+    display:flex; flex-wrap:wrap; gap:24px; align-items:center; }
+  .meta-band h2 { font:600 15px/1 'IBM Plex Mono',monospace; color:#fff; letter-spacing:.08em; text-transform:uppercase; }
+  .meta-band p { font-size:13.5px; max-width:56ch; color:#999; }
+  .intro { padding:52px 40px 24px; }
+  .intro h1 { font:600 22px/1.3 'IBM Plex Mono',monospace; color:#fff; }
+  .intro p { margin-top:10px; font-size:14px; color:#999; max-width:64ch; }
+
+  /* tokens communs — plus de beige */
+  :root {
+    --graphite:#1E2126; --graphite-2:#272B31; --line-dark:rgba(245,246,248,.14);
+    --paper:#F5F6F8; --white:#FFFFFF; --ink:#1E2126; --muted-l:#5F6570; --line-light:#DFE2E7;
+    --copper:#C97E48; --copper-deep:#A45F2E; --copper-fg:#1C1408;
+    --fg:#F5F6F8; --muted-d:#A9ADB5;
+    --display:'Clash Display',sans-serif; --body:'Switzer',sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  .nav { display:flex; align-items:center; gap:28px; padding:22px 40px; }
+  .brand { font:600 17px var(--display); }
+  .nav a { font-size:13.5px; }
+  .btn { padding:12px 24px; border-radius:4px; font-weight:600; font-size:14.5px; display:inline-block; }
+
+  /* ============ D1 · MANIFESTE ============ */
+  .d1 .nav { background:var(--graphite); color:var(--fg); }
+  .d1 .nav a { color:var(--muted-d); }
+  .d1 .nav .cta { margin-left:auto; background:var(--copper); color:var(--copper-fg); padding:10px 18px; border-radius:4px; font-weight:600; }
+  .d1 .hero { background:var(--graphite); color:var(--fg); }
+  .d1 .hero-inner { max-width:1120px; margin:0 auto; padding:88px 40px 72px; }
+  .d1 .kicker { font:500 12px var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--copper); }
+  .d1 h1 { font:600 clamp(46px,6.6vw,88px)/1.02 var(--display); letter-spacing:-.015em; max-width:14ch; margin-top:20px; }
+  .d1 .lead { margin-top:24px; font-size:17.5px; line-height:1.6; color:var(--muted-d); max-width:52ch; }
+  .d1 .hero-ctas { margin-top:32px; display:flex; gap:14px; }
+  .d1 .btn-p { background:var(--copper); color:var(--copper-fg); }
+  .d1 .btn-g { border:1.5px solid var(--line-dark); color:var(--fg); }
+  .d1 .rule { height:1px; background:linear-gradient(to right, transparent, var(--copper) 120px, var(--copper) calc(100% - 120px), transparent); opacity:.6; }
+  .d1 .pkgs { background:var(--paper); color:var(--ink); padding:64px 40px 88px; }
+  .d1 .pkgs-inner { max-width:1120px; margin:0 auto; }
+  .d1 .pkgs h2 { font:500 13px var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--copper-deep); margin-bottom:8px; }
+  .d1 .row { display:grid; grid-template-columns:64px 1fr 2fr 1.2fr auto; gap:24px; align-items:baseline;
+    padding:28px 0; border-top:1.5px solid var(--line-light); }
+  .d1 .row:last-child { border-bottom:1.5px solid var(--line-light); }
+  .d1 .idx { font:400 15px var(--mono); color:var(--copper-deep); }
+  .d1 .row h3 { font:600 22px var(--display); }
+  .d1 .desc { font-size:14.5px; line-height:1.5; color:var(--muted-l); }
+  .d1 .price { font:600 clamp(30px,3.6vw,44px) var(--display); color:var(--ink); white-space:nowrap; }
+  .d1 .price small { font:500 11.5px var(--mono); color:var(--copper-deep); display:block; margin-top:4px; letter-spacing:.04em; }
+  .d1 .go { font-weight:600; color:var(--ink); font-size:14.5px; border-bottom:2px solid var(--copper); padding-bottom:2px; }
+
+  /* ============ D2 · PANNEAUX ============ */
+  .d2 { background:var(--graphite); color:var(--fg); }
+  .d2 .nav { border-bottom:1px solid var(--line-dark); }
+  .d2 .nav a { color:var(--muted-d); }
+  .d2 .nav .cta { margin-left:auto; border:1.5px solid var(--copper); color:var(--copper); padding:10px 18px; border-radius:4px; font-weight:600; }
+  .d2 .hero-inner { max-width:1120px; margin:0 auto; padding:88px 40px 64px; display:grid; grid-template-columns:14px 1fr; gap:32px; }
+  .d2 .vrule { width:2px; background:linear-gradient(var(--copper), transparent); }
+  .d2 h1 { font:600 clamp(46px,6.4vw,84px)/1.03 var(--display); letter-spacing:-.015em; max-width:15ch; }
+  .d2 .lead { margin-top:22px; font-size:17px; line-height:1.6; color:var(--muted-d); max-width:52ch; }
+  .d2 .hero-ctas { margin-top:30px; display:flex; gap:14px; }
+  .d2 .btn-p { background:var(--copper); color:var(--copper-fg); }
+  .d2 .btn-g { border:1.5px solid var(--line-dark); color:var(--fg); }
+  .d2 .pkgs { max-width:1120px; margin:0 auto; padding:24px 40px 96px;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1.5px; background:transparent; }
+  .d2 .panel { background:var(--graphite-2); padding:30px 26px 26px; display:flex; flex-direction:column; min-height:360px; }
+  .d2 .panel .tag { font:500 11px var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--copper); }
+  .d2 .panel h3 { font:600 24px var(--display); margin-top:14px; }
+  .d2 .panel p { margin-top:12px; font-size:14.5px; line-height:1.55; color:var(--muted-d); }
+  .d2 .panel .price { margin-top:auto; padding-top:26px; font:600 clamp(30px,3vw,40px) var(--display); color:var(--fg); }
+  .d2 .panel .price small { font:500 11.5px var(--mono); color:var(--copper); display:block; margin-top:6px; letter-spacing:.04em; }
+  .d2 .panel .go { margin-top:18px; color:var(--copper); font-weight:600; font-size:14.5px; }
+  .d2 .panel:hover { background:#2B3037; }
+
+  /* ============ D3 · ÉDITORIAL BLANC ============ */
+  .d3 { background:var(--white); color:var(--ink); }
+  .d3 .nav { border-bottom:1.5px solid var(--ink); }
+  .d3 .nav a { color:var(--muted-l); }
+  .d3 .nav .cta { margin-left:auto; background:var(--ink); color:var(--white); padding:10px 18px; border-radius:4px; font-weight:600; }
+  .d3 .hero-inner { max-width:1120px; margin:0 auto; padding:96px 40px 72px; }
+  .d3 .kicker { font:500 12px var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--copper-deep); }
+  .d3 h1 { font:500 clamp(52px,7.6vw,104px)/1.0 var(--display); letter-spacing:-.02em; max-width:13ch; margin-top:22px; }
+  .d3 h1 em { font-style:normal; color:var(--copper-deep); }
+  .d3 .lead { margin-top:26px; font-size:17.5px; line-height:1.6; color:var(--muted-l); max-width:52ch; }
+  .d3 .hero-ctas { margin-top:32px; display:flex; gap:14px; }
+  .d3 .btn-p { background:var(--ink); color:var(--white); }
+  .d3 .btn-g { border:1.5px solid var(--line-light); color:var(--ink); }
+  .d3 .pkgs { border-top:1.5px solid var(--ink); }
+  .d3 .prow { border-bottom:1.5px solid var(--line-light); }
+  .d3 .prow-inner { max-width:1120px; margin:0 auto; padding:40px 40px;
+    display:grid; grid-template-columns:1fr auto; gap:28px; align-items:center; }
+  .d3 .prow h3 { font:600 24px var(--display); }
+  .d3 .prow .desc { margin-top:8px; font-size:14.5px; line-height:1.5; color:var(--muted-l); max-width:56ch; }
+  .d3 .prow .meta { margin-top:10px; font:500 11.5px var(--mono); letter-spacing:.06em; color:var(--copper-deep); text-transform:uppercase; }
+  .d3 .bignum { font:500 clamp(44px,6vw,76px)/1 var(--display); letter-spacing:-.02em; color:var(--ink); white-space:nowrap; text-align:right; }
+  .d3 .bignum small { display:block; font:500 12px var(--mono); color:var(--muted-l); margin-top:8px; letter-spacing:.04em; }
+  .d3 .cta-band { background:var(--graphite); color:var(--fg); }
+  .d3 .cta-inner { max-width:1120px; margin:0 auto; padding:52px 40px;
+    display:flex; align-items:center; gap:28px; flex-wrap:wrap; }
+  .d3 .cta-inner p { font:500 22px var(--display); }
+  .d3 .cta-inner .btn-p { margin-left:auto; background:var(--copper); color:var(--copper-fg); }
+
+  @media (max-width:900px){
+    .meta-band, .intro, .nav { padding-left:20px; padding-right:20px; }
+    .d1 .hero-inner, .d1 .pkgs, .d2 .hero-inner, .d2 .pkgs, .d3 .hero-inner, .d3 .prow-inner, .d3 .cta-inner { padding-left:20px; padding-right:20px; }
+    .d1 .row { grid-template-columns:40px 1fr; }
+    .d1 .desc, .d1 .price, .d1 .go { grid-column:2; }
+    .d2 .pkgs { grid-template-columns:1fr; }
+    .d3 .prow-inner { grid-template-columns:1fr; }
+    .d3 .bignum { text-align:left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>Base C1 actée (Clash Display · Switzer · graphite/cuivre) — 3 designs</h1>
+  <p>Le beige est remplacé (papier froid #F5F6F8 ou blanc pur). Même contenu, trois compositions :
+  choisis celle qui servira de langage à tout le site.</p>
+</div>
+
+<!-- ============ D1 ============ -->
+<div class="meta-band">
+  <h2>D1 — Manifeste</h2>
+  <p>Hero graphite, table des prix sur papier froid, index 01/02/03 (la vraie séquence Sprint→Build→Delivery),
+  filet cuivre en signature. L'évolution directe de ce que tu as vu.</p>
+</div>
+<section class="d1">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero"><div class="hero-inner">
+    <span class="kicker">Scoping · Build · Delivery</span>
+    <h1>Products shipped, not days billed.</h1>
+    <p class="lead">Fixed-scope packages: the scope in writing, the price known upfront, the deliverable
+    verifiable. The small package prices the big one — nobody signs a big number blind. Neither do we.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-p" href="#">Book a call</a>
+      <a class="btn btn-g" href="#">See the offers</a>
+    </div>
+  </div>
+  <div class="rule"></div></div>
+  <div class="pkgs"><div class="pkgs-inner">
+    <h2>Three packages. Prices on the page.</h2>
+    <div class="row">
+      <span class="idx">01</span>
+      <h3>Discovery Sprint</h3>
+      <p class="desc">Scope, priorities, clickable prototype — and a firm quote for the build.
+      3 weeks, fixed dates. Yours to keep.</p>
+      <div class="price">€9,500<small>FIXED · $11,000</small></div>
+      <a class="go" href="#">Details</a>
+    </div>
+    <div class="row">
+      <span class="idx">02</span>
+      <h3>End-to-end Build</h3>
+      <p class="desc">Design to production. Frozen scope, milestone demos every two weeks,
+      your code, your repo. 6–10 weeks.</p>
+      <div class="price">from €25,000<small>FIRM AFTER SPRINT</small></div>
+      <a class="go" href="#">Details</a>
+    </div>
+    <div class="row">
+      <span class="idx">03</span>
+      <h3>Product Delivery</h3>
+      <p class="desc">Your team builds, we steer: living backlog, run rituals, predictable shipping.
+      Cancel monthly, 30-day notice.</p>
+      <div class="price">€3,900/mo<small>OR €7,500/MO · $4,500/$8,500</small></div>
+      <a class="go" href="#">Details</a>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ D2 ============ -->
+<div class="meta-band">
+  <h2>D2 — Panneaux</h2>
+  <p>Tout graphite, d'un bloc : trois panneaux d'offre côte à côte, règle verticale cuivre au hero,
+  boutons outline cuivre. Dense, sombre, présence maximale.</p>
+</div>
+<section class="d2">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero-inner">
+    <div class="vrule"></div>
+    <div>
+      <h1>Products shipped, not days billed.</h1>
+      <p class="lead">Fixed-scope packages: the scope in writing, the price known upfront, the
+      deliverable verifiable. The small package prices the big one — nobody signs a big number blind.
+      Neither do we.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-p" href="#">Book a call</a>
+        <a class="btn btn-g" href="#">See the offers</a>
+      </div>
+    </div>
+  </div>
+  <div class="pkgs">
+    <article class="panel">
+      <span class="tag">01 · 3 weeks</span>
+      <h3>Discovery Sprint</h3>
+      <p>Scope, priorities, clickable prototype — and a firm quote for the build. Fixed dates.
+      Yours to keep.</p>
+      <div class="price">€9,500<small>FIXED · $11,000</small></div>
+      <a class="go" href="#">Details →</a>
+    </article>
+    <article class="panel">
+      <span class="tag">02 · 6–10 weeks</span>
+      <h3>End-to-end Build</h3>
+      <p>Design to production. Frozen scope, milestone demos every two weeks, your code, your repo.</p>
+      <div class="price">from €25,000<small>FIRM AFTER SPRINT</small></div>
+      <a class="go" href="#">Details →</a>
+    </article>
+    <article class="panel">
+      <span class="tag">03 · Monthly</span>
+      <h3>Product Delivery</h3>
+      <p>Your team builds, we steer: living backlog, run rituals, predictable shipping. Cancel monthly.</p>
+      <div class="price">€3,900/mo<small>OR €7,500/MO · $4,500/$8,500</small></div>
+      <a class="go" href="#">Details →</a>
+    </article>
+  </div>
+</section>
+
+<!-- ============ D3 ============ -->
+<div class="meta-band">
+  <h2>D3 — Éditorial blanc</h2>
+  <p>Blanc pur, typographie géante en graisse medium, un mot en cuivre dans le titre, prix énormes
+  alignés à droite, bande CTA graphite en pied. Le plus épuré des trois.</p>
+</div>
+<section class="d3">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero-inner">
+    <span class="kicker">Scoping · Build · Delivery</span>
+    <h1>Products <em>shipped</em>, not days billed.</h1>
+    <p class="lead">Fixed-scope packages: the scope in writing, the price known upfront, the deliverable
+    verifiable. The small package prices the big one — nobody signs a big number blind. Neither do we.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-p" href="#">Book a call</a>
+      <a class="btn btn-g" href="#">See the offers</a>
+    </div>
+  </div>
+  <div class="pkgs">
+    <div class="prow">
+      <div class="prow-inner">
+        <div>
+          <h3>Discovery Sprint</h3>
+          <p class="desc">Scope, priorities, clickable prototype — and a firm quote for the build.
+          Yours to keep, executable by any team.</p>
+          <p class="meta">01 · 3 weeks · fixed dates</p>
+        </div>
+        <div class="bignum">€9,500<small>FIXED · $11,000</small></div>
+      </div>
+    </div>
+    <div class="prow">
+      <div class="prow-inner">
+        <div>
+          <h3>End-to-end Build</h3>
+          <p class="desc">Design to production. Frozen scope, milestone demos every two weeks,
+          your code, your repo.</p>
+          <p class="meta">02 · 6–10 weeks · firm after sprint</p>
+        </div>
+        <div class="bignum">from €25,000<small>FIRM AFTER SPRINT</small></div>
+      </div>
+    </div>
+    <div class="prow">
+      <div class="prow-inner">
+        <div>
+          <h3>Product Delivery</h3>
+          <p class="desc">Your team builds, we steer: living backlog, run rituals, predictable shipping.
+          Cancel monthly, 30-day notice.</p>
+          <p class="meta">03 · monthly · 30-day notice</p>
+        </div>
+        <div class="bignum">€3,900/mo<small>OR €7,500/MO</small></div>
+      </div>
+    </div>
+  </div>
+  <div class="cta-band"><div class="cta-inner">
+    <p>Tell us what you need shipped.</p>
+    <a class="btn btn-p" href="#">Book a call</a>
+  </div></div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NexusInsight — round 3 : 5 propositions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600&f[]=switzer@400,500,600&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#111; color:#ddd; font-family:'Switzer',system-ui,sans-serif; }
+  a { text-decoration:none; }
+
+  .meta-band { background:#111; color:#bbb; padding:24px 40px; border-top:1px solid #333;
+    display:flex; flex-wrap:wrap; gap:20px; align-items:center; }
+  .meta-band h2 { font:600 15px/1 'IBM Plex Mono',monospace; color:#fff; letter-spacing:.08em; text-transform:uppercase; }
+  .meta-band p { font-size:13.5px; max-width:58ch; color:#999; }
+  .intro { padding:48px 40px 20px; }
+  .intro h1 { font:600 21px/1.3 'IBM Plex Mono',monospace; color:#fff; }
+  .intro p { margin-top:8px; font-size:14px; color:#999; max-width:66ch; }
+
+  :root {
+    --graphite:#1E2126; --graphite-2:#282C33; --line-dark:rgba(245,246,248,.14);
+    --paper:#F5F6F8; --white:#FFFFFF; --ink:#1E2126; --muted-l:#5F6570; --line-light:#DDE0E6;
+    --copper:#C97E48; --copper-deep:#A45F2E; --copper-fg:#1C1408;
+    --fg:#F5F6F8; --muted-d:#A9ADB5;
+    --display:'Clash Display',sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+
+  /* ---------- structure commune ---------- */
+  .p .nav { display:flex; align-items:center; gap:26px; padding:20px 40px; }
+  .p .brand { font:600 16.5px var(--display); }
+  .p .nav a { font-size:13.5px; }
+  .p .nav .cta { margin-left:auto; padding:10px 18px; border-radius:4px; font-weight:600; font-size:13.5px; }
+  .p .hero-inner { max-width:1120px; margin:0 auto; padding:64px 40px 56px; }
+  .p .kicker { font:500 11.5px var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--copper-deep); }
+  .p h1 { font:600 clamp(34px,4.4vw,56px)/1.08 var(--display); letter-spacing:-.015em; max-width:18ch; margin-top:16px; }
+  .p .lead { margin-top:18px; font-size:16.5px; line-height:1.6; max-width:54ch; }
+  .p .ctas { margin-top:26px; display:flex; gap:12px; }
+  .p .btn { padding:11px 22px; border-radius:4px; font-weight:600; font-size:14px; }
+  .p .offers { padding:56px 40px 72px; }
+  .p .offers-inner { max-width:1120px; margin:0 auto; }
+  .p .offers h2 { font:500 12.5px var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--copper-deep); margin-bottom:22px; }
+  .p .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .p .card { padding:24px 22px 20px; display:flex; flex-direction:column; min-height:300px; }
+  .p .card .tag { font:500 10.5px var(--mono); letter-spacing:.13em; text-transform:uppercase; }
+  .p .card h3 { font:600 21px var(--display); margin-top:12px; }
+  .p .card p { margin-top:10px; font-size:14px; line-height:1.55; }
+  .p .card .price { margin-top:auto; padding-top:20px; font:600 27px var(--display); }
+  .p .card .price small { font:500 10.5px var(--mono); display:block; margin-top:5px; letter-spacing:.05em; }
+  .p .card .go { margin-top:14px; font-weight:600; font-size:14px; }
+  @media (prefers-reduced-motion:no-preference){
+    .p .card { transition:transform .16s cubic-bezier(.4,0,.2,1), box-shadow .16s, background .16s; }
+    .p .card:hover { transform:translateY(-3px); }
+  }
+
+  /* ============ E1 · Clair bordé ============ */
+  .e1 { background:var(--white); color:var(--ink); }
+  .e1 .nav { border-bottom:1.5px solid var(--ink); }
+  .e1 .nav a { color:var(--muted-l); }
+  .e1 .nav .cta { background:var(--ink); color:var(--white); }
+  .e1 .lead { color:var(--muted-l); }
+  .e1 .btn-p { background:var(--ink); color:var(--white); }
+  .e1 .btn-g { border:1.5px solid var(--line-light); color:var(--ink); }
+  .e1 .card { background:var(--white); border:1.5px solid var(--ink); }
+  .e1 .card .tag { color:var(--copper-deep); }
+  .e1 .card p { color:var(--muted-l); }
+  .e1 .card .price small { color:var(--copper-deep); }
+  .e1 .card .go { color:var(--ink); border-bottom:2px solid var(--copper); align-self:flex-start; }
+  .e1 .card:hover { box-shadow:5px 5px 0 var(--copper); }
+
+  /* ============ E2 · Hero graphite, cards claires ============ */
+  .e2 .nav, .e2 .hero { background:var(--graphite); color:var(--fg); }
+  .e2 .nav a { color:var(--muted-d); }
+  .e2 .nav .cta { background:var(--copper); color:var(--copper-fg); }
+  .e2 .kicker { color:var(--copper); }
+  .e2 .lead { color:var(--muted-d); }
+  .e2 .btn-p { background:var(--copper); color:var(--copper-fg); }
+  .e2 .btn-g { border:1.5px solid var(--line-dark); color:var(--fg); }
+  .e2 .offers { background:var(--paper); color:var(--ink); }
+  .e2 .card { background:var(--white); border-top:3px solid var(--copper); box-shadow:0 1px 2px rgba(30,33,38,.06); }
+  .e2 .card .tag { color:var(--copper-deep); }
+  .e2 .card p { color:var(--muted-l); }
+  .e2 .card .price small { color:var(--copper-deep); }
+  .e2 .card .go { color:var(--ink); }
+  .e2 .card:hover { box-shadow:0 10px 26px rgba(30,33,38,.12); }
+
+  /* ============ E3 · Split + carte de faits ============ */
+  .e3 { background:var(--paper); color:var(--ink); }
+  .e3 .nav { background:var(--paper); }
+  .e3 .nav a { color:var(--muted-l); }
+  .e3 .nav .cta { background:var(--ink); color:var(--white); }
+  .e3 .hero-inner { display:grid; grid-template-columns:1.5fr 1fr; gap:48px; align-items:center; }
+  .e3 .lead { color:var(--muted-l); }
+  .e3 .btn-p { background:var(--ink); color:var(--white); }
+  .e3 .btn-g { border:1.5px solid var(--line-light); color:var(--ink); }
+  .e3 .fact { background:var(--graphite); color:var(--fg); padding:26px 24px; border-radius:6px; }
+  .e3 .fact .row { display:flex; justify-content:space-between; gap:16px; padding:12px 0; font-size:13.5px; border-bottom:1px solid var(--line-dark); }
+  .e3 .fact .row:last-child { border-bottom:0; }
+  .e3 .fact .k { color:var(--muted-d); font:500 11px var(--mono); letter-spacing:.1em; text-transform:uppercase; }
+  .e3 .fact .v { font-weight:600; text-align:right; }
+  .e3 .fact .v.c { color:var(--copper); }
+  .e3 .card { background:var(--graphite); color:var(--fg); border-radius:6px; }
+  .e3 .card .tag { color:var(--copper); }
+  .e3 .card p { color:var(--muted-d); }
+  .e3 .card .price { color:var(--fg); }
+  .e3 .card .price small { color:var(--copper); }
+  .e3 .card .go { color:var(--copper); }
+  .e3 .card:hover { background:#252932; }
+
+  /* ============ E4 · Tout graphite, cards cuivrées ============ */
+  .e4 { background:var(--graphite); color:var(--fg); }
+  .e4 .nav { border-bottom:1px solid var(--line-dark); }
+  .e4 .nav a { color:var(--muted-d); }
+  .e4 .nav .cta { border:1.5px solid var(--copper); color:var(--copper); }
+  .e4 .kicker { color:var(--copper); }
+  .e4 .lead { color:var(--muted-d); }
+  .e4 .btn-p { background:var(--copper); color:var(--copper-fg); }
+  .e4 .btn-g { border:1.5px solid var(--line-dark); color:var(--fg); }
+  .e4 .card { background:var(--graphite-2); border:1px solid var(--line-dark); border-radius:6px; }
+  .e4 .card .tag { color:var(--copper); }
+  .e4 .card p { color:var(--muted-d); }
+  .e4 .card .price small { color:var(--copper); }
+  .e4 .card .go { color:var(--copper); }
+  .e4 .card:hover { border-color:var(--copper); }
+
+  /* ============ E5 · Bande graphite ============ */
+  .e5 { background:var(--white); color:var(--ink); }
+  .e5 .nav a { color:var(--muted-l); }
+  .e5 .nav .cta { background:var(--ink); color:var(--white); }
+  .e5 .lead { color:var(--muted-l); }
+  .e5 .btn-p { background:var(--ink); color:var(--white); }
+  .e5 .btn-g { border:1.5px solid var(--line-light); color:var(--ink); }
+  .e5 .offers { background:var(--graphite); color:var(--fg); }
+  .e5 .offers h2 { color:var(--copper); }
+  .e5 .card { background:var(--paper); color:var(--ink); border-radius:6px; }
+  .e5 .card .tag { color:var(--copper-deep); }
+  .e5 .card p { color:var(--muted-l); }
+  .e5 .card .price small { color:var(--copper-deep); }
+  .e5 .card .go { color:var(--ink); border-bottom:2px solid var(--copper); align-self:flex-start; }
+  .e5 .card:hover { box-shadow:0 12px 28px rgba(0,0,0,.28); }
+
+  @media (max-width:900px){
+    .meta-band, .intro { padding-left:20px; padding-right:20px; }
+    .p .nav, .p .hero-inner, .p .offers { padding-left:20px; padding-right:20px; }
+    .p .cards { grid-template-columns:1fr; }
+    .e3 .hero-inner { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>Round 3 — 5 propositions (Clash Display · Switzer · graphite/cuivre)</h1>
+  <p>Typo assagie (hero ≤ 56px), les offres en cards partout. Cinq équilibres clair/sombre et
+  compositions différents.</p>
+</div>
+
+<!-- ============ E1 ============ -->
+<div class="meta-band">
+  <h2>E1 — Clair bordé</h2>
+  <p>Blanc, cards à bordure encre, ombre cuivre au survol. Net, gallerie, presque print.</p>
+</div>
+<section class="p e1">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero"><div class="hero-inner">
+    <span class="kicker">Scoping · Build · Delivery</span>
+    <h1>Products shipped, not days billed.</h1>
+    <p class="lead">Fixed-scope packages: the scope in writing, the price known upfront, the deliverable
+    verifiable. The small package prices the big one — nobody signs a big number blind. Neither do we.</p>
+    <div class="ctas"><a class="btn btn-p" href="#">Book a call</a><a class="btn btn-g" href="#">See the offers</a></div>
+  </div></div>
+  <div class="offers"><div class="offers-inner">
+    <h2>Three packages. Prices on the page.</h2>
+    <div class="cards">
+      <article class="card">
+        <span class="tag">01 · 3 weeks</span>
+        <h3>Discovery Sprint</h3>
+        <p>Scope, priorities, clickable prototype — and a firm quote for the build. Fixed dates. Yours to keep.</p>
+        <div class="price">€9,500<small>FIXED · $11,000</small></div>
+        <a class="go" href="#">Details</a>
+      </article>
+      <article class="card">
+        <span class="tag">02 · 6–10 weeks</span>
+        <h3>End-to-end Build</h3>
+        <p>Design to production. Frozen scope, milestone demos every two weeks, your code, your repo.</p>
+        <div class="price">from €25,000<small>FIRM AFTER SPRINT</small></div>
+        <a class="go" href="#">Details</a>
+      </article>
+      <article class="card">
+        <span class="tag">03 · Monthly</span>
+        <h3>Product Delivery</h3>
+        <p>Your team builds, we steer: living backlog, run rituals, predictable shipping. Cancel monthly.</p>
+        <div class="price">€3,900/mo<small>OR €7,500/MO</small></div>
+        <a class="go" href="#">Details</a>
+      </article>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ E2 ============ -->
+<div class="meta-band">
+  <h2>E2 — Hero graphite, cards claires</h2>
+  <p>Le D1 passé aux cards : hero sombre, offres sur papier froid, liseré cuivre en tête de card.</p>
+</div>
+<section class="p e2">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero"><div class="hero-inner">
+    <span class="kicker">Scoping · Build · Delivery</span>
+    <h1>Products shipped, not days billed.</h1>
+    <p class="lead">Fixed-scope packages: the scope in writing, the price known upfront, the deliverable
+    verifiable. The small package prices the big one — nobody signs a big number blind. Neither do we.</p>
+    <div class="ctas"><a class="btn btn-p" href="#">Book a call</a><a class="btn btn-g" href="#">See the offers</a></div>
+  </div></div>
+  <div class="offers"><div class="offers-inner">
+    <h2>Three packages. Prices on the page.</h2>
+    <div class="cards">
+      <article class="card">
+        <span class="tag">01 · 3 weeks</span>
+        <h3>Discovery Sprint</h3>
+        <p>Scope, priorities, clickable prototype — and a firm quote for the build. Fixed dates. Yours to keep.</p>
+        <div class="price">€9,500<small>FIXED · $11,000</small></div>
+        <a class="go" href="#">Details →</a>
+      </article>
+      <article class="card">
+        <span class="tag">02 · 6–10 weeks</span>
+        <h3>End-to-end Build</h3>
+        <p>Design to production. Frozen scope, milestone demos every two weeks, your code, your repo.</p>
+        <div class="price">from €25,000<small>FIRM AFTER SPRINT</small></div>
+        <a class="go" href="#">Details →</a>
+      </article>
+      <article class="card">
+        <span class="tag">03 · Monthly</span>
+        <h3>Product Delivery</h3>
+        <p>Your team builds, we steer: living backlog, run rituals, predictable shipping. Cancel monthly.</p>
+        <div class="price">€3,900/mo<small>OR €7,500/MO</small></div>
+        <a class="go" href="#">Details →</a>
+      </article>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ E3 ============ -->
+<div class="meta-band">
+  <h2>E3 — Split + carte de faits</h2>
+  <p>Hero clair en deux colonnes : la thèse à gauche, une carte graphite « les faits » à droite
+  (prix fixe / périmètre gelé / livrable vérifiable). Cards d'offres graphite sur papier froid.</p>
+</div>
+<section class="p e3">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero"><div class="hero-inner">
+    <div>
+      <span class="kicker">Scoping · Build · Delivery</span>
+      <h1>Products shipped, not days billed.</h1>
+      <p class="lead">Fixed-scope packages — the small one prices the big one. Nobody signs a big
+      number blind. Neither do we.</p>
+      <div class="ctas"><a class="btn btn-p" href="#">Book a call</a><a class="btn btn-g" href="#">See the offers</a></div>
+    </div>
+    <div class="fact">
+      <div class="row"><span class="k">Scope</span><span class="v">in writing, frozen</span></div>
+      <div class="row"><span class="k">Price</span><span class="v c">known upfront</span></div>
+      <div class="row"><span class="k">Deliverable</span><span class="v">verifiable</span></div>
+      <div class="row"><span class="k">Code</span><span class="v">yours, repo included</span></div>
+      <div class="row"><span class="k">Engagement</span><span class="v">no day rates</span></div>
+    </div>
+  </div></div>
+  <div class="offers"><div class="offers-inner">
+    <h2>Three packages. Prices on the page.</h2>
+    <div class="cards">
+      <article class="card">
+        <span class="tag">01 · 3 weeks</span>
+        <h3>Discovery Sprint</h3>
+        <p>Scope, priorities, clickable prototype — and a firm quote for the build. Fixed dates. Yours to keep.</p>
+        <div class="price">€9,500<small>FIXED · $11,000</small></div>
+        <a class="go" href="#">Details →</a>
+      </article>
+      <article class="card">
+        <span class="tag">02 · 6–10 weeks</span>
+        <h3>End-to-end Build</h3>
+        <p>Design to production. Frozen scope, milestone demos every two weeks, your code, your repo.</p>
+        <div class="price">from €25,000<small>FIRM AFTER SPRINT</small></div>
+        <a class="go" href="#">Details →</a>
+      </article>
+      <article class="card">
+        <span class="tag">03 · Monthly</span>
+        <h3>Product Delivery</h3>
+        <p>Your team builds, we steer: living backlog, run rituals, predictable shipping. Cancel monthly.</p>
+        <div class="price">€3,900/mo<small>OR €7,500/MO</small></div>
+        <a class="go" href="#">Details →</a>
+      </article>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ E4 ============ -->
+<div class="meta-band">
+  <h2>E4 — Tout graphite</h2>
+  <p>Une seule ambiance sombre, cards bordées qui s'allument cuivre au survol. Sobre et continu.</p>
+</div>
+<section class="p e4">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero"><div class="hero-inner">
+    <span class="kicker">Scoping · Build · Delivery</span>
+    <h1>Products shipped, not days billed.</h1>
+    <p class="lead">Fixed-scope packages: the scope in writing, the price known upfront, the deliverable
+    verifiable. The small package prices the big one — nobody signs a big number blind. Neither do we.</p>
+    <div class="ctas"><a class="btn btn-p" href="#">Book a call</a><a class="btn btn-g" href="#">See the offers</a></div>
+  </div></div>
+  <div class="offers"><div class="offers-inner">
+    <h2>Three packages. Prices on the page.</h2>
+    <div class="cards">
+      <article class="card">
+        <span class="tag">01 · 3 weeks</span>
+        <h3>Discovery Sprint</h3>
+        <p>Scope, priorities, clickable prototype — and a firm quote for the build. Fixed dates. Yours to keep.</p>
+        <div class="price">€9,500<small>FIXED · $11,000</small></div>
+        <a class="go" href="#">Details →</a>
+      </article>
+      <article class="card">
+        <span class="tag">02 · 6–10 weeks</span>
+        <h3>End-to-end Build</h3>
+        <p>Design to production. Frozen scope, milestone demos every two weeks, your code, your repo.</p>
+        <div class="price">from €25,000<small>FIRM AFTER SPRINT</small></div>
+        <a class="go" href="#">Details →</a>
+      </article>
+      <article class="card">
+        <span class="tag">03 · Monthly</span>
+        <h3>Product Delivery</h3>
+        <p>Your team builds, we steer: living backlog, run rituals, predictable shipping. Cancel monthly.</p>
+        <div class="price">€3,900/mo<small>OR €7,500/MO</small></div>
+        <a class="go" href="#">Details →</a>
+      </article>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ E5 ============ -->
+<div class="meta-band">
+  <h2>E5 — Bande graphite</h2>
+  <p>Hero blanc calme, puis une bande graphite pleine largeur qui porte les trois cards claires.
+  Le contraste est dans la section offres, pas dans le hero.</p>
+</div>
+<section class="p e5">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero"><div class="hero-inner">
+    <span class="kicker">Scoping · Build · Delivery</span>
+    <h1>Products shipped, not days billed.</h1>
+    <p class="lead">Fixed-scope packages: the scope in writing, the price known upfront, the deliverable
+    verifiable. The small package prices the big one — nobody signs a big number blind. Neither do we.</p>
+    <div class="ctas"><a class="btn btn-p" href="#">Book a call</a><a class="btn btn-g" href="#">See the offers</a></div>
+  </div></div>
+  <div class="offers"><div class="offers-inner">
+    <h2>Three packages. Prices on the page.</h2>
+    <div class="cards">
+      <article class="card">
+        <span class="tag">01 · 3 weeks</span>
+        <h3>Discovery Sprint</h3>
+        <p>Scope, priorities, clickable prototype — and a firm quote for the build. Fixed dates. Yours to keep.</p>
+        <div class="price">€9,500<small>FIXED · $11,000</small></div>
+        <a class="go" href="#">Details</a>
+      </article>
+      <article class="card">
+        <span class="tag">02 · 6–10 weeks</span>
+        <h3>End-to-end Build</h3>
+        <p>Design to production. Frozen scope, milestone demos every two weeks, your code, your repo.</p>
+        <div class="price">from €25,000<small>FIRM AFTER SPRINT</small></div>
+        <a class="go" href="#">Details</a>
+      </article>
+      <article class="card">
+        <span class="tag">03 · Monthly</span>
+        <h3>Product Delivery</h3>
+        <p>Your team builds, we steer: living backlog, run rituals, predictable shipping. Cancel monthly.</p>
+        <div class="price">€3,900/mo<small>OR €7,500/MO</small></div>
+        <a class="go" href="#">Details</a>
+      </article>
+    </div>
+  </div></div>
+</section>
+
+</body>
+</html>

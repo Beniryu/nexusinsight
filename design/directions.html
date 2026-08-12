@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NexusInsight — 3 directions d'identité</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Anton&family=Space+Mono:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:#111; color:#ddd; font-family:'Instrument Sans',system-ui,sans-serif; }
+  img { max-width:100%; }
+
+  /* ===== chrome de présentation (pas une direction) ===== */
+  .meta-band { background:#111; color:#bbb; padding:28px 40px; border-top:1px solid #333;
+    display:flex; flex-wrap:wrap; gap:24px; align-items:center; }
+  .meta-band h2 { font:600 15px/1 'IBM Plex Mono',monospace; color:#fff; letter-spacing:.08em; text-transform:uppercase; }
+  .meta-band p { font-size:13.5px; max-width:52ch; color:#999; }
+  .chips { display:flex; gap:8px; }
+  .chip { width:26px; height:26px; border-radius:50%; border:1px solid rgba(255,255,255,.25); }
+  .meta-band .fonts { font:400 12px 'IBM Plex Mono',monospace; color:#777; }
+  .intro { padding:56px 40px 28px; }
+  .intro h1 { font:600 24px/1.3 'IBM Plex Mono',monospace; color:#fff; }
+  .intro p { margin-top:10px; font-size:14px; color:#999; max-width:64ch; }
+
+  /* ============================================================
+     DIRECTION A — SPEC  (le document de cadrage)
+  ============================================================ */
+  .dA { --paper:#F7F9FB; --ink:#101D2E; --ink-2:#43536A; --line:#D4DCE6;
+        --blue:#2450E4; --green:#0C7A5B; --stamp-bg:#EDF1FB;
+        background:var(--paper); color:var(--ink);
+        font-family:'Instrument Sans',sans-serif; }
+  .dA .nav { display:flex; align-items:center; gap:28px; padding:20px 40px;
+    border-bottom:1px solid var(--line); }
+  .dA .brand { font:600 16px 'Archivo',sans-serif; letter-spacing:.01em; }
+  .dA .nav a { font-size:13.5px; color:var(--ink-2); text-decoration:none; }
+  .dA .nav .cta { margin-left:auto; background:var(--ink); color:var(--paper);
+    padding:9px 16px; font-size:13.5px; font-weight:500; }
+  .dA .hero { display:grid; grid-template-columns:150px 1fr; gap:0;
+    max-width:1120px; margin:0 auto; padding:72px 40px 56px; }
+  .dA .rail { border-right:1px solid var(--line); padding-right:18px;
+    font:400 11px/1.9 'IBM Plex Mono',monospace; color:var(--ink-2);
+    display:flex; flex-direction:column; gap:22px; }
+  .dA .rail .rev { color:var(--blue); }
+  .dA .hero-body { padding-left:40px; }
+  .dA .eyebrow { font:500 12px 'IBM Plex Mono',monospace; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--blue); }
+  .dA h1.display { font:600 clamp(38px,5.2vw,64px)/1.06 'Archivo',sans-serif;
+    font-stretch:115%; letter-spacing:-.02em; margin:18px 0 20px; max-width:17ch; }
+  .dA .lead { font-size:17px; line-height:1.55; color:var(--ink-2); max-width:52ch; }
+  .dA .hero-ctas { margin-top:30px; display:flex; gap:12px; }
+  .dA .btn-primary { background:var(--blue); color:#fff; padding:12px 22px;
+    font-size:14.5px; font-weight:600; text-decoration:none; }
+  .dA .btn-ghost { border:1px solid var(--line); color:var(--ink); padding:12px 22px;
+    font-size:14.5px; font-weight:500; text-decoration:none; }
+  .dA .pkgs { max-width:1120px; margin:0 auto; padding:0 40px 80px;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .dA .pkg { border:1px solid var(--line); background:#fff; padding:26px 24px 22px;
+    display:flex; flex-direction:column; gap:14px; position:relative; }
+  .dA .pkg .sec { font:400 11px 'IBM Plex Mono',monospace; color:var(--ink-2); }
+  .dA .pkg h3 { font:600 21px 'Archivo',sans-serif; letter-spacing:-.01em; }
+  .dA .pkg p { font-size:14px; line-height:1.5; color:var(--ink-2); }
+  .dA .pkg .price-block { margin-top:auto; padding-top:16px; border-top:1px solid var(--line); }
+  .dA .pkg .price { font:600 26px 'Archivo',sans-serif; }
+  .dA .pkg .price small { font:400 12px 'IBM Plex Mono',monospace; color:var(--ink-2); margin-left:6px; }
+  .dA .stamp { display:inline-block; margin-top:10px; font:500 10.5px 'IBM Plex Mono',monospace;
+    letter-spacing:.1em; padding:4px 8px; background:var(--stamp-bg); color:var(--blue);
+    border:1px solid var(--blue); }
+  .dA .stamp.shipped { color:var(--green); border-color:var(--green); background:#EBF5F1; }
+
+  /* ============================================================
+     DIRECTION B — WAYBILL  (le colis, l'expédition)
+  ============================================================ */
+  .dB { --concrete:#ECEAE6; --char:#23231F; --orange:#E8501A; --steel:#8B8E93; --paperw:#FBFAF7;
+        background:var(--concrete); color:var(--char); font-family:'Archivo',sans-serif; }
+  .dB .nav { display:flex; align-items:center; gap:28px; padding:18px 40px;
+    background:var(--char); color:#EDEBE6; }
+  .dB .brand { font:400 18px 'Anton',sans-serif; letter-spacing:.04em; text-transform:uppercase; }
+  .dB .nav a { font:500 12.5px 'Space Mono',monospace; color:#C9C7C0; text-decoration:none;
+    text-transform:uppercase; letter-spacing:.06em; }
+  .dB .nav .cta { margin-left:auto; background:var(--orange); color:#fff; padding:10px 18px; }
+  .dB .hero { max-width:1120px; margin:0 auto; padding:72px 40px 48px; }
+  .dB .tag { display:inline-block; font:700 11px 'Space Mono',monospace; letter-spacing:.12em;
+    background:var(--char); color:var(--concrete); padding:5px 10px; text-transform:uppercase; }
+  .dB h1.display { font:400 clamp(52px,8vw,104px)/0.98 'Anton',sans-serif;
+    text-transform:uppercase; letter-spacing:.005em; margin:20px 0 22px; }
+  .dB h1.display .hl { color:var(--orange); }
+  .dB .lead { font-size:17px; line-height:1.55; color:#4E4C46; max-width:54ch; }
+  .dB .hero-ctas { margin-top:28px; display:flex; gap:12px; }
+  .dB .btn-primary { background:var(--orange); color:#fff; padding:13px 24px;
+    font:600 14px 'Archivo',sans-serif; text-transform:uppercase; letter-spacing:.05em; text-decoration:none; }
+  .dB .btn-ghost { border:2px solid var(--char); color:var(--char); padding:11px 22px;
+    font:600 14px 'Archivo',sans-serif; text-transform:uppercase; letter-spacing:.05em; text-decoration:none; }
+  .dB .pkgs { max-width:1120px; margin:0 auto; padding:8px 40px 84px;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  .dB .waybill { background:var(--paperw); border:1.5px solid var(--char);
+    display:flex; flex-direction:column; }
+  .dB .wb-head { display:flex; justify-content:space-between; align-items:center;
+    padding:12px 16px; border-bottom:1.5px dashed var(--char);
+    font:700 11px 'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; }
+  .dB .wb-head .no { color:var(--steel); }
+  .dB .wb-body { padding:18px 16px 14px; display:flex; flex-direction:column; gap:12px; flex:1; }
+  .dB .waybill h3 { font:400 26px 'Anton',sans-serif; text-transform:uppercase; letter-spacing:.01em; }
+  .dB .route { font:400 12px/1.8 'Space Mono',monospace; color:#4E4C46; }
+  .dB .route b { color:var(--char); font-weight:700; }
+  .dB .wb-fields { display:grid; grid-template-columns:1fr 1fr; border-top:1.5px solid var(--char); }
+  .dB .wb-fields div { padding:10px 16px; }
+  .dB .wb-fields div + div { border-left:1.5px solid var(--char); }
+  .dB .wb-fields .lbl { font:700 9.5px 'Space Mono',monospace; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--steel); }
+  .dB .wb-fields .val { font:600 18px 'Archivo',sans-serif; margin-top:2px; }
+  .dB .wb-strip { height:14px; background:repeating-linear-gradient(90deg,
+    var(--char) 0 3px, transparent 3px 6px, var(--char) 6px 7px, transparent 7px 12px);
+    margin:0 16px 14px; opacity:.85; }
+
+  /* ============================================================
+     DIRECTION C — KLEIN  (le prix comme monument)
+  ============================================================ */
+  .dC { --klein:#1B3BBB; --paper:#F4F5F8; --inkc:#0B0E1E; --sky:#9FB4FF;
+        background:var(--klein); color:var(--paper); font-family:'Public Sans',sans-serif; }
+  .dC .nav { display:flex; align-items:center; gap:28px; padding:22px 40px; }
+  .dC .brand { font:700 17px 'Bricolage Grotesque',sans-serif; letter-spacing:-.01em; }
+  .dC .nav a { font-size:13.5px; color:var(--sky); text-decoration:none; }
+  .dC .nav .cta { margin-left:auto; background:var(--paper); color:var(--klein);
+    padding:10px 18px; font-weight:600; border-radius:999px; font-size:13.5px; }
+  .dC .hero { max-width:1120px; margin:0 auto; padding:84px 40px 64px; }
+  .dC h1.display { font:800 clamp(44px,6.4vw,84px)/1.02 'Bricolage Grotesque',sans-serif;
+    letter-spacing:-.03em; max-width:15ch; }
+  .dC .lead { margin-top:24px; font-size:17.5px; line-height:1.6; color:#CBD5FA; max-width:52ch; }
+  .dC .hero-ctas { margin-top:32px; display:flex; gap:14px; }
+  .dC .btn-primary { background:var(--paper); color:var(--klein); padding:13px 26px;
+    border-radius:999px; font-weight:600; font-size:15px; text-decoration:none; }
+  .dC .btn-ghost { border:1.5px solid rgba(244,245,248,.5); color:var(--paper);
+    padding:12px 24px; border-radius:999px; font-weight:500; font-size:15px; text-decoration:none; }
+  .dC .pkgs { background:var(--paper); color:var(--inkc); padding:64px 40px 88px; }
+  .dC .pkgs-inner { max-width:1120px; margin:0 auto; }
+  .dC .pkgs h2 { font:700 13px 'JetBrains Mono',monospace; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--klein); margin-bottom:28px; }
+  .dC .rows { display:flex; flex-direction:column; }
+  .dC .row { display:grid; grid-template-columns:1.1fr 2fr 1.2fr auto; gap:24px; align-items:baseline;
+    padding:26px 0; border-top:1.5px solid #D8DCE8; }
+  .dC .row:last-child { border-bottom:1.5px solid #D8DCE8; }
+  .dC .row h3 { font:700 22px 'Bricolage Grotesque',sans-serif; letter-spacing:-.01em; }
+  .dC .row .desc { font-size:14.5px; line-height:1.5; color:#4A4F63; }
+  .dC .row .big-price { font:800 clamp(30px,3.6vw,46px) 'Bricolage Grotesque',sans-serif;
+    letter-spacing:-.02em; color:var(--klein); white-space:nowrap; }
+  .dC .row .big-price small { font:500 12px 'JetBrains Mono',monospace; color:#4A4F63;
+    display:block; letter-spacing:0; margin-top:4px; }
+  .dC .row .go { font-weight:600; color:var(--inkc); text-decoration:none; font-size:14.5px;
+    border-bottom:2px solid var(--klein); padding-bottom:2px; white-space:nowrap; }
+
+  @media (max-width:900px){
+    .dA .hero { grid-template-columns:1fr; }
+    .dA .rail { display:none; }
+    .dA .hero-body { padding-left:0; }
+    .dA .pkgs, .dB .pkgs { grid-template-columns:1fr; }
+    .dC .row { grid-template-columns:1fr; gap:10px; }
+    .meta-band, .intro, .dA .nav, .dB .nav, .dC .nav { padding-left:20px; padding-right:20px; }
+    .dA .hero, .dB .hero, .dC .hero, .dA .pkgs, .dB .pkgs, .dC .pkgs { padding-left:20px; padding-right:20px; }
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .dA .pkg, .dB .waybill { transition:transform .18s cubic-bezier(.4,0,.2,1), box-shadow .18s; }
+    .dA .pkg:hover { transform:translateY(-3px); box-shadow:0 10px 24px rgba(16,29,46,.08); }
+    .dB .waybill:hover { transform:translateY(-3px); box-shadow:6px 6px 0 var(--char); }
+  }
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>NexusInsight — 3 directions d'identité</h1>
+  <p>Hero + cards packages, copy réelle (EN). Chaque direction est ancrée dans un artefact du métier :
+  le document de cadrage (A), le colis expédié (B), le prix assumé (C). Aucune n'emprunte à Nocturne.</p>
+</div>
+
+<!-- ================= DIRECTION A ================= -->
+<div class="meta-band">
+  <h2>A — Spec</h2>
+  <div class="chips">
+    <span class="chip" style="background:#F7F9FB"></span><span class="chip" style="background:#101D2E"></span>
+    <span class="chip" style="background:#2450E4"></span><span class="chip" style="background:#0C7A5B"></span>
+  </div>
+  <p>L'esthétique du document de cadrage : marges annotées, sections numérotées, périmètre gelé au tampon.
+  Sérieux d'ingénierie, lisible par une DSI.</p>
+  <span class="fonts">Archivo · Instrument Sans · IBM Plex Mono</span>
+</div>
+<section class="dA">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero">
+    <div class="rail">
+      <span>DOC — NXI-001<br>REV A · 2026</span>
+      <span class="rev">SCOPE §1<br>IN WRITING</span>
+      <span>PRICE<br>KNOWN UPFRONT</span>
+      <span>DELIVERABLE<br>VERIFIABLE</span>
+    </div>
+    <div class="hero-body">
+      <span class="eyebrow">Product studio — scoping · build · delivery</span>
+      <h1 class="display">Products shipped, not days billed.</h1>
+      <p class="lead">Every engagement is a fixed-scope package: the scope in writing, the price known
+      before we start, the deliverable you can verify. No day rates, no drift.</p>
+      <div class="hero-ctas">
+        <a class="btn-primary" href="#">Book a call</a>
+        <a class="btn-ghost" href="#">See the offers</a>
+      </div>
+    </div>
+  </div>
+  <div class="pkgs">
+    <article class="pkg">
+      <span class="sec">§1 · 3 WEEKS</span>
+      <h3>Discovery Sprint</h3>
+      <p>Scope, priorities, clickable prototype — and a firm quote for the build. Yours to keep,
+      executable by any team.</p>
+      <div class="price-block">
+        <span class="price">€9,500<small>FIXED · $11,000</small></span><br>
+        <span class="stamp">SCOPE → FROZEN</span>
+      </div>
+    </article>
+    <article class="pkg">
+      <span class="sec">§2 · 6–10 WEEKS</span>
+      <h3>End-to-end Build</h3>
+      <p>Design to production: milestone demos every two weeks, CI/CD included, your code, your repo.</p>
+      <div class="price-block">
+        <span class="price">from €25,000<small>FIRM AFTER SPRINT</small></span><br>
+        <span class="stamp shipped">SHIPPED → PROD</span>
+      </div>
+    </article>
+    <article class="pkg">
+      <span class="sec">§3 · MONTHLY</span>
+      <h3>Product Delivery</h3>
+      <p>Your team builds, we steer: living backlog, run rituals, predictable shipping. Cancel monthly.</p>
+      <div class="price-block">
+        <span class="price">€3,900<small>/MO · OR €7,500</small></span><br>
+        <span class="stamp">ROLLING · 30-DAY</span>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ================= DIRECTION B ================= -->
+<div class="meta-band">
+  <h2>B — Waybill</h2>
+  <div class="chips">
+    <span class="chip" style="background:#ECEAE6"></span><span class="chip" style="background:#23231F"></span>
+    <span class="chip" style="background:#E8501A"></span><span class="chip" style="background:#FBFAF7"></span>
+  </div>
+  <p>On vend des packages, on les expédie : bordereaux, tampons, orange sécurité. La direction la plus
+  mémorable — et la plus risquée face à une DSI conservatrice.</p>
+  <span class="fonts">Anton · Archivo · Space Mono</span>
+</div>
+<section class="dB">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero">
+    <span class="tag">Scoping · Build · Delivery</span>
+    <h1 class="display">Products <span class="hl">shipped</span>,<br>not days billed.</h1>
+    <p class="lead">Fixed-scope packages with the price on the label. The scope in writing before we start,
+    a verifiable deliverable at the end. No day rates, no drift.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#">Book a call</a>
+      <a class="btn-ghost" href="#">See the offers</a>
+    </div>
+  </div>
+  <div class="pkgs">
+    <article class="waybill">
+      <div class="wb-head"><span>WAYBILL 01</span><span class="no">NXI-SPRINT</span></div>
+      <div class="wb-body">
+        <h3>Discovery Sprint</h3>
+        <div class="route"><b>FROM</b> — an idea, a redesign, an internal project<br>
+        <b>TO</b> — frozen scope + prototype + firm build quote</div>
+      </div>
+      <div class="wb-strip"></div>
+      <div class="wb-fields">
+        <div><div class="lbl">Transit</div><div class="val">3 weeks</div></div>
+        <div><div class="lbl">Declared value</div><div class="val">€9,500</div></div>
+      </div>
+    </article>
+    <article class="waybill">
+      <div class="wb-head"><span>WAYBILL 02</span><span class="no">NXI-BUILD</span></div>
+      <div class="wb-body">
+        <h3>End-to-end Build</h3>
+        <div class="route"><b>FROM</b> — a frozen scope<br>
+        <b>TO</b> — your product in production, code and repo included</div>
+      </div>
+      <div class="wb-strip"></div>
+      <div class="wb-fields">
+        <div><div class="lbl">Transit</div><div class="val">6–10 weeks</div></div>
+        <div><div class="lbl">Declared value</div><div class="val">from €25,000</div></div>
+      </div>
+    </article>
+    <article class="waybill">
+      <div class="wb-head"><span>WAYBILL 03</span><span class="no">NXI-DELIVERY</span></div>
+      <div class="wb-body">
+        <h3>Product Delivery</h3>
+        <div class="route"><b>FROM</b> — a team that ships sideways<br>
+        <b>TO</b> — a living backlog and predictable releases</div>
+      </div>
+      <div class="wb-strip"></div>
+      <div class="wb-fields">
+        <div><div class="lbl">Cadence</div><div class="val">monthly</div></div>
+        <div><div class="lbl">Declared value</div><div class="val">€3,900/mo</div></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ================= DIRECTION C ================= -->
+<div class="meta-band">
+  <h2>C — Klein</h2>
+  <div class="chips">
+    <span class="chip" style="background:#1B3BBB"></span><span class="chip" style="background:#F4F5F8"></span>
+    <span class="chip" style="background:#0B0E1E"></span><span class="chip" style="background:#9FB4FF"></span>
+  </div>
+  <p>La transparence tarifaire est la thèse, donc le prix est le monument. Bleu Klein plein cadre,
+  typographie énorme, table des offres façon manifeste. Internationale d'emblée.</p>
+  <span class="fonts">Bricolage Grotesque · Public Sans · JetBrains Mono</span>
+</div>
+<section class="dC">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero">
+    <h1 class="display">Products shipped, not days billed.</h1>
+    <p class="lead">Scoping, build and delivery as fixed-scope packages — the scope in writing,
+    the price known upfront, the deliverable verifiable. The small package prices the big one:
+    nobody signs a big number blind. Neither do we.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#">Book a call</a>
+      <a class="btn-ghost" href="#">See the offers</a>
+    </div>
+  </div>
+  <div class="pkgs">
+    <div class="pkgs-inner">
+      <h2>Three packages. Prices on the page.</h2>
+      <div class="rows">
+        <div class="row">
+          <h3>Discovery Sprint</h3>
+          <p class="desc">Scope, priorities, clickable prototype — and a firm quote for the build.
+          3 weeks, fixed dates. Yours to keep.</p>
+          <div class="big-price">€9,500<small>FIXED · $11,000</small></div>
+          <a class="go" href="#">Details</a>
+        </div>
+        <div class="row">
+          <h3>End-to-end Build</h3>
+          <p class="desc">Design to production. Frozen scope, milestone demos every two weeks,
+          your code, your repo. 6–10 weeks.</p>
+          <div class="big-price">from €25,000<small>FIRM AFTER SPRINT</small></div>
+          <a class="go" href="#">Details</a>
+        </div>
+        <div class="row">
+          <h3>Product Delivery</h3>
+          <p class="desc">Your team builds, we steer: living backlog, run rituals, predictable
+          shipping. Cancel monthly, 30-day notice.</p>
+          <div class="big-price">€3,900/mo<small>OR €7,500/MO · $4,500/$8,500</small></div>
+          <a class="go" href="#">Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!-- @dsCard group="Sections" -->
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@600&f[]=switzer@400,500,600&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#F5F6F8; color:#1E2126; font-family:'Switzer',system-ui,sans-serif; }
+  .hero { max-width:1120px; margin:0 auto; padding:56px 40px;
+    display:grid; grid-template-columns:1.5fr 1fr; gap:48px; align-items:center; }
+  .kick { font:500 11.5px 'JetBrains Mono',monospace; letter-spacing:.16em; text-transform:uppercase; color:#A45F2E; }
+  h1 { font:600 clamp(34px,4.4vw,56px)/1.08 'Clash Display',sans-serif; letter-spacing:-.015em; max-width:18ch; margin:16px 0 0; }
+  .lead { margin-top:18px; font-size:16.5px; line-height:1.6; color:#5F6570; max-width:54ch; }
+  .ctas { margin-top:26px; display:flex; gap:12px; }
+  .btn { text-decoration:none; padding:11px 22px; border-radius:4px; font-weight:600; font-size:14px; }
+  .p { background:#1E2126; color:#fff; }
+  .g { border:1.5px solid #DDE0E6; color:#1E2126; }
+  .fact { background:#1E2126; color:#F5F6F8; padding:26px 24px; border-radius:6px; }
+  .row { display:flex; justify-content:space-between; gap:16px; padding:12px 0; font-size:13.5px;
+    border-bottom:1px solid rgba(245,246,248,.14); }
+  .row:last-child { border-bottom:0; }
+  .k { color:#A9ADB5; font:500 11px 'JetBrains Mono',monospace; letter-spacing:.1em; text-transform:uppercase; }
+  .v { font-weight:600; text-align:right; }
+  .v.c { color:#C97E48; }
+  @media (max-width:900px){ .hero { grid-template-columns:1fr; padding:32px 20px; } }
+</style></head><body>
+<div class="hero">
+  <div>
+    <span class="kick">Scoping · Build · Delivery</span>
+    <h1>Products shipped, not days billed.</h1>
+    <p class="lead">Fixed-scope packages — the small one prices the big one. Nobody signs a big
+    number blind. Neither do we.</p>
+    <div class="ctas"><a class="btn p" href="#">Book a call</a><a class="btn g" href="#">See the offers</a></div>
+  </div>
+  <div class="fact">
+    <div class="row"><span class="k">Scope</span><span class="v">in writing, frozen</span></div>
+    <div class="row"><span class="k">Price</span><span class="v c">known upfront</span></div>
+    <div class="row"><span class="k">Deliverable</span><span class="v">verifiable</span></div>
+    <div class="row"><span class="k">Code</span><span class="v">yours, repo included</span></div>
+    <div class="row"><span class="k">Engagement</span><span class="v">no day rates</span></div>
+  </div>
+</div>
+</body></html>

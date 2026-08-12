@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NexusInsight — variantes de la direction C</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;700;900&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&f[]=switzer@400,500,600&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#111; color:#ddd; font-family:system-ui,sans-serif; }
+
+  .meta-band { background:#111; color:#bbb; padding:26px 40px; border-top:1px solid #333;
+    display:flex; flex-wrap:wrap; gap:24px; align-items:center; }
+  .meta-band h2 { font:600 15px/1 'IBM Plex Mono',monospace; color:#fff; letter-spacing:.08em; text-transform:uppercase; }
+  .meta-band p { font-size:13.5px; max-width:52ch; color:#999; }
+  .chips { display:flex; gap:8px; }
+  .chip { width:26px; height:26px; border-radius:50%; border:1px solid rgba(255,255,255,.25); }
+  .meta-band .fonts { font:400 12px 'IBM Plex Mono',monospace; color:#777; }
+  .intro { padding:52px 40px 24px; }
+  .intro h1 { font:600 22px/1.3 'IBM Plex Mono',monospace; color:#fff; }
+  .intro p { margin-top:10px; font-size:14px; color:#999; max-width:64ch; }
+
+  /* ===== structure C commune, tokens par variante ===== */
+  .v { font-family:var(--body); }
+  .v .nav { display:flex; align-items:center; gap:28px; padding:22px 40px; background:var(--hero-bg); color:var(--hero-fg); }
+  .v .brand { font:var(--brand-font); letter-spacing:var(--brand-ls,-0.01em); }
+  .v .nav a { font-size:13.5px; color:var(--hero-muted); text-decoration:none; }
+  .v .nav .cta { margin-left:auto; background:var(--hero-fg); color:var(--hero-bg);
+    padding:10px 18px; font-weight:600; border-radius:var(--btn-r); font-size:13.5px; }
+  .v .hero { background:var(--hero-bg); color:var(--hero-fg); }
+  .v .hero-inner { max-width:1120px; margin:0 auto; padding:84px 40px 64px; }
+  .v h1.display { font:var(--display-font); letter-spacing:var(--display-ls); max-width:15ch; }
+  .v .lead { margin-top:24px; font-size:17.5px; line-height:1.6; color:var(--hero-muted); max-width:52ch; }
+  .v .hero-ctas { margin-top:32px; display:flex; gap:14px; }
+  .v .btn-primary { background:var(--accent); color:var(--accent-fg); padding:13px 26px;
+    border-radius:var(--btn-r); font-weight:600; font-size:15px; text-decoration:none; }
+  .v .btn-ghost { border:1.5px solid var(--hero-line); color:var(--hero-fg);
+    padding:12px 24px; border-radius:var(--btn-r); font-weight:500; font-size:15px; text-decoration:none; }
+  .v .pkgs { background:var(--table-bg); color:var(--table-fg); padding:64px 40px 88px; }
+  .v .pkgs-inner { max-width:1120px; margin:0 auto; }
+  .v .pkgs h2 { font:500 13px var(--mono); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--accent-on-light); margin-bottom:28px; }
+  .v .row { display:grid; grid-template-columns:1.1fr 2fr 1.2fr auto; gap:24px; align-items:baseline;
+    padding:26px 0; border-top:1.5px solid var(--table-line); }
+  .v .row:last-child { border-bottom:1.5px solid var(--table-line); }
+  .v .row h3 { font:var(--h3-font); letter-spacing:-.01em; }
+  .v .row .desc { font-size:14.5px; line-height:1.5; color:var(--table-muted); }
+  .v .row .big-price { font:var(--price-font); letter-spacing:-.02em; color:var(--accent-on-light); white-space:nowrap; }
+  .v .row .big-price small { font:500 12px var(--mono); color:var(--table-muted);
+    display:block; letter-spacing:0; margin-top:4px; }
+  .v .row .go { font-weight:600; color:var(--table-fg); text-decoration:none; font-size:14.5px;
+    border-bottom:2px solid var(--accent-on-light); padding-bottom:2px; white-space:nowrap; }
+
+  /* ---- C1 · Graphite & cuivre — Clash Display / Switzer ---- */
+  .c1 { --hero-bg:#22252A; --hero-fg:#F2F0EB; --hero-muted:#B9B5AC; --hero-line:rgba(242,240,235,.35);
+        --accent:#C97E48; --accent-fg:#1C1408; --accent-on-light:#A45F2E;
+        --table-bg:#F2F0EB; --table-fg:#22252A; --table-muted:#6A675F; --table-line:#D9D5CB;
+        --body:'Switzer',sans-serif; --mono:'JetBrains Mono',monospace; --btn-r:4px;
+        --brand-font:600 17px 'Clash Display',sans-serif;
+        --display-font:600 clamp(44px,6.4vw,84px)/1.02 'Clash Display',sans-serif; --display-ls:-.015em;
+        --h3-font:600 22px 'Clash Display',sans-serif;
+        --price-font:600 clamp(30px,3.6vw,46px) 'Clash Display',sans-serif; }
+
+  /* ---- C2 · Vert bouteille & craie — Schibsted Grotesk / Public Sans ---- */
+  .c2 { --hero-bg:#123B2F; --hero-fg:#F4F3EE; --hero-muted:#B8CCC2; --hero-line:rgba(244,243,238,.4);
+        --accent:#F4F3EE; --accent-fg:#123B2F; --accent-on-light:#123B2F;
+        --table-bg:#F4F3EE; --table-fg:#17201C; --table-muted:#5C6B63; --table-line:#D8D6CB;
+        --body:'Public Sans',sans-serif; --mono:'IBM Plex Mono',monospace; --btn-r:0;
+        --brand-font:900 17px 'Schibsted Grotesk',sans-serif;
+        --display-font:900 clamp(44px,6.4vw,84px)/1.03 'Schibsted Grotesk',sans-serif; --display-ls:-.025em;
+        --h3-font:700 22px 'Schibsted Grotesk',sans-serif;
+        --price-font:900 clamp(30px,3.6vw,46px) 'Schibsted Grotesk',sans-serif; }
+
+  /* ---- C3 · Ivoire, encre & vermillon sombre — Fraunces / Instrument Sans ---- */
+  .c3 { --hero-bg:#F5F2EC; --hero-fg:#14120E; --hero-muted:#5B564A; --hero-line:#C9C2B2;
+        --accent:#9E2B25; --accent-fg:#F5F2EC; --accent-on-light:#9E2B25;
+        --table-bg:#FDFCF9; --table-fg:#14120E; --table-muted:#6A6456; --table-line:#E2DCCE;
+        --body:'Instrument Sans',sans-serif; --mono:'IBM Plex Mono',monospace; --btn-r:2px;
+        --brand-font:700 18px 'Fraunces',serif;
+        --display-font:600 clamp(46px,6.6vw,88px)/1.04 'Fraunces',serif; --display-ls:-.01em;
+        --h3-font:600 23px 'Fraunces',serif;
+        --price-font:600 clamp(30px,3.8vw,48px) 'Fraunces',serif; }
+  .c3 .nav { border-bottom:1.5px solid var(--hero-line); }
+
+  @media (max-width:900px){
+    .v .row { grid-template-columns:1fr; gap:10px; }
+    .meta-band, .intro, .v .nav, .v .hero-inner, .v .pkgs { padding-left:20px; padding-right:20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="intro">
+  <h1>Direction C retenue — 3 variantes typo + couleurs</h1>
+  <p>Même structure (hero plein cadre, table-manifeste des prix), trois personnalités différentes.
+  Le bleu Klein et Bricolage Grotesque sont écartés.</p>
+</div>
+
+<!-- ============ C1 ============ -->
+<div class="meta-band">
+  <h2>C1 — Graphite &amp; cuivre</h2>
+  <div class="chips">
+    <span class="chip" style="background:#22252A"></span><span class="chip" style="background:#F2F0EB"></span>
+    <span class="chip" style="background:#C97E48"></span><span class="chip" style="background:#A45F2E"></span>
+  </div>
+  <p>Atelier haut de gamme : graphite chaud, papier grège, cuivre en accent. Clash Display donne des
+  chiffres élégants sans froideur corporate.</p>
+  <span class="fonts">Clash Display · Switzer · JetBrains Mono</span>
+</div>
+<section class="v c1">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero"><div class="hero-inner">
+    <h1 class="display">Products shipped, not days billed.</h1>
+    <p class="lead">Scoping, build and delivery as fixed-scope packages — the scope in writing,
+    the price known upfront, the deliverable verifiable. The small package prices the big one:
+    nobody signs a big number blind. Neither do we.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#">Book a call</a>
+      <a class="btn-ghost" href="#">See the offers</a>
+    </div>
+  </div></div>
+  <div class="pkgs"><div class="pkgs-inner">
+    <h2>Three packages. Prices on the page.</h2>
+    <div class="rows">
+      <div class="row">
+        <h3>Discovery Sprint</h3>
+        <p class="desc">Scope, priorities, clickable prototype — and a firm quote for the build.
+        3 weeks, fixed dates. Yours to keep.</p>
+        <div class="big-price">€9,500<small>FIXED · $11,000</small></div>
+        <a class="go" href="#">Details</a>
+      </div>
+      <div class="row">
+        <h3>End-to-end Build</h3>
+        <p class="desc">Design to production. Frozen scope, milestone demos every two weeks,
+        your code, your repo. 6–10 weeks.</p>
+        <div class="big-price">from €25,000<small>FIRM AFTER SPRINT</small></div>
+        <a class="go" href="#">Details</a>
+      </div>
+      <div class="row">
+        <h3>Product Delivery</h3>
+        <p class="desc">Your team builds, we steer: living backlog, run rituals, predictable
+        shipping. Cancel monthly, 30-day notice.</p>
+        <div class="big-price">€3,900/mo<small>OR €7,500/MO · $4,500/$8,500</small></div>
+        <a class="go" href="#">Details</a>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ C2 ============ -->
+<div class="meta-band">
+  <h2>C2 — Vert bouteille &amp; craie</h2>
+  <div class="chips">
+    <span class="chip" style="background:#123B2F"></span><span class="chip" style="background:#F4F3EE"></span>
+    <span class="chip" style="background:#17201C"></span><span class="chip" style="background:#B8CCC2"></span>
+  </div>
+  <p>Fiabilité sans bleu corporate : vert bouteille profond, craie, zéro arrondi. Schibsted Grotesk
+  en graisse 900 = des prix qui pèsent.</p>
+  <span class="fonts">Schibsted Grotesk · Public Sans · IBM Plex Mono</span>
+</div>
+<section class="v c2">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero"><div class="hero-inner">
+    <h1 class="display">Products shipped, not days billed.</h1>
+    <p class="lead">Scoping, build and delivery as fixed-scope packages — the scope in writing,
+    the price known upfront, the deliverable verifiable. The small package prices the big one:
+    nobody signs a big number blind. Neither do we.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#">Book a call</a>
+      <a class="btn-ghost" href="#">See the offers</a>
+    </div>
+  </div></div>
+  <div class="pkgs"><div class="pkgs-inner">
+    <h2>Three packages. Prices on the page.</h2>
+    <div class="rows">
+      <div class="row">
+        <h3>Discovery Sprint</h3>
+        <p class="desc">Scope, priorities, clickable prototype — and a firm quote for the build.
+        3 weeks, fixed dates. Yours to keep.</p>
+        <div class="big-price">€9,500<small>FIXED · $11,000</small></div>
+        <a class="go" href="#">Details</a>
+      </div>
+      <div class="row">
+        <h3>End-to-end Build</h3>
+        <p class="desc">Design to production. Frozen scope, milestone demos every two weeks,
+        your code, your repo. 6–10 weeks.</p>
+        <div class="big-price">from €25,000<small>FIRM AFTER SPRINT</small></div>
+        <a class="go" href="#">Details</a>
+      </div>
+      <div class="row">
+        <h3>Product Delivery</h3>
+        <p class="desc">Your team builds, we steer: living backlog, run rituals, predictable
+        shipping. Cancel monthly, 30-day notice.</p>
+        <div class="big-price">€3,900/mo<small>OR €7,500/MO · $4,500/$8,500</small></div>
+        <a class="go" href="#">Details</a>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ C3 ============ -->
+<div class="meta-band">
+  <h2>C3 — Ivoire, encre &amp; vermillon</h2>
+  <div class="chips">
+    <span class="chip" style="background:#F5F2EC"></span><span class="chip" style="background:#14120E"></span>
+    <span class="chip" style="background:#9E2B25"></span><span class="chip" style="background:#FDFCF9"></span>
+  </div>
+  <p>Registre éditorial-contractuel : hero clair, serif Fraunces pour les titres et les prix — la
+  gravité d'un beau contrat, pas d'une plaquette. Vermillon sombre en signature.</p>
+  <span class="fonts">Fraunces · Instrument Sans · IBM Plex Mono</span>
+</div>
+<section class="v c3">
+  <nav class="nav">
+    <span class="brand">NexusInsight</span>
+    <a href="#">Offers</a><a href="#">Method</a><a href="#">Founder</a><a href="#">EN/FR</a>
+    <a href="#" class="cta">Book a call</a>
+  </nav>
+  <div class="hero"><div class="hero-inner">
+    <h1 class="display">Products shipped, not days billed.</h1>
+    <p class="lead">Scoping, build and delivery as fixed-scope packages — the scope in writing,
+    the price known upfront, the deliverable verifiable. The small package prices the big one:
+    nobody signs a big number blind. Neither do we.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#">Book a call</a>
+      <a class="btn-ghost" href="#">See the offers</a>
+    </div>
+  </div></div>
+  <div class="pkgs"><div class="pkgs-inner">
+    <h2>Three packages. Prices on the page.</h2>
+    <div class="rows">
+      <div class="row">
+        <h3>Discovery Sprint</h3>
+        <p class="desc">Scope, priorities, clickable prototype — and a firm quote for the build.
+        3 weeks, fixed dates. Yours to keep.</p>
+        <div class="big-price">€9,500<small>FIXED · $11,000</small></div>
+        <a class="go" href="#">Details</a>
+      </div>
+      <div class="row">
+        <h3>End-to-end Build</h3>
+        <p class="desc">Design to production. Frozen scope, milestone demos every two weeks,
+        your code, your repo. 6–10 weeks.</p>
+        <div class="big-price">from €25,000<small>FIRM AFTER SPRINT</small></div>
+        <a class="go" href="#">Details</a>
+      </div>
+      <div class="row">
+        <h3>Product Delivery</h3>
+        <p class="desc">Your team builds, we steer: living backlog, run rituals, predictable
+        shipping. Cancel monthly, 30-day notice.</p>
+        <div class="big-price">€3,900/mo<small>OR €7,500/MO · $4,500/$8,500</small></div>
+        <a class="go" href="#">Details</a>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+</body>
+</html>
