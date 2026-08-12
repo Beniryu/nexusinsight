@@ -10,7 +10,7 @@ statut: in_progress # draft | in_progress | awaiting_promotion | promoted | fail
 etape_courante: fix
 failure_reason: null # null | step_failed_3x | timeout | external_budget | aborted_by_user | artefact_invalide
 cree_le: 2026-08-12T02:51:48+02:00
-mis_a_jour_le: 2026-08-12T04:16:21+02:00
+mis_a_jour_le: 2026-08-12T04:23:10+02:00
 etapes:
   # statuts : pending | running | passed | failed | skipped
   pitch: { statut: passed }
@@ -18,7 +18,7 @@ etapes:
   plan: { statut: passed, valide_par: kaan }
   implement: { statut: passed, tentatives: 0, task_courante: "08" }
   review: { statut: pending, tentatives: 0, cycles: 1, verdict: null }
-  fix: { statut: running, tentatives: 0 }
+  fix: { statut: passed, tentatives: 0 }
   verify: { statut: pending, tentatives: 0 }
   test_fix: { statut: pending, tentatives: 0 }
   deploy_test: { statut: pending, tentatives: 0, cibles: [] } # cibles : [{type, artefact, acces_test, run_id}]
@@ -32,7 +32,7 @@ budget_externe:
   plafond_usd: 10
   ressources: [] # [{type, nom, cout_usd_mois, cree_par_forge}]
   risque_signale_avant_go: false # true = le depassement potentiel a ete montre a Kaan AVANT le go
-tokens_usd_info: 55.8334 # informatif, JAMAIS un garde-fou (aucun arret sur ce champ)
+tokens_usd_info: 61.4403 # informatif, JAMAIS un garde-fou (aucun arret sur ce champ)
 promotion:
   commande: "forge promote site-v1"
   executee_le: null
@@ -53,3 +53,4 @@ promotion:
 - 2026-08-12T04:09:05+02:00 — implement/tache 08 passed (run 8) — Harnais transverse finalisé sur dist/ : suite CAP-10 ajoutée à tests/pages.test.ts (EARS-44 sitemap = exactement 14 URLs indexables sans légales, EARS-45 OG complet + og:image locale absolue, EARS-46 robots.txt, EARS-4 zéro hôte externe) ; public/robots.txt créé. npm test 44/44 vert, npm run check 0 erreur, build 17 pages, les 4 no-gos sortent en 0.
 - 2026-08-12T04:09:05+02:00 — implement passed (run 1) — 8 tache(s) implementee(s)
 - 2026-08-12T04:16:20+02:00 — review passed (run 1) — Relecture adversariale complète : spec + plan relus, diff intégral parcouru (composants, pages, contenu, tests), suite rejouée réellement (44/44 verts, dist rebuildé), npm run check 0 erreur, no-gos vérifiés (package.json/Dockerfile/nginx.conf intouchés, aucun hôte externe, statique pur), fond strictement conforme à brand/OFFERS.md et brand/BRAND.md (prix EUR/USD + HT, chiffre CAC40 autorisé seul, vocabulaire interdit absent, Rémunet cité en réalisation du fondateur), SEO bilingue conforme (canonical/hreflang/x-default, sitemap 14 URLs exact, noindex légales seules, OG absolu local, robots, favicon), fontes authentiques aux bons poids et familles alignées avec tokens.css. Un écart objectif confirmé bloque l'approbation : JetBrains Mono committé en fichiers complets (cyrillique+grec) au lieu du subset latin exigé par EARS-2, invisible pour fonts.test.ts — plus deux trous de couverture mineurs (home FR et section déroulé non assertées). Hypothèses acceptées : 404 bilingue hors registre sans nav/footer (liens de reprise EARS-50 présents, choix documenté) ; modification .forge/config.yml (budget orchestrateur, hors périmètre de la spec).
+- 2026-08-12T04:23:10+02:00 — fix passed (run 1) — Les 3 findings de review-1 sont corrigés, un commit chacun. Majeure EARS-2 (617eb17) : JetBrains Mono Regular+Medium subsettés en latin via pyftsubset (~32 Ko et 361 codepoints chacun contre ~92 Ko/1 363, zéro cyrillique/grec), plafond 40 Ko ajouté à fonts.test.ts (ROUGE vérifié sur les fichiers complets), LICENSES.md documente la modification OFL. Mineures : CAP-4 paramétré sur les deux homes EN+FR (786ae4d, mutation FR vérifiée ROUGE) et EARS-24 asserte data-section="timeline" (d590c7f). Suite complète 45/45 verte, npm run check 0 erreur.
