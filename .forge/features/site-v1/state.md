@@ -10,7 +10,7 @@ statut: in_progress # draft | in_progress | awaiting_promotion | promoted | fail
 etape_courante: deploy_test
 failure_reason: null # null | step_failed_3x | timeout | external_budget | aborted_by_user | artefact_invalide
 cree_le: 2026-08-12T02:51:48+02:00
-mis_a_jour_le: 2026-08-12T04:27:18+02:00
+mis_a_jour_le: 2026-08-12T04:29:19+02:00
 etapes:
   # statuts : pending | running | passed | failed | skipped
   pitch: { statut: passed }
@@ -21,7 +21,7 @@ etapes:
   fix: { statut: passed, tentatives: 0 }
   verify: { statut: passed, tentatives: 0 }
   test_fix: { statut: pending, tentatives: 0 }
-  deploy_test: { statut: running, tentatives: 0, cibles: [] } # cibles : [{type, artefact, acces_test, run_id}]
+  deploy_test: { statut: passed, tentatives: 0, cibles: [ { type: cloud-run, artefact: europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@sha256:c4685f21745f0cb9a9d8c4a74c04b3565204c90a1544257f6cb9f846f25dee97, acces_test: https://nexusinsight-test-d6kia6goga-ew.a.run.app, run_id: "31556917649" } ] } # cibles : [{type, artefact, acces_test, run_id}]
   report: { statut: pending }
   archive: { statut: pending }
 caps:
@@ -57,3 +57,9 @@ promotion:
 - 2026-08-12T04:27:09+02:00 — review passed (run 2) — Revue adversariale de contrôle après fix-1 : les 3 findings de review-1 sont réellement corrigés et vérifiés par exécution indépendante. Majeure EARS-2 : les deux woff2 JetBrains Mono sont d'authentiques subsets latin (361 codepoints chacun, 0 cyrillique, 0 grec, 32 140 / 32 820 octets contre ~92 Ko — contre-vérifié via fontTools, glyphes critiques — ' € → ↔ é œ présents) et fonts.test.ts plafonne désormais chaque fichier à 40 Ko (les fichiers complets d'origine échoueraient). Mineure 1 : le bloc CAP-4 de pages.test.ts itère sur les deux homes EN et FR — ordre des 7 sections par positions, cards indexées, liens packages localisés via paire(), étapes/punchline tirées de site[locale], chiffre autorisé par locale, audiences et FAQ comptées. Mineure 2 : EARS-24 asserte data-section="timeline" sur les 6 pages package. Re-vérification globale rejouée : vitest 45/45 verts (build réel de dist/), npm run check 0 erreur / 0 warning / 0 hint, no-gos intacts (diff vide sur package.json, Dockerfile, nginx.conf ; aucun hôte externe dans le HTML buildé), familles fonts.css alignées sur tokens.css, prix EUR/USD exacts d'OFFERS.md et chaque prix affiché accompagné de HT / excl. VAT dans le HTML buildé (3 cards home + hero de chaque package, EN et FR), vocabulaire interdit absent, aucune promesse chiffrée de résultat client, Rémunet cité en réalisation personnelle du fondateur dans les deux locales, nav Offers en ancre absolue /#offers - /fr/#offres, canonical/hreflang/x-default/noindex dérivés du registre, sitemap 14 URLs exactes, OG PNG committés, delivery FR contre-vérifiée (2 tiers, 30 jours, 3 900/7 500 €). Hypothèses de review-1 maintenues : 404 bilingue hors registre sans nav/footer (liens de reprise présents), modification .forge/config.yml limitée au budget orchestrateur (max_heures_total 8→24, hors périmètre spec). Critères [test: manual] (EARS-17, 37, 53, 54, 55) restent pour la revue humaine avant promotion prod, conformément au plan.
 - 2026-08-12T04:27:18+02:00 — verify passed (run 1) — suite verte (lint/typecheck/test + no-gos)
 - 2026-08-12T04:27:18+02:00 — deploy_test : 1 fichier(s) non committe(s) par les agents inclus dans le commit de declenchement (.remember/)
+- 2026-08-12T04:27:20+02:00 — deploy_test : forge/site-v1 pousse en ff2ba81a18fe — attente du run forge-deploy-test.yml
+- 2026-08-12T04:27:21+02:00 — deploy_test : run introuvable (tour 1, 0 run(s) listes) — nouvelle tentative dans 5 s
+- 2026-08-12T04:27:27+02:00 — deploy_test : run introuvable (tour 2, 0 run(s) listes) — nouvelle tentative dans 10 s
+- 2026-08-12T04:27:37+02:00 — deploy_test : run 31556917649 demarre — suivi jusqu'a sa conclusion
+- 2026-08-12T04:29:19+02:00 — deploy_test : https://nexusinsight-test-d6kia6goga-ew.a.run.app — europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@sha256:c4685f21745f0cb9a9d8c4a74c04b3565204c90a1544257f6cb9f846f25dee97
+- 2026-08-12T04:29:19+02:00 — deploy_test passed (run 1) — 1 cible(s) deployee(s) en test
