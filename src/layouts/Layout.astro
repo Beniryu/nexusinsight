@@ -1,22 +1,21 @@
 ---
-// Layout de base — hreflang croisés EN/FR, meta par page.
+// Layout de base — canonical/hreflang/x-default dérivés du registre des routes, OG, favicon.
 import '../styles/fonts.css';
 import '../styles/tokens.css';
 import type { Locale } from '../content/site';
+import { paire } from '../content/routes';
 
 interface Props {
   locale: Locale;
   title: string;
   description: string;
-  /** Chemin de la page équivalente dans l'autre langue (ex. '/fr/' pour '/'). */
-  altPath: string;
-  /** Chemin canonique de cette page. */
+  /** Chemin canonique de cette page — doit exister dans le registre src/content/routes.ts. */
   path: string;
 }
 
-const { locale, title, description, altPath, path } = Astro.props;
+const { locale, title, description, path } = Astro.props;
 const site = 'https://nexusinsight.io';
-const altLocale = locale === 'en' ? 'fr' : 'en';
+const r = paire(path);
 ---
 
 <!doctype html>
@@ -26,14 +25,17 @@ const altLocale = locale === 'en' ? 'fr' : 'en';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {r.noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={site + path} />
-    <link rel="alternate" hreflang={locale} href={site + path} />
-    <link rel="alternate" hreflang={altLocale} href={site + altPath} />
-    <link rel="alternate" hreflang="x-default" href={site + (locale === 'en' ? path : altPath)} />
+    <link rel="alternate" hreflang="en" href={site + r.en} />
+    <link rel="alternate" hreflang="fr" href={site + r.fr} />
+    <link rel="alternate" hreflang="x-default" href={site + r.en} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={site + path} />
+    <meta property="og:image" content={`${site}/og/og-${locale}.png`} />
   </head>
   <body>
     <slot />

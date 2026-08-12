@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
+  <!-- Source OG EN. Régénérer le PNG : npx (option yes) @resvg/resvg-js-cli og-en.svg ../og-en.png -->
+  <!-- Couleurs = tokens E3 (graphite #1E2126, clair #F5F6F8, muted #A9ADB5, cuivre #C97E48). -->
+  <!-- Fonts système génériques : resvg ne lit pas les woff2 ; aucune exigence de famille sur l'OG. -->
+  <rect width="1200" height="630" fill="#1E2126"/>
+  <rect x="100" y="196" width="84" height="6" fill="#C97E48"/>
+  <text x="100" y="320" font-family="Helvetica, Arial, sans-serif" font-size="92" font-weight="600" fill="#F5F6F8">NexusInsight</text>
+  <text x="100" y="396" font-family="Helvetica, Arial, sans-serif" font-size="38" fill="#A9ADB5">Products shipped, not days billed.</text>
+  <circle cx="1084" cy="530" r="10" fill="#C97E48"/>
+</svg>
