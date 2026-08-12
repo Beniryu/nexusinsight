@@ -16,7 +16,7 @@ etapes:
   pitch: { statut: passed }
   spec: { statut: passed, valide_par: kaan }
   plan: { statut: passed, valide_par: kaan }
-  implement: { statut: running, tentatives: 0, task_courante: "08" }
+  implement: { statut: passed, tentatives: 0, task_courante: "08" }
   review: { statut: pending, tentatives: 0, cycles: 0, verdict: null }
   fix: { statut: pending, tentatives: 0 }
   verify: { statut: pending, tentatives: 0 }
@@ -51,3 +51,4 @@ promotion:
 - 2026-08-12T03:57:57+02:00 — implement/tache 06 passed (run 6) — Tâche 06 en TDD strict : 7 tests EARS-24..30 écrits dans tests/pages.test.ts (rouges vérifiés, commit ac241cc), puis gabarit PackagePage.astro + 6 pages /sprint /build /delivery et paires FR (commit 1387273). npm test 34/34, npm run check 0 erreur, build 8 pages — 6 routes servies.
 - 2026-08-12T04:04:35+02:00 — implement/tache 07 passed (run 7) — Tâche 07 en TDD strict : 6 tests EARS-31..36,38..42,49,50 écrits dans tests/pages.test.ts (rouges vérifiés, commit e23e67b), puis 4 gabarits + 8 pages EN/FR + 404 E3 (commit 35d84f5). npm test 40/40, npm run check 0 erreur, build 17 pages, Dockerfile/nginx.conf intouchés.
 - 2026-08-12T04:09:05+02:00 — implement/tache 08 passed (run 8) — Harnais transverse finalisé sur dist/ : suite CAP-10 ajoutée à tests/pages.test.ts (EARS-44 sitemap = exactement 14 URLs indexables sans légales, EARS-45 OG complet + og:image locale absolue, EARS-46 robots.txt, EARS-4 zéro hôte externe) ; public/robots.txt créé. npm test 44/44 vert, npm run check 0 erreur, build 17 pages, les 4 no-gos sortent en 0.
+- 2026-08-12T04:09:05+02:00 — implement passed (run 1) — 8 tache(s) implementee(s)
