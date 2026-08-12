@@ -271,3 +271,62 @@ describe('CAP-6/7/8/9 — pages secondaires (method, founder, contact, legal) + 
     expect(html).toMatch(/href="\/fr\/"/);
   });
 });
+
+describe('CAP-10 — sitemap, OG, robots et hygiène réseau sur le build complet', () => {
+  it('EARS-44 : le sitemap liste exactement les 14 URLs indexables et exclut les légales', () => {
+    const fichiers = readdirSync('dist').filter((f) => f.startsWith('sitemap') && f.endsWith('.xml'));
+    expect(fichiers.length, 'aucun fichier sitemap*.xml dans dist/').toBeGreaterThan(0);
+    const contenu = fichiers.map((f) => readFileSync(join('dist', f), 'utf8')).join('');
+    expect(contenu).not.toContain('/legal');
+    expect(contenu).not.toContain('/mentions-legales');
+    // <loc> de pages uniquement — le sitemap-index référence ses fichiers .xml, on les écarte.
+    const locs = [...contenu.matchAll(/<loc>([^<]+)<\/loc>/g)]
+      .map((m) => m[1])
+      .filter((u) => !u.endsWith('.xml'))
+      .sort();
+    const attendues = routes
+      .filter((r) => !r.noindex)
+      .flatMap((r) => [SITE + r.en, SITE + r.fr])
+      .sort();
+    expect(attendues).toHaveLength(14);
+    expect(locs).toEqual(attendues);
+  });
+
+  it('EARS-45 : OG complet par page — og:title/description/url propres, og:image locale absolue', () => {
+    expect(existsSync('public/og/og-en.png')).toBe(true);
+    expect(existsSync('public/og/og-fr.png')).toBe(true);
+    const pages = pagesBuildees();
+    expect(pages.length).toBeGreaterThan(0);
+    for (const { path } of pages) {
+      const html = readFileSync(distHtml(path), 'utf8');
+      expect(html, `${path} og:title`).toMatch(/<meta property="og:title" content="[^"]+"/);
+      expect(html, `${path} og:description`).toMatch(/<meta property="og:description" content="[^"]+"/);
+      expect(html, `${path} og:url`).toContain(`<meta property="og:url" content="${SITE}${path}"`);
+      const image = html.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+      const locale = path.startsWith('/fr/') ? 'fr' : 'en';
+      expect(image, `${path} og:image`).toBe(`${SITE}/og/og-${locale}.png`);
+    }
+  });
+
+  it('EARS-46 : robots.txt statique copié dans dist/, crawl autorisé, sitemap référencé', () => {
+    expect(existsSync('public/robots.txt'), 'public/robots.txt manquant').toBe(true);
+    const robots = readFileSync(join('dist', 'robots.txt'), 'utf8');
+    expect(robots).toMatch(/^User-agent: \*$/m);
+    expect(robots).toMatch(/^Allow: \/$/m);
+    expect(robots).toMatch(/^Sitemap: https:\/\/nexusinsight\.io\/sitemap-index\.xml$/m);
+  });
+
+  it('EARS-4 : aucun hôte de fonts/CDN ni ressource script/link externe dans le HTML buildé', () => {
+    for (const f of toutesLesPagesHtml()) {
+      const html = lirePage(f);
+      expect(html, f).not.toMatch(
+        /fonts\.googleapis\.com|api\.fontshare\.com|cdn\.jsdelivr|unpkg\.com/,
+      );
+      // Seul le propre domaine est toléré en URL absolue sur <script>/<link> (canonical, hreflang).
+      const externes = [...html.matchAll(/<(?:script|link)[^>]+(?:src|href)="(https?:\/\/[^"]+)"/g)]
+        .map((m) => m[1])
+        .filter((u) => u !== SITE && !u.startsWith(`${SITE}/`));
+      expect(externes, `${f} : ressources externes`).toEqual([]);
+    }
+  });
+});
