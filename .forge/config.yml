@@ -40,7 +40,7 @@ budget:
 
 caps:
   tentatives_max: 3     # 3 echecs sur une etape => etape failed + feature failed
-  max_heures_total: 8
+  max_heures_total: 24
 
 surfaces: [web]                          # web | backend | extension | admin-ui | ios | android | ...
 
