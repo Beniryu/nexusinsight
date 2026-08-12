@@ -7,18 +7,18 @@ branche: forge/site-v1
 worktree: .worktrees/forge/site-v1
 base_sha: d9855b66d184c6370fc5c4f3d6ee5a312d3574a8 # sha de main au moment du /forge:new
 statut: in_progress # draft | in_progress | awaiting_promotion | promoted | failed | abandoned
-etape_courante: review
+etape_courante: fix
 failure_reason: null # null | step_failed_3x | timeout | external_budget | aborted_by_user | artefact_invalide
 cree_le: 2026-08-12T02:51:48+02:00
-mis_a_jour_le: 2026-08-12T04:16:20+02:00
+mis_a_jour_le: 2026-08-12T04:16:21+02:00
 etapes:
   # statuts : pending | running | passed | failed | skipped
   pitch: { statut: passed }
   spec: { statut: passed, valide_par: kaan }
   plan: { statut: passed, valide_par: kaan }
   implement: { statut: passed, tentatives: 0, task_courante: "08" }
-  review: { statut: passed, tentatives: 0, cycles: 0, verdict: changements_demandes }
-  fix: { statut: pending, tentatives: 0 }
+  review: { statut: pending, tentatives: 0, cycles: 1, verdict: null }
+  fix: { statut: running, tentatives: 0 }
   verify: { statut: pending, tentatives: 0 }
   test_fix: { statut: pending, tentatives: 0 }
   deploy_test: { statut: pending, tentatives: 0, cibles: [] } # cibles : [{type, artefact, acces_test, run_id}]
