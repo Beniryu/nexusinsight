@@ -14,6 +14,13 @@ export interface FaqItem {
   a: string;
 }
 
+interface HeroFact {
+  k: string;
+  v: string;
+  /** Règle E3 : une seule valeur en cuivre par carte de faits. */
+  copper?: boolean;
+}
+
 interface PackageSummary {
   index: string;
   name: string;
@@ -159,9 +166,10 @@ export interface Copy {
   nav: { offers: string; method: string; founder: string; cta: string };
   footer: { company: string; legal: string; contact: string; founderSite: string };
   home: {
+    heroFacts: HeroFact[];
     packagesTitle: string;
     packages: PackageSummary[];
-    mechanism: { title: string; steps: string[]; punchline: string };
+    mechanism: { title: string; stepTitles: string[]; steps: string[]; punchline: string };
     proof: { title: string; text: string; link: { label: string; href: string } };
     audiencesTitle: string;
     audiences: { label: string; text: string; href: string }[];
@@ -208,6 +216,13 @@ export const site: Record<Locale, Copy> = {
       founderSite: "Founder's personal site",
     },
     home: {
+      heroFacts: [
+        { k: 'Scope', v: 'in writing, frozen' },
+        { k: 'Price', v: 'known upfront', copper: true },
+        { k: 'Deliverable', v: 'verifiable' },
+        { k: 'Code', v: 'yours, repo included' },
+        { k: 'Engagement', v: 'no day rates' },
+      ],
       packagesTitle: 'Three packages, one mechanism',
       packages: [
         {
@@ -243,6 +258,7 @@ export const site: Record<Locale, Copy> = {
       ],
       mechanism: {
         title: 'The Sprint prices the Build',
+        stepTitles: ['The Sprint', 'Frozen scope', 'Firm price'],
         steps: [
           'The Sprint — small, fixed price, 3 weeks — produces the written scope, the prioritised backlog and the prototype.',
           'On that basis, the Build gets a firm-price, frozen-scope proposal.',
@@ -658,6 +674,13 @@ export const site: Record<Locale, Copy> = {
       founderSite: 'Site personnel du fondateur',
     },
     home: {
+      heroFacts: [
+        { k: 'Périmètre', v: 'par écrit, gelé' },
+        { k: 'Prix', v: 'connu d\'avance', copper: true },
+        { k: 'Livrable', v: 'vérifiable' },
+        { k: 'Code', v: 'à vous, repo inclus' },
+        { k: 'Engagement', v: 'pas de jours facturés' },
+      ],
       packagesTitle: 'Trois packages, un mécanisme',
       packages: [
         {
@@ -693,6 +716,7 @@ export const site: Record<Locale, Copy> = {
       ],
       mechanism: {
         title: 'Le Sprint price le Build',
+        stepTitles: ['Le Sprint', 'Périmètre gelé', 'Prix ferme'],
         steps: [
           'Le Sprint — petit, prix fixe, 3 semaines — produit le périmètre écrit, le backlog priorisé et le prototype.',
           'Sur cette base, le Build reçoit une proposition à prix ferme et à périmètre gelé.',
