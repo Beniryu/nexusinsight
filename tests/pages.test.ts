@@ -12,6 +12,11 @@ function distHtml(path: string): string {
   return join('dist', ...path.split('/').filter(Boolean), 'index.html');
 }
 
+/** Lit un fichier de dist/ par chemin relatif ('index.html', 'fr/index.html'). */
+function lirePage(rel: string): string {
+  return readFileSync(join('dist', ...rel.split('/')), 'utf8');
+}
+
 /**
  * Pages du registre déjà buildées : les tâches 05-07 créent les routes restantes,
  * ce harnais les couvrira mécaniquement dès qu'elles existeront dans dist/.
@@ -115,5 +120,46 @@ describe('CAP-2 — nav, footer et sélecteur de langue sur le HTML buildé', ()
         localeDe(path) === 'en' ? /personal site/ : /personnel du fondateur/,
       );
     }
+  });
+});
+
+describe('CAP-4 — home complète EN + FR (7 sections du wireframe validé)', () => {
+  it("EARS-18/19 : la home EN rend les 7 sections dans l'ordre et 3 cards indexées", () => {
+    const html = lirePage('index.html');
+    const ordre = ['hero', 'offers', 'mechanism', 'proof', 'audiences', 'faq', 'cta-band'];
+    const positions = ordre.map((id) => html.indexOf(`data-section="${id}"`));
+    expect(positions.every((p, i) => p >= 0 && (i === 0 || p > positions[i - 1]))).toBe(true);
+    for (const idx of ['01', '02', '03']) expect(html).toContain(`data-card-index="${idx}"`);
+    expect(html).toMatch(/href="\/sprint\/"/);
+    expect(html).toMatch(/href="\/build\/"/);
+    expect(html).toMatch(/href="\/delivery\/"/);
+  });
+
+  it('EARS-20 : le mécanisme expose les 3 étapes et la punchline', () => {
+    const html = lirePage('index.html');
+    expect(html).toMatch(/frozen scope/i);
+    expect(html).toMatch(/nobody signs a big number blind/i);
+  });
+
+  it('EARS-21 : la preuve mentionne le seul chiffre autorisé et lie vers founder', () => {
+    const html = lirePage('index.html');
+    expect(html).toMatch(/80,000 users/);
+    expect(html).toMatch(/href="\/founder\/"/);
+  });
+
+  it("EARS-22 : 4 entrées audience avec leur porte d'entrée", () => {
+    const html = lirePage('index.html');
+    expect((html.match(/data-audience=/g) ?? []).length).toBe(4);
+  });
+
+  it('EARS-23 : la FAQ home compte 4 ou 5 entrées', () => {
+    const n = (lirePage('index.html').match(/data-faq-item/g) ?? []).length;
+    expect(n).toBeGreaterThanOrEqual(4);
+    expect(n).toBeLessThanOrEqual(5);
+  });
+
+  it("EARS-9 : l'ancre offers/offres existe sur chaque home", () => {
+    expect(lirePage('index.html')).toContain('id="offers"');
+    expect(lirePage('fr/index.html')).toContain('id="offres"');
   });
 });
