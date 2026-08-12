@@ -115,7 +115,7 @@ export interface DeliveryPage {
 /** Union des trois contenus package — consommée par le gabarit PackagePage.astro. */
 export type PackageContent = SprintPage | BuildPage | DeliveryPage;
 
-interface MethodPage {
+export interface MethodPage {
   meta: Meta;
   hero: { kicker: string; title: string; lead: string };
   milestones: TitledText;
@@ -125,7 +125,7 @@ interface MethodPage {
   remote: TitledText;
 }
 
-interface FounderPage {
+export interface FounderPage {
   meta: Meta;
   hero: { kicker: string; title: string; lead: string };
   structure: TitledText;
@@ -134,7 +134,7 @@ interface FounderPage {
   link: { label: string; href: string };
 }
 
-interface ContactPage {
+export interface ContactPage {
   meta: Meta;
   hero: { kicker: string; title: string; lead: string };
   email: string;
@@ -142,7 +142,7 @@ interface ContactPage {
   note: string;
 }
 
-interface LegalPage {
+export interface LegalPage {
   meta: Meta;
   title: string;
   tradeName: string;
@@ -567,7 +567,7 @@ export const site: Record<Locale, Copy> = {
           lead: 'The same mechanics on every package: visible progress, a frozen scope, and a stack you can afford to own.',
         },
         milestones: {
-          title: '2-week milestones',
+          title: 'Two-week milestones',
           text: 'A demo at every milestone, continuous acceptance — you watch the product move, not progress slides.',
         },
         scopeRule: {
@@ -636,7 +636,7 @@ export const site: Record<Locale, Copy> = {
         publisher: [
           'NexusEvo SARL, share capital of €1,000',
           '45 rue de la Capsulerie, 93170 Bagnolet, France',
-          'SIREN 928 581 545 — Trade and Companies Register (RCS) of Bobigny',
+          'SIREN 928 581 545 — RCS Bobigny (Trade and Companies Register)',
           'EU VAT number: FR95 928 581 545',
           'Publishing director: Kaan Karabulut',
           'Contact: kaan@nexusinsight.io',

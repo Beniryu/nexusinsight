@@ -1,0 +1,56 @@
+---
+// Gabarit de la page contact — mailto unique action, aucun <form> (EARS-38/39).
+import Layout from '../layouts/Layout.astro';
+import type { Locale, ContactPage } from '../content/site';
+
+interface Props {
+  locale: Locale;
+  /** Chemin canonique — doit exister dans src/content/routes.ts. */
+  path: string;
+  page: ContactPage;
+}
+
+const { locale, path, page } = Astro.props;
+---
+
+<Layout locale={locale} title={page.meta.title} description={page.meta.description} path={path}>
+  <main>
+    <section class="hero" data-section="hero">
+      <span class="kicker">{page.hero.kicker}</span>
+      <h1>{page.hero.title}</h1>
+      <p class="lead">{page.hero.lead}</p>
+      <a class="btn" href={`mailto:${page.email}`}>{page.ctaLabel}</a>
+      <p class="note">{page.note}</p>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .hero {
+    max-width: var(--nxi-page-max);
+    margin: 0 auto;
+    padding: 88px var(--nxi-gutter) 96px;
+  }
+  .kicker { font: 500 var(--nxi-meta) var(--nxi-mono); letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+  h1 { font: 600 var(--nxi-hero) var(--nxi-display); line-height: 1.08;
+    letter-spacing: var(--nxi-track-display); max-width: 20ch; margin-top: 16px; }
+  .lead { margin-top: 18px; color: var(--nxi-muted-l); max-width: 62ch; }
+
+  .btn {
+    display: inline-block;
+    margin-top: 32px;
+    background: var(--nxi-ink);
+    color: var(--nxi-white);
+    padding: 14px 24px;
+    border-radius: var(--nxi-r-btn);
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+  }
+  .note { margin-top: 16px; font-size: var(--nxi-desc); color: var(--nxi-muted-l); }
+
+  @media (max-width: 900px) {
+    .hero { padding: 40px 20px 56px; }
+  }
+</style>

@@ -1,0 +1,7 @@
+---
+// /legal — mentions légales EN (noindex via routes.ts).
+import LegalPage from '../components/LegalPage.astro';
+import { site } from '../content/site';
+---
+
+<LegalPage locale="en" path="/legal/" page={site.en.pages.legal} />
