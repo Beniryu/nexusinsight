@@ -1,10 +1,10 @@
 ---
 id: "01"
 titre: "Fonts self-hostées (Clash Display, Switzer, JetBrains Mono) + fonts.css + licences"
-statut: pending
+statut: passed
 tentatives: 0
 depends_on: []
-ears: [EARS-1, EARS-2, EARS-3, EARS-4, EARS-5]
+ears: [ EARS-1, EARS-2, EARS-3, EARS-4, EARS-5 ]
 ---
 
 ## Objectif
