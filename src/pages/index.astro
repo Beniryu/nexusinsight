@@ -1,0 +1,35 @@
+---
+// Home EN (x-default) — scaffold minimal : hero E3. Le site complet arrive via la feature Forge v1.
+import Layout from '../layouts/Layout.astro';
+import { site } from '../content/site';
+
+const t = site.en;
+---
+
+<Layout locale="en" title={t.meta.title} description={t.meta.description} path="/" altPath="/fr/">
+  <main class="hero">
+    <div>
+      <span class="kicker">{t.hero.kicker}</span>
+      <h1>{t.hero.title}</h1>
+      <p class="lead">{t.hero.lead}</p>
+      <div class="ctas">
+        <a class="btn primary" href="mailto:kaan@nexusinsight.io">{t.hero.ctaPrimary}</a>
+        <a class="btn ghost" href="#offers">{t.hero.ctaSecondary}</a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .hero { max-width: var(--nxi-page-max); margin: 0 auto; padding: 96px var(--nxi-gutter); }
+  .kicker { font: 500 var(--nxi-meta) var(--nxi-mono); letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+  h1 { font: 600 var(--nxi-hero) var(--nxi-display); line-height: 1.08;
+    letter-spacing: var(--nxi-track-display); max-width: 18ch; margin-top: 16px; }
+  .lead { margin-top: 18px; color: var(--nxi-muted-l); max-width: 54ch; }
+  .ctas { margin-top: 26px; display: flex; gap: 12px; }
+  .btn { text-decoration: none; padding: 11px 22px; border-radius: var(--nxi-r-btn);
+    font-weight: 600; font-size: 14px; }
+  .primary { background: var(--nxi-ink); color: var(--nxi-white); }
+  .ghost { border: 1.5px solid var(--nxi-line-light); color: var(--nxi-ink); }
+</style>

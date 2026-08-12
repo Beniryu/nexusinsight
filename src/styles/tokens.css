@@ -1,0 +1,50 @@
+/* NexusInsight — tokens canoniques (système E3, validé 2026-08-12).
+   Miroir de design/tokens.css — toute évolution passe d'abord par design/DESIGN.md. */
+
+:root {
+  --nxi-graphite: #1E2126;
+  --nxi-graphite-2: #282C33;
+  --nxi-paper: #F5F6F8;
+  --nxi-white: #FFFFFF;
+  --nxi-ink: #1E2126;
+  --nxi-fg: #F5F6F8;
+  --nxi-muted-l: #5F6570;
+  --nxi-muted-d: #A9ADB5;
+  --nxi-copper: #C97E48;
+  --nxi-copper-deep: #A45F2E;
+  --nxi-copper-fg: #1C1408;
+  --nxi-line-light: #DDE0E6;
+  --nxi-line-dark: rgba(245, 246, 248, 0.14);
+
+  --nxi-display: 'Clash Display', system-ui, sans-serif;
+  --nxi-body: 'Switzer', system-ui, sans-serif;
+  --nxi-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --nxi-hero: clamp(34px, 4.4vw, 56px);
+  --nxi-h3: 21px;
+  --nxi-price: 27px;
+  --nxi-body-size: 16.5px;
+  --nxi-desc: 14px;
+  --nxi-meta: 11.5px;
+  --nxi-tag: 10.5px;
+  --nxi-track-display: -0.015em;
+  --nxi-track-label: 0.14em;
+
+  --nxi-r-btn: 4px;
+  --nxi-r-card: 6px;
+  --nxi-page-max: 1120px;
+  --nxi-gutter: 40px;
+  --nxi-card-gap: 18px;
+  --nxi-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --nxi-dur: 160ms;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--nxi-paper);
+  color: var(--nxi-ink);
+  font-family: var(--nxi-body);
+  font-size: var(--nxi-body-size);
+  line-height: 1.6;
+}

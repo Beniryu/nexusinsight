@@ -1,0 +1,23 @@
+{
+  "name": "nexusinsight",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "dev": "astro dev --port 9104",
+    "build": "astro build",
+    "preview": "astro preview --port 9104",
+    "check": "astro check",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.4.1",
+    "astro": "^5.12.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0"
+  }
+}
