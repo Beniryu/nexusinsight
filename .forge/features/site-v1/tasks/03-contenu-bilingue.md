@@ -1,10 +1,10 @@
 ---
 id: "03"
 titre: "Modèle de contenu bilingue complet (site.ts) + tests de conformité de la copy"
-statut: pending
+statut: passed
 tentatives: 0
 depends_on: []
-ears: [EARS-11, EARS-12, EARS-13, EARS-14, EARS-15, EARS-16, EARS-17]
+ears: [ EARS-11, EARS-12, EARS-13, EARS-14, EARS-15, EARS-16, EARS-17 ]
 ---
 
 ## Objectif
