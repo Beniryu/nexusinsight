@@ -10,7 +10,7 @@ statut: in_progress # draft | in_progress | awaiting_promotion | promoted | fail
 etape_courante: report
 failure_reason: null # null | step_failed_3x | timeout | external_budget | aborted_by_user | artefact_invalide
 cree_le: 2026-08-12T02:51:48+02:00
-mis_a_jour_le: 2026-08-12T04:29:19+02:00
+mis_a_jour_le: 2026-08-12T04:31:29+02:00
 etapes:
   # statuts : pending | running | passed | failed | skipped
   pitch: { statut: passed }
@@ -22,7 +22,7 @@ etapes:
   verify: { statut: passed, tentatives: 0 }
   test_fix: { statut: pending, tentatives: 0 }
   deploy_test: { statut: passed, tentatives: 0, cibles: [ { type: cloud-run, artefact: europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@sha256:c4685f21745f0cb9a9d8c4a74c04b3565204c90a1544257f6cb9f846f25dee97, acces_test: https://nexusinsight-test-d6kia6goga-ew.a.run.app, run_id: "31556917649" } ] } # cibles : [{type, artefact, acces_test, run_id}]
-  report: { statut: running }
+  report: { statut: passed, tentatives: 0 }
   archive: { statut: pending }
 caps:
   tentatives_max: 3 # depasse => etape failed + statut failed (failure_reason: step_failed_3x)
@@ -32,7 +32,7 @@ budget_externe:
   plafond_usd: 10
   ressources: [] # [{type, nom, cout_usd_mois, cree_par_forge}]
   risque_signale_avant_go: false # true = le depassement potentiel a ete montre a Kaan AVANT le go
-tokens_usd_info: 65.5169 # informatif, JAMAIS un garde-fou (aucun arret sur ce champ)
+tokens_usd_info: 68.2879 # informatif, JAMAIS un garde-fou (aucun arret sur ce champ)
 promotion:
   commande: "forge promote site-v1"
   executee_le: null
@@ -63,3 +63,4 @@ promotion:
 - 2026-08-12T04:27:37+02:00 — deploy_test : run 31556917649 demarre — suivi jusqu'a sa conclusion
 - 2026-08-12T04:29:19+02:00 — deploy_test : https://nexusinsight-test-d6kia6goga-ew.a.run.app — europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@sha256:c4685f21745f0cb9a9d8c4a74c04b3565204c90a1544257f6cb9f846f25dee97
 - 2026-08-12T04:29:19+02:00 — deploy_test passed (run 1) — 1 cible(s) deployee(s) en test
+- 2026-08-12T04:31:29+02:00 — report passed (run 1) — report.md assemblé et validé (validate-artifacts ✅) : ready_for_promotion, 45/45 tests, 50/55 EARS auto verts + 5 manuels listés, 4 no-gos pass, diff 75 fichiers +4611/-34, coûts externes 0 USD, cible Cloud Run test + commande gh workflow tracées, promotion via `forge promote site-v1`.
