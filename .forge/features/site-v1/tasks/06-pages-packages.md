@@ -1,10 +1,10 @@
 ---
 id: "06"
 titre: "Pages packages ×6 (/sprint /build /delivery + paires FR) via gabarit commun"
-statut: pending
+statut: passed
 tentatives: 0
-depends_on: ["03", "04"]
-ears: [EARS-24, EARS-25, EARS-26, EARS-27, EARS-28, EARS-29, EARS-30]
+depends_on: [ "03", "04" ]
+ears: [ EARS-24, EARS-25, EARS-26, EARS-27, EARS-28, EARS-29, EARS-30 ]
 ---
 
 ## Objectif
