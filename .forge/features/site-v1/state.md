@@ -10,14 +10,14 @@ statut: in_progress # draft | in_progress | awaiting_promotion | promoted | fail
 etape_courante: review
 failure_reason: null # null | step_failed_3x | timeout | external_budget | aborted_by_user | artefact_invalide
 cree_le: 2026-08-12T02:51:48+02:00
-mis_a_jour_le: 2026-08-12T04:23:10+02:00
+mis_a_jour_le: 2026-08-12T04:27:09+02:00
 etapes:
   # statuts : pending | running | passed | failed | skipped
   pitch: { statut: passed }
   spec: { statut: passed, valide_par: kaan }
   plan: { statut: passed, valide_par: kaan }
   implement: { statut: passed, tentatives: 0, task_courante: "08" }
-  review: { statut: running, tentatives: 0, cycles: 1, verdict: null }
+  review: { statut: passed, tentatives: 0, cycles: 1, verdict: approuve }
   fix: { statut: passed, tentatives: 0 }
   verify: { statut: pending, tentatives: 0 }
   test_fix: { statut: pending, tentatives: 0 }
@@ -32,7 +32,7 @@ budget_externe:
   plafond_usd: 10
   ressources: [] # [{type, nom, cout_usd_mois, cree_par_forge}]
   risque_signale_avant_go: false # true = le depassement potentiel a ete montre a Kaan AVANT le go
-tokens_usd_info: 61.4403 # informatif, JAMAIS un garde-fou (aucun arret sur ce champ)
+tokens_usd_info: 65.5169 # informatif, JAMAIS un garde-fou (aucun arret sur ce champ)
 promotion:
   commande: "forge promote site-v1"
   executee_le: null
@@ -54,3 +54,4 @@ promotion:
 - 2026-08-12T04:09:05+02:00 — implement passed (run 1) — 8 tache(s) implementee(s)
 - 2026-08-12T04:16:20+02:00 — review passed (run 1) — Relecture adversariale complète : spec + plan relus, diff intégral parcouru (composants, pages, contenu, tests), suite rejouée réellement (44/44 verts, dist rebuildé), npm run check 0 erreur, no-gos vérifiés (package.json/Dockerfile/nginx.conf intouchés, aucun hôte externe, statique pur), fond strictement conforme à brand/OFFERS.md et brand/BRAND.md (prix EUR/USD + HT, chiffre CAC40 autorisé seul, vocabulaire interdit absent, Rémunet cité en réalisation du fondateur), SEO bilingue conforme (canonical/hreflang/x-default, sitemap 14 URLs exact, noindex légales seules, OG absolu local, robots, favicon), fontes authentiques aux bons poids et familles alignées avec tokens.css. Un écart objectif confirmé bloque l'approbation : JetBrains Mono committé en fichiers complets (cyrillique+grec) au lieu du subset latin exigé par EARS-2, invisible pour fonts.test.ts — plus deux trous de couverture mineurs (home FR et section déroulé non assertées). Hypothèses acceptées : 404 bilingue hors registre sans nav/footer (liens de reprise EARS-50 présents, choix documenté) ; modification .forge/config.yml (budget orchestrateur, hors périmètre de la spec).
 - 2026-08-12T04:23:10+02:00 — fix passed (run 1) — Les 3 findings de review-1 sont corrigés, un commit chacun. Majeure EARS-2 (617eb17) : JetBrains Mono Regular+Medium subsettés en latin via pyftsubset (~32 Ko et 361 codepoints chacun contre ~92 Ko/1 363, zéro cyrillique/grec), plafond 40 Ko ajouté à fonts.test.ts (ROUGE vérifié sur les fichiers complets), LICENSES.md documente la modification OFL. Mineures : CAP-4 paramétré sur les deux homes EN+FR (786ae4d, mutation FR vérifiée ROUGE) et EARS-24 asserte data-section="timeline" (d590c7f). Suite complète 45/45 verte, npm run check 0 erreur.
+- 2026-08-12T04:27:09+02:00 — review passed (run 2) — Revue adversariale de contrôle après fix-1 : les 3 findings de review-1 sont réellement corrigés et vérifiés par exécution indépendante. Majeure EARS-2 : les deux woff2 JetBrains Mono sont d'authentiques subsets latin (361 codepoints chacun, 0 cyrillique, 0 grec, 32 140 / 32 820 octets contre ~92 Ko — contre-vérifié via fontTools, glyphes critiques — ' € → ↔ é œ présents) et fonts.test.ts plafonne désormais chaque fichier à 40 Ko (les fichiers complets d'origine échoueraient). Mineure 1 : le bloc CAP-4 de pages.test.ts itère sur les deux homes EN et FR — ordre des 7 sections par positions, cards indexées, liens packages localisés via paire(), étapes/punchline tirées de site[locale], chiffre autorisé par locale, audiences et FAQ comptées. Mineure 2 : EARS-24 asserte data-section="timeline" sur les 6 pages package. Re-vérification globale rejouée : vitest 45/45 verts (build réel de dist/), npm run check 0 erreur / 0 warning / 0 hint, no-gos intacts (diff vide sur package.json, Dockerfile, nginx.conf ; aucun hôte externe dans le HTML buildé), familles fonts.css alignées sur tokens.css, prix EUR/USD exacts d'OFFERS.md et chaque prix affiché accompagné de HT / excl. VAT dans le HTML buildé (3 cards home + hero de chaque package, EN et FR), vocabulaire interdit absent, aucune promesse chiffrée de résultat client, Rémunet cité en réalisation personnelle du fondateur dans les deux locales, nav Offers en ancre absolue /#offers - /fr/#offres, canonical/hreflang/x-default/noindex dérivés du registre, sitemap 14 URLs exactes, OG PNG committés, delivery FR contre-vérifiée (2 tiers, 30 jours, 3 900/7 500 €). Hypothèses de review-1 maintenues : 404 bilingue hors registre sans nav/footer (liens de reprise présents), modification .forge/config.yml limitée au budget orchestrateur (max_heures_total 8→24, hors périmètre spec). Critères [test: manual] (EARS-17, 37, 53, 54, 55) restent pour la revue humaine avant promotion prod, conformément au plan.
