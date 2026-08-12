@@ -56,7 +56,7 @@ interface CrossLink {
   href: string;
 }
 
-interface SprintPage {
+export interface SprintPage {
   meta: Meta;
   hero: PackageHero;
   deliverablesTitle: string;
@@ -72,7 +72,7 @@ interface SprintPage {
   crossLink: CrossLink;
 }
 
-interface BuildPage {
+export interface BuildPage {
   meta: Meta;
   hero: PackageHero;
   deliverablesTitle: string;
@@ -97,18 +97,23 @@ interface DeliveryTier {
   inclusions: string[];
 }
 
-interface DeliveryPage {
+export interface DeliveryPage {
   meta: Meta;
   hero: PackageHero;
   tiersTitle: string;
   tiers: DeliveryTier[];
   commitment: TitledText;
+  prerequisitesTitle: string;
+  prerequisites: string[];
   exclusionsTitle: string;
   exclusions: string[];
   faqTitle: string;
   faq: FaqItem[];
   crossLink: CrossLink;
 }
+
+/** Union des trois contenus package — consommée par le gabarit PackagePage.astro. */
+export type PackageContent = SprintPage | BuildPage | DeliveryPage;
 
 interface MethodPage {
   meta: Meta;
@@ -522,6 +527,11 @@ export const site: Record<Locale, Copy> = {
           title: 'Monthly commitment',
           text: 'Cancellable with 30 days’ notice, on both sides. No annual lock-in — renewal is earned every month.',
         },
+        prerequisitesTitle: 'Where it starts from',
+        prerequisites: [
+          'A dev team already exists — in-house, agency or offshore.',
+          'One product to steer — the subscription covers a single product.',
+        ],
         exclusionsTitle: "What's not included",
         exclusions: [
           'This is not staffing in disguise: no imposed presence in your offices, no integration into your hierarchy. The rhythm follows deliverables and rituals, not a badge.',
@@ -980,6 +990,11 @@ export const site: Record<Locale, Copy> = {
           title: 'Un engagement mensuel',
           text: 'Résiliable avec 30 jours de préavis, des deux côtés. Pas d\'engagement annuel — la reconduction se gagne chaque mois.',
         },
+        prerequisitesTitle: 'Le point de départ',
+        prerequisites: [
+          'Une équipe de dev existe déjà — interne, ESN ou offshore.',
+          'Un produit à piloter — l\'abonnement couvre un seul produit.',
+        ],
         exclusionsTitle: 'Ce qui n\'est pas inclus',
         exclusions: [
           'Ce n\'est pas de la régie déguisée : pas de présence imposée dans vos locaux, pas d\'intégration à votre hiérarchie. Le rythme se cale sur les livrables et les rituels, pas sur un badge.',

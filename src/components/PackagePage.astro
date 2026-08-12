@@ -1,0 +1,204 @@
+---
+// Gabarit commun des 6 pages package — hero factuel, livrables numérotés (ou comparatif des
+// 2 intensités Delivery), déroulé, exclusions, prérequis, FAQ, cross-link logique + bande CTA.
+// Contrat de testabilité : data-section="hero|deliverables|timeline|exclusions|prerequisites|faq|crosslink",
+// data-deliverable par livrable, data-tier par intensité, data-exclusion par exclusion.
+// Ces attributs ne doivent jamais apparaître dans le CSS (les tests comptent leurs occurrences HTML).
+import Layout from '../layouts/Layout.astro';
+import CtaBand from './CtaBand.astro';
+import type { Locale, PackageContent } from '../content/site';
+
+interface Props {
+  locale: Locale;
+  /** Chemin canonique — doit exister dans src/content/routes.ts. */
+  path: string;
+  /** Sous-objet de site[locale].pages : sprint, build ou delivery. */
+  page: PackageContent;
+}
+
+const { locale, path, page } = Astro.props;
+
+// Discrimination structurelle de l'union : Sprint/Build portent des livrables et un déroulé,
+// Delivery porte les 2 intensités et l'engagement mensuel.
+const deliverables = 'deliverables' in page ? page.deliverables : null;
+const deliverablesTitle = 'deliverablesTitle' in page ? page.deliverablesTitle : page.tiersTitle;
+const tiers = 'tiers' in page ? page.tiers : null;
+const steps = 'process' in page ? page.process : null;
+const stepsTitle = 'processTitle' in page ? page.processTitle : null;
+const scopeRule = 'scopeRule' in page ? page.scopeRule : null;
+const commitment = 'commitment' in page ? page.commitment : null;
+---
+
+<Layout locale={locale} title={page.meta.title} description={page.meta.description} path={path}>
+  <main>
+    <section class="hero" data-section="hero">
+      <span class="kicker">{page.hero.kicker}</span>
+      <h1>{page.hero.name}</h1>
+      <p class="lead">{page.hero.promise}</p>
+      <div class="facts">
+        <p class="price">{page.hero.price}</p>
+        <p class="meta">{page.hero.priceMeta}</p>
+        <p class="meta">{page.hero.duration}</p>
+      </div>
+    </section>
+
+    <section class="block" data-section="deliverables">
+      <h2 class="label">{deliverablesTitle}</h2>
+      {deliverables && (
+        <ol class="deliv">
+          {deliverables.map((d, i) => (
+            <li data-deliverable={`0${i + 1}`}>
+              <span class="num">{`0${i + 1}`}</span>
+              <h3>{d.title}</h3>
+              <p>{d.text}</p>
+            </li>
+          ))}
+        </ol>
+      )}
+      {tiers && (
+        <div class="tiers">
+          {tiers.map((tier, i) => (
+            <article class="tier" data-tier={`0${i + 1}`}>
+              <h3>{tier.name}</h3>
+              <p class="price">{tier.price}</p>
+              <p class="meta">{tier.priceMeta} · {tier.charge}</p>
+              <ul class="plain">
+                {tier.inclusions.map((inc) => <li>{inc}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+
+    <section class="block" data-section="timeline">
+      {stepsTitle && steps && (
+        <>
+          <h2 class="label">{stepsTitle}</h2>
+          <ol class="steps">
+            {steps.map((s, i) => (
+              <li>
+                <span class="num">{`0${i + 1}`}</span>
+                <p>{s}</p>
+              </li>
+            ))}
+          </ol>
+        </>
+      )}
+      {scopeRule && (
+        <div class="rule">
+          <h3>{scopeRule.title}</h3>
+          <p>{scopeRule.text}</p>
+        </div>
+      )}
+      {commitment && (
+        <div class="rule">
+          <h3>{commitment.title}</h3>
+          <p>{commitment.text}</p>
+        </div>
+      )}
+    </section>
+
+    <section class="block" data-section="exclusions">
+      <h2 class="label">{page.exclusionsTitle}</h2>
+      <ul class="plain wide">
+        {page.exclusions.map((e) => <li data-exclusion>{e}</li>)}
+      </ul>
+    </section>
+
+    <section class="block" data-section="prerequisites">
+      <h2 class="label">{page.prerequisitesTitle}</h2>
+      <ul class="plain wide">
+        {page.prerequisites.map((p) => <li>{p}</li>)}
+      </ul>
+    </section>
+
+    <section class="block" data-section="faq">
+      <h2 class="label">{page.faqTitle}</h2>
+      <div class="faq">
+        {page.faq.map((f) => (
+          <details data-faq-item>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="block" data-section="crosslink">
+      <p class="cross">{page.crossLink.text}</p>
+      <a class="go" href={page.crossLink.href}>{page.crossLink.label} →</a>
+    </section>
+
+    <CtaBand locale={locale} />
+  </main>
+</Layout>
+
+<style>
+  .hero {
+    max-width: var(--nxi-page-max);
+    margin: 0 auto;
+    padding: 88px var(--nxi-gutter) 56px;
+  }
+  .kicker { font: 500 var(--nxi-meta) var(--nxi-mono); letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+  h1 { font: 600 var(--nxi-hero) var(--nxi-display); line-height: 1.08;
+    letter-spacing: var(--nxi-track-display); max-width: 20ch; margin-top: 16px; }
+  .lead { margin-top: 18px; color: var(--nxi-muted-l); max-width: 62ch; }
+  .facts { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--nxi-line-light); }
+  .price { font: 600 var(--nxi-price) var(--nxi-display);
+    letter-spacing: var(--nxi-track-display); }
+  .meta { margin-top: 4px; font-size: var(--nxi-desc); color: var(--nxi-muted-l); }
+
+  .block { max-width: var(--nxi-page-max); margin: 0 auto; padding: 48px var(--nxi-gutter); }
+  .label { font: 500 12.5px var(--nxi-mono); letter-spacing: var(--nxi-track-label);
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+  .num { font: 500 var(--nxi-tag) var(--nxi-mono); letter-spacing: 0.13em;
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+
+  .deliv { margin-top: 24px; display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 28px; list-style: none; }
+  .deliv h3 { font: 600 var(--nxi-h3) var(--nxi-display);
+    letter-spacing: var(--nxi-track-display); margin-top: 8px; }
+  .deliv p { margin-top: 8px; font-size: var(--nxi-desc); line-height: 1.55;
+    color: var(--nxi-muted-l); }
+
+  .tiers { margin-top: 24px; display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: var(--nxi-card-gap); }
+  .tier { border: 1px solid var(--nxi-line-light); border-radius: var(--nxi-r-card);
+    padding: 26px 24px; background: var(--nxi-white); }
+  .tier h3 { font: 600 var(--nxi-h3) var(--nxi-display);
+    letter-spacing: var(--nxi-track-display); }
+  .tier .price { margin-top: 12px; }
+  .tier ul { margin-top: 16px; }
+
+  .steps { margin-top: 24px; list-style: none; display: grid; gap: 18px; max-width: 72ch; }
+  .steps p { margin-top: 4px; color: var(--nxi-muted-l); }
+  .rule { margin-top: 28px; border-left: 3px solid var(--nxi-copper); padding-left: 20px;
+    max-width: 72ch; }
+  .rule h3 { font: 600 var(--nxi-h3) var(--nxi-display);
+    letter-spacing: var(--nxi-track-display); }
+  .rule p { margin-top: 8px; color: var(--nxi-muted-l); }
+
+  .plain { margin-top: 20px; list-style: none; display: grid; gap: 10px; }
+  .plain li { padding-left: 18px; position: relative; font-size: var(--nxi-desc);
+    line-height: 1.55; color: var(--nxi-muted-l); }
+  .plain li::before { content: '—'; position: absolute; left: 0; color: var(--nxi-copper-deep); }
+  .wide { max-width: 72ch; }
+
+  .faq { margin-top: 16px; max-width: 72ch; }
+  .faq details { border-bottom: 1px solid var(--nxi-line-light); padding: 14px 0; }
+  .faq summary { font-weight: 600; cursor: pointer; }
+  .faq details p { margin-top: 10px; color: var(--nxi-muted-l); }
+
+  .cross { font: 500 22px var(--nxi-display); letter-spacing: var(--nxi-track-display);
+    max-width: 40ch; }
+  .go { display: inline-block; margin-top: 14px; font-weight: 600; font-size: 14px;
+    color: var(--nxi-copper-deep); text-decoration: none; }
+
+  @media (max-width: 900px) {
+    .hero { padding: 40px 20px 32px; }
+    .block { padding: 36px 20px; }
+    .deliv, .tiers { grid-template-columns: 1fr; }
+  }
+</style>
