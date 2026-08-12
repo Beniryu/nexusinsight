@@ -1,0 +1,48 @@
+projet:
+  slug: nexusinsight                 # [a-z0-9-], 1-20 car., ni tiret de tete/fin, JAMAIS suffixe -test/-prod
+  nom: "NexusInsight"
+
+repo:
+  default_branch: main
+  worktrees_dir: .worktrees/forge     # gitignore ; un worktree par feature : <worktrees_dir>/<slug-feature>
+  github: Beniryu/nexusinsight             # owner/name
+
+commandes:                            # executees telles quelles ; null = etape SAUTEE (skipped), jamais une erreur
+  install: "npm ci"
+  lint: "npm run check"
+  typecheck: "npm run check"
+  test: "npm test"
+  build: "npm run build"
+  e2e: null
+
+cibles:                               # v1 : seul `cloud-run` est implemente (ios/android/capacitor = incr. 5)
+  - type: cloud-run                   # cloud-run | ios | android | capacitor
+    port: 8080                    # port HTTP du conteneur -> variable PORT du workflow deploy-test
+    health_path: /      # smoke test post-deploiement -> variable HEALTH_PATH
+    service_test: nexusinsight-test  # convention imposee : <slug>-test
+    service_prod: nexusinsight       # convention imposee : <slug> (jamais de suffixe)
+    registry: europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight   # depot AR unique `forge` -> variable AR_IMAGE
+    gcp_project: kaan-personal-system
+    region: europe-west1
+    cloudsql_instance: null           # ex. kaan-personal-system:europe-west1:regulatory-artifact-db
+    secrets: []                       # noms Secret Manager, convention <slug>-{test|prod}-<cle>
+    env:
+      test: {}                        # variables NON sensibles de l'env test
+      prod: {}                        # variables NON sensibles de l'env prod
+    # --- champs OPTIONNELS : supprimables, le rendu applique alors le defaut indique ---
+    memory: 512Mi                     # defaut 512Mi -> variable MEMORY (service test)
+    ci_node_version: 22               # defaut 22    -> variable CI_NODE_VERSION (actions/setup-node)
+    min_instances_prod: 0             # defaut 0     -> variable MIN_INSTANCES_PROD (mettre 1 pour
+                                      #                 eviter le cold start en prod)
+
+budget:
+  plafond_externe_usd: 10   # coûts FACTURABLES hors abonnement Claude UNIQUEMENT (jamais les tokens)
+
+caps:
+  tentatives_max: 3     # 3 echecs sur une etape => etape failed + feature failed
+  max_heures_total: 8
+
+surfaces: [web]                          # web | backend | extension | admin-ui | ios | android | ...
+
+dependances_user:
+  verifie_le: 2026-08-12T02:46:38+02:00  # ISO8601 du dernier `scripts/doctor.sh` vert

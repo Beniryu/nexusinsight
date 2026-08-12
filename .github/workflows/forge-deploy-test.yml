@@ -1,0 +1,165 @@
+# Template Forge — rendu par substitution simple {{VAR}} -> valeur (sed-compatible).
+# AUCUNE logique de template ici (pas de conditionnels/boucles) : les éléments optionnels
+# (Cloud SQL, secrets, env vars) sont des variables "flag" qui contiennent soit une option
+# gcloud complète, soit une chaîne vide. Voir templates/github/VARIABLES.md pour le détail
+# de CHAQUE variable {{VAR}}.
+name: forge-deploy-test
+
+on:
+  push:
+    branches: ['forge/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # WIF/OIDC keyless — jamais de clé de service account stockée.
+
+concurrency:
+  group: forge-deploy-test
+  cancel-in-progress: false
+
+jobs:
+  # Source de vérité, AVANT tout build : un build ne part jamais si la CI est rouge.
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run check
+
+      - name: Test
+        run: npm test
+
+  build-deploy:
+    name: Build & deploy Cloud Run (test)
+    needs: ci
+    runs-on: ubuntu-latest
+    outputs:
+      url: ${{ steps.deploy.outputs.url }}
+      digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to GCP (Workload Identity Federation)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/857615578903/locations/global/workloadIdentityPools/github/providers/github-provider
+          service_account: forge-deployer-test@kaan-personal-system.iam.gserviceaccount.com
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configurer Docker pour Artifact Registry
+        run: gcloud auth configure-docker europe-west1-docker.pkg.dev --quiet
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build & push (image immuable taguée SHA)
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight:${{ github.sha }}
+          # OBLIGATOIRE : sinon le digest renvoyé est celui d'un index d'attestation
+          # (pas du manifest) — la vérification de promotion (garde anti-digest-arbitraire
+          # de forge-promote-prod) casserait.
+          provenance: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Déployer sur Cloud Run (test)
+        id: deploy
+        env:
+          BUILD_DIGEST: ${{ steps.build.outputs.digest }}
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          # Branche sanitisée pour le label GCP forge-feature :
+          # minuscules, tout caractère hors [a-z0-9-_] -> '-', 63 caractères max
+          # (contrainte de longueur des labels GCP).
+          FEATURE=$(printf '%s' "$BRANCH_NAME" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9_-' '-' | cut -c1-63)
+          SHA_SHORT="${GITHUB_SHA:0:12}"
+
+          gcloud run deploy "nexusinsight-test" \
+            --image "europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@${BUILD_DIGEST}" \
+            --project "kaan-personal-system" \
+            --region "europe-west1" \
+            --service-account "run-nexusinsight-test@kaan-personal-system.iam.gserviceaccount.com" \
+            --port 8080 \
+            --min-instances 0 --max-instances 2 \
+            --memory 512Mi --cpu 1 \
+            --allow-unauthenticated \
+               \
+            --labels "forge-env=test,forge-project=nexusinsight,forge-feature=${FEATURE},forge-sha=${SHA_SHORT}" \
+            --quiet
+
+          URL=$(gcloud run services describe "nexusinsight-test" \
+            --project "kaan-personal-system" --region "europe-west1" \
+            --format='value(status.url)')
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: Smoke test (10 tentatives max, 6 s d'intervalle)
+        env:
+          SERVICE_URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          set +e
+          code="000"
+          for i in $(seq 1 10); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "${SERVICE_URL}/")
+            # Sain = 2xx ou 3xx (< 400). Un 3xx (redirection OAuth d'une app Shopify) passe ;
+            # un 4xx — dont un 404 si le health_path n'est PAS servi par l'app, ou est un chemin
+            # réservé par le Google Frontend comme /healthz sur *.run.app — ÉCHOUE. (Auparavant
+            # « < 500 » laissait passer un 404 : health_path doit pointer une route réelle 2xx/3xx.)
+            if [ "$code" != "000" ] && [ "$code" -lt 400 ]; then
+              exit 0
+            fi
+            sleep 6
+          done
+          echo "::error::smoke test KO après 10 tentatives (dernier code HTTP: ${code}) — le health_path répond-il en 2xx/3xx ? (éviter /healthz sur *.run.app, réservé)"
+          exit 1
+
+      - name: Rapport machine-lisible
+        env:
+          SERVICE_URL: ${{ steps.deploy.outputs.url }}
+          BUILD_DIGEST: ${{ steps.build.outputs.digest }}
+          GIT_SHA: ${{ github.sha }}
+          BRANCH_NAME: ${{ github.ref_name }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          cat > deploy-report.json <<EOF
+          {
+            "status": "success",
+            "service": "nexusinsight-test",
+            "url": "${SERVICE_URL}",
+            "image": "europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@${BUILD_DIGEST}",
+            "digest": "${BUILD_DIGEST}",
+            "git_sha": "${GIT_SHA}",
+            "branch": "${BRANCH_NAME}",
+            "run_id": "${RUN_ID}",
+            "promotion_note": "promotion via /forge:promote <feature> ou forge promote <feature> (voir report.md)",
+            "finished_at": "$(date -u +%FT%TZ)"
+          }
+          EOF
+          {
+            echo "### Déployé en test"
+            echo "- URL : ${SERVICE_URL}"
+            echo "- Digest : \`${BUILD_DIGEST}\`"
+            echo "- Promotion : via \`/forge:promote <feature>\` (voir report.md — jamais le slug projet)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: forge-deploy-report
+          path: deploy-report.json

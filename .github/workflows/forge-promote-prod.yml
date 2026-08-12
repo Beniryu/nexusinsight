@@ -1,0 +1,92 @@
+# Template Forge — rendu par substitution simple {{VAR}} -> valeur (sed-compatible).
+# AUCUNE logique de template ici (pas de conditionnels/boucles) : les éléments optionnels
+# (Cloud SQL, secrets, env vars) sont des variables "flag" qui contiennent soit une option
+# gcloud complète, soit une chaîne vide. Voir templates/github/VARIABLES.md pour le détail
+# de CHAQUE variable {{VAR}}.
+name: forge-promote-prod
+
+on:
+  workflow_dispatch:
+    inputs:
+      digest:
+        description: 'Digest validé en test, format sha256:...'
+        required: true
+      confirm:
+        description: 'Retaper le slug du projet pour confirmer la promotion'
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  promote:
+    name: Promouvoir en production
+    runs-on: ubuntu-latest
+    # La barrière : reviewer humain requis, configuré côté GitHub
+    # (Settings > Environments > production). Aucun step ne démarre sans approbation.
+    environment: production
+    steps:
+      - name: Garde-fou 1 — confirmation du slug
+        env:
+          CONFIRM_INPUT: ${{ inputs.confirm }}
+        run: |
+          if [ "$CONFIRM_INPUT" != "nexusinsight" ]; then
+            echo "::error::confirmation invalide : attendu \"nexusinsight\", reçu \"$CONFIRM_INPUT\""
+            exit 1
+          fi
+
+      - name: Authenticate to GCP (Workload Identity Federation)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/857615578903/locations/global/workloadIdentityPools/github/providers/github-provider
+          service_account: forge-deployer-prod@kaan-personal-system.iam.gserviceaccount.com
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Garde-fou 2 — le digest doit être celui actuellement servi en test
+        env:
+          DIGEST_INPUT: ${{ inputs.digest }}
+        run: |
+          set -euo pipefail
+          TEST_IMAGE=$(gcloud run services describe "nexusinsight-test" \
+            --project "kaan-personal-system" --region "europe-west1" \
+            --format='value(spec.template.spec.containers[0].image)')
+          EXPECTED_IMAGE="europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@${DIGEST_INPUT}"
+          if [ "$TEST_IMAGE" != "$EXPECTED_IMAGE" ]; then
+            echo "::error::le digest promu (${DIGEST_INPUT}) n'est pas celui actuellement déployé en test (${TEST_IMAGE})"
+            exit 1
+          fi
+
+      - name: Déployer sur Cloud Run (prod) — digest exact, jamais de rebuild
+        id: deploy
+        env:
+          DIGEST_INPUT: ${{ inputs.digest }}
+        run: |
+          set -euo pipefail
+          gcloud run deploy "nexusinsight" \
+            --image "europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@${DIGEST_INPUT}" \
+            --project "kaan-personal-system" \
+            --region "europe-west1" \
+            --service-account "run-nexusinsight-prod@kaan-personal-system.iam.gserviceaccount.com" \
+            --min-instances 0 \
+               \
+            --labels "forge-env=prod,forge-project=nexusinsight" \
+            --quiet
+
+          URL=$(gcloud run services describe "nexusinsight" \
+            --project "kaan-personal-system" --region "europe-west1" \
+            --format='value(status.url)')
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: Résumé
+        env:
+          SERVICE_URL: ${{ steps.deploy.outputs.url }}
+          DIGEST_INPUT: ${{ inputs.digest }}
+        run: |
+          {
+            echo "### Promu en production"
+            echo "- Service : nexusinsight"
+            echo "- URL : ${SERVICE_URL}"
+            echo "- Digest : \`${DIGEST_INPUT}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
