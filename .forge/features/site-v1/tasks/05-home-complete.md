@@ -1,10 +1,10 @@
 ---
 id: "05"
 titre: "Home complète EN + FR (7 sections du wireframe validé)"
-statut: pending
+statut: passed
 tentatives: 0
-depends_on: ["03", "04"]
-ears: [EARS-9, EARS-18, EARS-19, EARS-20, EARS-21, EARS-22, EARS-23]
+depends_on: [ "03", "04" ]
+ears: [ EARS-9, EARS-18, EARS-19, EARS-20, EARS-21, EARS-22, EARS-23 ]
 ---
 
 ## Objectif
