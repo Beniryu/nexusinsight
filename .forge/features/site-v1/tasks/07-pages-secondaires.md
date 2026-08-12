@@ -1,10 +1,10 @@
 ---
 id: "07"
 titre: "Pages method, founder, contact, legal (×2) + 404"
-statut: pending
+statut: passed
 tentatives: 0
-depends_on: ["03", "04"]
-ears: [EARS-31, EARS-32, EARS-33, EARS-34, EARS-35, EARS-36, EARS-38, EARS-39, EARS-40, EARS-41, EARS-42, EARS-49, EARS-50]
+depends_on: [ "03", "04" ]
+ears: [ EARS-31, EARS-32, EARS-33, EARS-34, EARS-35, EARS-36, EARS-38, EARS-39, EARS-40, EARS-41, EARS-42, EARS-49, EARS-50 ]
 ---
 
 ## Objectif
