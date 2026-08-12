@@ -1,10 +1,10 @@
 ---
 id: "08"
 titre: "Harnais de tests sur le build (dist/) : SEO, hreflang, sitemap, OG, robots, nav/footer partout"
-statut: pending
+statut: passed
 tentatives: 0
-depends_on: ["05", "06", "07"]
-ears: [EARS-4, EARS-6, EARS-7, EARS-8, EARS-10, EARS-43, EARS-44, EARS-45, EARS-46, EARS-47]
+depends_on: [ "05", "06", "07" ]
+ears: [ EARS-4, EARS-6, EARS-7, EARS-8, EARS-10, EARS-43, EARS-44, EARS-45, EARS-46, EARS-47 ]
 ---
 
 ## Objectif
