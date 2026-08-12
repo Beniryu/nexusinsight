@@ -1,10 +1,10 @@
 ---
 id: "02"
 titre: "Registre des routes EN↔FR + Layout enrichi (hreflang par paire, og:image, noindex, favicon)"
-statut: pending
+statut: passed
 tentatives: 0
 depends_on: []
-ears: [EARS-43, EARS-47, EARS-48]
+ears: [ EARS-43, EARS-47, EARS-48 ]
 ---
 
 ## Objectif
