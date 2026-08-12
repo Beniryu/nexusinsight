@@ -210,7 +210,7 @@ describe('CAP-5 — pages packages ×6 sur le gabarit commun', () => {
   it('EARS-24 : les 6 pages package existent et portent les 7 sections du gabarit', () => {
     for (const p of PAGES_PKG) {
       const html = lirePage(p);
-      for (const s of ['hero', 'deliverables', 'exclusions', 'prerequisites', 'faq', 'crosslink']) {
+      for (const s of ['hero', 'deliverables', 'timeline', 'exclusions', 'prerequisites', 'faq', 'crosslink']) {
         expect(html, `${p} sans section ${s}`).toContain(`data-section="${s}"`);
       }
     }
