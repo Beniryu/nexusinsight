@@ -606,7 +606,7 @@ export const site: Record<Locale, Copy> = {
         facts: [
           'Steering a data governance programme (Microsoft Purview) at TotalEnergies since 2023 — more than 80,000 users, around a hundred countries.',
           'Partner at The Node; product owner of Drift.',
-          'Built Rémunet — a personal project of the founder, not a NexusInsight service.',
+          'Builds and runs his own products end to end — scoped, shipped and operated the same way we work for clients.',
         ],
         link: { label: 'kaankarabulut.com', href: 'https://kaankarabulut.com' },
       },
@@ -1069,7 +1069,7 @@ export const site: Record<Locale, Copy> = {
         facts: [
           'Pilote un programme de data governance (Microsoft Purview) chez TotalEnergies depuis 2023 — plus de 80 000 utilisateurs, une centaine de pays.',
           'Associé chez The Node ; product owner de Drift.',
-          'A construit Rémunet — une réalisation personnelle du fondateur, pas un service NexusInsight.',
+          'Construit et opère ses propres produits de bout en bout — cadrés, livrés et maintenus comme nous travaillons pour nos clients.',
         ],
         link: { label: 'kaankarabulut.com', href: 'https://kaankarabulut.com' },
       },
