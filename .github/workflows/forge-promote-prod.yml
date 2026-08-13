@@ -69,6 +69,7 @@ jobs:
             --project "kaan-personal-system" \
             --region "europe-west1" \
             --service-account "run-nexusinsight-prod@kaan-personal-system.iam.gserviceaccount.com" \
+            --allow-unauthenticated \
             --min-instances 0 \
                \
             --labels "forge-env=prod,forge-project=nexusinsight" \
