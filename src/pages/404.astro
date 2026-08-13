@@ -1,0 +1,67 @@
+---
+// 404 unique pour tout le site (nginx sert dist/404.html) — style E3 plein graphite,
+// hors registre des routes (pas de canonical/hreflang), liens de reprise EN + FR (EARS-49/50).
+import '../styles/fonts.css';
+import '../styles/tokens.css';
+import { site } from '../content/site';
+
+const en = site.en.pages.notFound;
+const fr = site.fr.pages.notFound;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{en.meta.title}</title>
+    <meta name="description" content={en.meta.description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <main class="wrap">
+      <span class="code">404</span>
+      <h1>{en.title}</h1>
+      <p class="lead">{en.text}</p>
+      <p class="lead" lang="fr">{fr.text}</p>
+      <nav class="links">
+        <a class="go" href={en.links.en.href}>{en.links.en.label} →</a>
+        <a class="go" lang="fr" href={en.links.fr.href}>{en.links.fr.label} →</a>
+      </nav>
+    </main>
+  </body>
+</html>
+
+<style>
+  body {
+    background: var(--nxi-graphite);
+    color: var(--nxi-fg);
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+  }
+  .wrap { max-width: 560px; padding: 48px var(--nxi-gutter); }
+  .code {
+    font: 500 var(--nxi-meta) var(--nxi-mono);
+    letter-spacing: var(--nxi-track-label);
+    text-transform: uppercase;
+    color: var(--nxi-copper);
+  }
+  h1 {
+    font: 600 var(--nxi-hero) var(--nxi-display);
+    line-height: 1.08;
+    letter-spacing: var(--nxi-track-display);
+    margin-top: 14px;
+  }
+  .lead { margin-top: 14px; color: var(--nxi-muted-d); }
+  .links { margin-top: 30px; display: grid; gap: 10px; }
+  .go {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--nxi-copper);
+    text-decoration: none;
+  }
+  @media (max-width: 900px) {
+    .wrap { padding: 40px 20px; }
+  }
+</style>

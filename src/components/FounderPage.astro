@@ -1,0 +1,73 @@
+---
+// Gabarit de la page fondateur — honnêteté structurelle, faits autorisés (BRAND.md), lien perso.
+// Aucune image de portrait : géométrie seulement (EARS-34/35/36/37).
+import Layout from '../layouts/Layout.astro';
+import CtaBand from './CtaBand.astro';
+import type { Locale, FounderPage } from '../content/site';
+
+interface Props {
+  locale: Locale;
+  /** Chemin canonique — doit exister dans src/content/routes.ts. */
+  path: string;
+  page: FounderPage;
+}
+
+const { locale, path, page } = Astro.props;
+---
+
+<Layout locale={locale} title={page.meta.title} description={page.meta.description} path={path}>
+  <main>
+    <section class="hero" data-section="hero">
+      <span class="kicker">{page.hero.kicker}</span>
+      <h1>{page.hero.title}</h1>
+      <p class="lead">{page.hero.lead}</p>
+    </section>
+
+    <section class="block" data-section="structure">
+      <h2>{page.structure.title}</h2>
+      <p class="body">{page.structure.text}</p>
+    </section>
+
+    <section class="block" data-section="facts">
+      <h2 class="label">{page.factsTitle}</h2>
+      <ul class="plain">
+        {page.facts.map((f) => <li>{f}</li>)}
+      </ul>
+      <a class="go" href={page.link.href}>{page.link.label} →</a>
+    </section>
+
+    <CtaBand locale={locale} />
+  </main>
+</Layout>
+
+<style>
+  .hero {
+    max-width: var(--nxi-page-max);
+    margin: 0 auto;
+    padding: 88px var(--nxi-gutter) 56px;
+  }
+  .kicker { font: 500 var(--nxi-meta) var(--nxi-mono); letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+  h1 { font: 600 var(--nxi-hero) var(--nxi-display); line-height: 1.08;
+    letter-spacing: var(--nxi-track-display); max-width: 20ch; margin-top: 16px; }
+  .lead { margin-top: 18px; color: var(--nxi-muted-l); max-width: 62ch; }
+
+  .block { max-width: var(--nxi-page-max); margin: 0 auto; padding: 48px var(--nxi-gutter); }
+  h2 { font: 600 26px var(--nxi-display); letter-spacing: var(--nxi-track-display); }
+  .label { font: 500 12.5px var(--nxi-mono); letter-spacing: var(--nxi-track-label);
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+  .body { margin-top: 14px; color: var(--nxi-muted-l); max-width: 68ch; }
+
+  .plain { margin-top: 20px; list-style: none; display: grid; gap: 10px; max-width: 72ch; }
+  .plain li { padding-left: 18px; position: relative; font-size: var(--nxi-desc);
+    line-height: 1.55; color: var(--nxi-muted-l); }
+  .plain li::before { content: '—'; position: absolute; left: 0; color: var(--nxi-copper-deep); }
+
+  .go { display: inline-block; margin-top: 20px; font-weight: 600; font-size: 14px;
+    color: var(--nxi-copper-deep); text-decoration: none; }
+
+  @media (max-width: 900px) {
+    .hero { padding: 40px 20px 32px; }
+    .block { padding: 36px 20px; }
+  }
+</style>

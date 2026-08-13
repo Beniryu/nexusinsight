@@ -1,0 +1,62 @@
+---
+// Gabarit des mentions légales — bloc éditeur NexusEvo complet + nom commercial + hébergeur.
+// Le noindex vient du Layout via le flag du registre routes.ts (EARS-40/41/42).
+import Layout from '../layouts/Layout.astro';
+import type { Locale, LegalPage } from '../content/site';
+
+interface Props {
+  locale: Locale;
+  /** Chemin canonique — doit exister dans src/content/routes.ts. */
+  path: string;
+  page: LegalPage;
+}
+
+const { locale, path, page } = Astro.props;
+---
+
+<Layout locale={locale} title={page.meta.title} description={page.meta.description} path={path}>
+  <main>
+    <section class="hero" data-section="hero">
+      <h1>{page.title}</h1>
+      <p class="lead">{page.tradeName}</p>
+    </section>
+
+    <section class="block" data-section="publisher">
+      <h2 class="label">{page.publisherTitle}</h2>
+      <ul class="plain">
+        {page.publisher.map((line) => <li>{line}</li>)}
+      </ul>
+    </section>
+
+    <section class="block" data-section="host">
+      <h2 class="label">{page.hostTitle}</h2>
+      <p class="body">{page.host}</p>
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .hero {
+    max-width: var(--nxi-page-max);
+    margin: 0 auto;
+    padding: 88px var(--nxi-gutter) 40px;
+  }
+  h1 { font: 600 var(--nxi-hero) var(--nxi-display); line-height: 1.08;
+    letter-spacing: var(--nxi-track-display); }
+  .lead { margin-top: 18px; color: var(--nxi-muted-l); max-width: 62ch; }
+
+  .block { max-width: var(--nxi-page-max); margin: 0 auto; padding: 32px var(--nxi-gutter); }
+  .label { font: 500 12.5px var(--nxi-mono); letter-spacing: var(--nxi-track-label);
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+  .body { margin-top: 14px; color: var(--nxi-muted-l); max-width: 68ch; }
+
+  .plain { margin-top: 20px; list-style: none; display: grid; gap: 10px; max-width: 72ch; }
+  .plain li { padding-left: 18px; position: relative; font-size: var(--nxi-desc);
+    line-height: 1.55; color: var(--nxi-muted-l); }
+  .plain li::before { content: '—'; position: absolute; left: 0; color: var(--nxi-copper-deep); }
+
+  @media (max-width: 900px) {
+    .hero { padding: 40px 20px 24px; }
+    .block { padding: 24px 20px; }
+  }
+</style>

@@ -1,0 +1,62 @@
+---
+// Nav E3 — nom en toutes lettres (pas de logo), liens localisés, sélecteur EN/FR
+// vers la page équivalente via paire(path), CTA vers la page contact de la locale.
+import { site, type Locale } from '../content/site';
+import { paire } from '../content/routes';
+
+interface Props {
+  locale: Locale;
+  /** Chemin canonique de la page courante — doit exister dans src/content/routes.ts. */
+  path: string;
+}
+
+const { locale, path } = Astro.props;
+const t = site[locale].nav;
+const autre: Locale = locale === 'en' ? 'fr' : 'en';
+const r = paire(path);
+const home = locale === 'en' ? '/' : '/fr/';
+const offersHref = locale === 'en' ? '/#offers' : '/fr/#offres';
+---
+
+<nav data-component="nav">
+  <div class="inner">
+    <a class="brand" href={home}>NexusInsight</a>
+    <a class="link" href={offersHref}>{t.offers}</a>
+    <a class="link" href={paire('/method/')[locale]}>{t.method}</a>
+    <a class="link" href={paire('/founder/')[locale]}>{t.founder}</a>
+    <a class="switch" data-lang-switch href={r[autre]}>{autre.toUpperCase()}</a>
+    <a class="cta" data-cta="contact" href={paire('/contact/')[locale]}>{t.cta}</a>
+  </div>
+</nav>
+
+<style>
+  .inner {
+    max-width: var(--nxi-page-max);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 26px;
+    padding: 20px var(--nxi-gutter);
+  }
+  a { text-decoration: none; }
+  .brand { font: 600 var(--nxi-body-size) var(--nxi-display); color: var(--nxi-ink); }
+  .link { color: var(--nxi-muted-l); font-size: 13.5px; }
+  .switch {
+    font: 500 var(--nxi-meta) var(--nxi-mono);
+    letter-spacing: var(--nxi-track-label);
+    text-transform: uppercase;
+    color: var(--nxi-copper-deep);
+  }
+  .cta {
+    margin-left: auto;
+    background: var(--nxi-ink);
+    color: var(--nxi-white);
+    padding: 10px 18px;
+    border-radius: var(--nxi-r-btn);
+    font-weight: 600;
+    font-size: 13.5px;
+  }
+  @media (max-width: 900px) {
+    .inner { padding: 16px 20px; gap: 14px; flex-wrap: wrap; }
+  }
+</style>

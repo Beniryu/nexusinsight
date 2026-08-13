@@ -1,27 +1,100 @@
 ---
-// Accueil FR — pair idiomatique de la home EN. Scaffold minimal.
+// Accueil FR — miroir idiomatique de la home EN : mêmes 7 sections, contenu site.fr,
+// liens /fr/… et ancre #offres. Le markup et les styles restent symétriques de ../index.astro.
 import Layout from '../../layouts/Layout.astro';
 import { site } from '../../content/site';
+import { paire } from '../../content/routes';
+import FactCard from '../../components/FactCard.astro';
+import OfferCard from '../../components/OfferCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
 
 const t = site.fr;
+// Clés techniques des 4 audiences (contrat de testabilité data-audience, invariant par locale).
+const audienceKeys = ['startup', 'smb', 'enterprise', 'us'];
 ---
 
-<Layout locale="fr" title={t.meta.title} description={t.meta.description} path="/fr/" altPath="/">
-  <main class="hero">
-    <div>
-      <span class="kicker">{t.hero.kicker}</span>
-      <h1>{t.hero.title}</h1>
-      <p class="lead">{t.hero.lead}</p>
-      <div class="ctas">
-        <a class="btn primary" href="mailto:kaan@nexusinsight.io">{t.hero.ctaPrimary}</a>
-        <a class="btn ghost" href="#offres">{t.hero.ctaSecondary}</a>
+<Layout locale="fr" title={t.meta.title} description={t.meta.description} path="/fr/">
+  <main>
+    <section class="hero" data-section="hero">
+      <div>
+        <span class="kicker">{t.hero.kicker}</span>
+        <h1>{t.hero.title}</h1>
+        <p class="lead">{t.hero.lead}</p>
+        <div class="ctas">
+          <a class="btn primary" data-cta="contact" href={paire('/contact/').fr}>{t.hero.ctaPrimary}</a>
+          <a class="btn ghost" href="#offres">{t.hero.ctaSecondary}</a>
+        </div>
       </div>
+      <FactCard rows={t.home.heroFacts} />
+    </section>
+
+    <section class="block" id="offres" data-section="offers">
+      <h2 class="label">{t.home.packagesTitle}</h2>
+      <div class="cards">
+        {t.home.packages.map((p) => <OfferCard {...p} linkLabel="Détails →" />)}
+      </div>
+    </section>
+
+    <section class="block" data-section="mechanism">
+      <h2 class="label">{t.home.mechanism.title}</h2>
+      <ol class="steps">
+        {t.home.mechanism.steps.map((text, i) => (
+          <li>
+            <span class="num">{`0${i + 1}`}</span>
+            <h3>{t.home.mechanism.stepTitles[i]}</h3>
+            <p>{text}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="punchline">{t.home.mechanism.punchline}</p>
+    </section>
+
+    <section class="block" data-section="proof">
+      <h2 class="label">{t.home.proof.title}</h2>
+      <p class="proof-text">{t.home.proof.text}</p>
+      <a class="go" href={t.home.proof.link.href}>{t.home.proof.link.label} →</a>
+    </section>
+
+    <section class="block" data-section="audiences">
+      <h2 class="label">{t.home.audiencesTitle}</h2>
+      <div class="audiences">
+        {t.home.audiences.map((a, i) => (
+          <a class="aud" data-audience={audienceKeys[i]} href={a.href}>
+            <h3>{a.label}</h3>
+            <p>{a.text}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="block" data-section="faq">
+      <h2 class="label">{t.home.faqTitle}</h2>
+      <div class="faq">
+        {t.home.faq.map((f) => (
+          <details data-faq-item>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <div data-section="cta-band">
+      <CtaBand locale="fr" />
     </div>
   </main>
 </Layout>
 
 <style>
-  .hero { max-width: var(--nxi-page-max); margin: 0 auto; padding: 96px var(--nxi-gutter); }
+  .hero {
+    max-width: var(--nxi-page-max);
+    margin: 0 auto;
+    padding: 96px var(--nxi-gutter) 72px;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
   .kicker { font: 500 var(--nxi-meta) var(--nxi-mono); letter-spacing: 0.16em;
     text-transform: uppercase; color: var(--nxi-copper-deep); }
   h1 { font: 600 var(--nxi-hero) var(--nxi-display); line-height: 1.08;
@@ -32,4 +105,50 @@ const t = site.fr;
     font-weight: 600; font-size: 14px; }
   .primary { background: var(--nxi-ink); color: var(--nxi-white); }
   .ghost { border: 1.5px solid var(--nxi-line-light); color: var(--nxi-ink); }
+
+  .block { max-width: var(--nxi-page-max); margin: 0 auto; padding: 56px var(--nxi-gutter); }
+  .label { font: 500 12.5px var(--nxi-mono); letter-spacing: var(--nxi-track-label);
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+
+  .cards { margin-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: var(--nxi-card-gap); }
+
+  .steps { margin-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 32px; list-style: none; }
+  .num { font: 500 var(--nxi-tag) var(--nxi-mono); letter-spacing: 0.13em;
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+  .steps h3 { font: 600 var(--nxi-h3) var(--nxi-display);
+    letter-spacing: var(--nxi-track-display); margin-top: 8px; }
+  .steps p { margin-top: 8px; font-size: var(--nxi-desc); line-height: 1.55;
+    color: var(--nxi-muted-l); }
+  .punchline { margin-top: 32px; font: 500 22px var(--nxi-display);
+    letter-spacing: var(--nxi-track-display); }
+
+  .proof-text { margin-top: 18px; max-width: 62ch; }
+  .go { display: inline-block; margin-top: 14px; font-weight: 600; font-size: 14px;
+    color: var(--nxi-copper-deep); text-decoration: none; }
+
+  .audiences { margin-top: 24px; display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: var(--nxi-card-gap); }
+  .aud { border: 1px solid var(--nxi-line-light); border-radius: var(--nxi-r-card);
+    padding: 22px 20px; text-decoration: none; color: var(--nxi-ink); }
+  .aud:hover { border-color: var(--nxi-copper); }
+  .aud h3 { font: 600 var(--nxi-h3) var(--nxi-display);
+    letter-spacing: var(--nxi-track-display); }
+  .aud p { margin-top: 8px; font-size: var(--nxi-desc); line-height: 1.55;
+    color: var(--nxi-muted-l); }
+
+  .faq { margin-top: 16px; max-width: 72ch; }
+  .faq details { border-bottom: 1px solid var(--nxi-line-light); padding: 14px 0; }
+  .faq summary { font-weight: 600; cursor: pointer; }
+  .faq details p { margin-top: 10px; color: var(--nxi-muted-l); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding: 32px 20px; }
+    .block { padding: 40px 20px; }
+    .cards, .steps, .audiences { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .aud { transition: border-color var(--nxi-dur) var(--nxi-ease); }
+  }
 </style>
