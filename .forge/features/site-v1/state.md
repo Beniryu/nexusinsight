@@ -6,11 +6,11 @@ route: full # quick | full  (state.md n'existe que pour `full`)
 branche: forge/site-v1
 worktree: .worktrees/forge/site-v1
 base_sha: d9855b66d184c6370fc5c4f3d6ee5a312d3574a8 # sha de main au moment du /forge:new
-statut: awaiting_promotion # draft | in_progress | awaiting_promotion | promoted | failed | abandoned
+statut: promoted # draft | in_progress | awaiting_promotion | promoted | failed | abandoned
 etape_courante: report
 failure_reason: null # null | step_failed_3x | timeout | external_budget | aborted_by_user | artefact_invalide
 cree_le: 2026-08-12T02:51:48+02:00
-mis_a_jour_le: 2026-08-12T04:31:29+02:00
+mis_a_jour_le: 2026-08-14T00:45:31+02:00
 etapes:
   # statuts : pending | running | passed | failed | skipped
   pitch: { statut: passed }
@@ -35,7 +35,7 @@ budget_externe:
 tokens_usd_info: 68.2879 # informatif, JAMAIS un garde-fou (aucun arret sur ce champ)
 promotion:
   commande: "forge promote site-v1"
-  executee_le: null
+  executee_le: 2026-08-14T00:45:31+02:00
 ---
 ## Journal
 - 2026-08-12T02:51:48+02:00 — creation de la feature (route full, branche forge/site-v1)
@@ -66,3 +66,4 @@ promotion:
 - 2026-08-12T04:31:29+02:00 — report passed (run 1) — report.md assemblé et validé (validate-artifacts ✅) : ready_for_promotion, 45/45 tests, 50/55 EARS auto verts + 5 manuels listés, 4 no-gos pass, diff 75 fichiers +4611/-34, coûts externes 0 USD, cible Cloud Run test + commande gh workflow tracées, promotion via `forge promote site-v1`.
 - 2026-08-12T04:31:29+02:00 — pipeline termine : pret pour « forge promote site-v1 »
 - 2026-08-14T00:30:36+02:00 — deploy_test rejoue apres retrait Remunet : run 31750031518, digest sha256:e1ab1253… — report.md et state.md realignes
+- 2026-08-14T00:45:31+02:00 — promotion executee en prod (run 31751188488, digest sha256:e1ab12531766f1f7a59457ad95984f045c6796f80e519194ed180fc08fd45b05)
