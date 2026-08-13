@@ -10,7 +10,7 @@ statut: promoted # draft | in_progress | awaiting_promotion | promoted | failed 
 etape_courante: report
 failure_reason: null # null | step_failed_3x | timeout | external_budget | aborted_by_user | artefact_invalide
 cree_le: 2026-08-12T02:51:48+02:00
-mis_a_jour_le: 2026-08-14T00:45:31+02:00
+mis_a_jour_le: 2026-08-14T01:14:10+02:00
 etapes:
   # statuts : pending | running | passed | failed | skipped
   pitch: { statut: passed }
@@ -23,7 +23,7 @@ etapes:
   test_fix: { statut: pending, tentatives: 0 }
   deploy_test: { statut: passed, tentatives: 0, cibles: [ { type: cloud-run, artefact: europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@sha256:e1ab12531766f1f7a59457ad95984f045c6796f80e519194ed180fc08fd45b05, acces_test: https://nexusinsight-test-d6kia6goga-ew.a.run.app, run_id: "31750031518" } ] } # cibles : [{type, artefact, acces_test, run_id}]
   report: { statut: passed, tentatives: 0 }
-  archive: { statut: pending }
+  archive: { statut: passed }
 caps:
   tentatives_max: 3 # depasse => etape failed + statut failed (failure_reason: step_failed_3x)
   max_heures_total: 24
@@ -67,3 +67,4 @@ promotion:
 - 2026-08-12T04:31:29+02:00 — pipeline termine : pret pour « forge promote site-v1 »
 - 2026-08-14T00:30:36+02:00 — deploy_test rejoue apres retrait Remunet : run 31750031518, digest sha256:e1ab1253… — report.md et state.md realignes
 - 2026-08-14T00:45:31+02:00 — promotion executee en prod (run 31751188488, digest sha256:e1ab12531766f1f7a59457ad95984f045c6796f80e519194ed180fc08fd45b05)
+- 2026-08-14T01:14:10+02:00 — archive passed (fusion product.md, merge --no-ff dans main, worktree/branche supprimes)
