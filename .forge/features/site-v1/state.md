@@ -21,7 +21,7 @@ etapes:
   fix: { statut: passed, tentatives: 0 }
   verify: { statut: passed, tentatives: 0 }
   test_fix: { statut: pending, tentatives: 0 }
-  deploy_test: { statut: passed, tentatives: 0, cibles: [ { type: cloud-run, artefact: europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@sha256:c4685f21745f0cb9a9d8c4a74c04b3565204c90a1544257f6cb9f846f25dee97, acces_test: https://nexusinsight-test-d6kia6goga-ew.a.run.app, run_id: "31556917649" } ] } # cibles : [{type, artefact, acces_test, run_id}]
+  deploy_test: { statut: passed, tentatives: 0, cibles: [ { type: cloud-run, artefact: europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@sha256:e1ab12531766f1f7a59457ad95984f045c6796f80e519194ed180fc08fd45b05, acces_test: https://nexusinsight-test-d6kia6goga-ew.a.run.app, run_id: "31750031518" } ] } # cibles : [{type, artefact, acces_test, run_id}]
   report: { statut: passed, tentatives: 0 }
   archive: { statut: pending }
 caps:
@@ -65,3 +65,4 @@ promotion:
 - 2026-08-12T04:29:19+02:00 — deploy_test passed (run 1) — 1 cible(s) deployee(s) en test
 - 2026-08-12T04:31:29+02:00 — report passed (run 1) — report.md assemblé et validé (validate-artifacts ✅) : ready_for_promotion, 45/45 tests, 50/55 EARS auto verts + 5 manuels listés, 4 no-gos pass, diff 75 fichiers +4611/-34, coûts externes 0 USD, cible Cloud Run test + commande gh workflow tracées, promotion via `forge promote site-v1`.
 - 2026-08-12T04:31:29+02:00 — pipeline termine : pret pour « forge promote site-v1 »
+- 2026-08-14T00:30:36+02:00 — deploy_test rejoue apres retrait Remunet : run 31750031518, digest sha256:e1ab1253… — report.md et state.md realignes

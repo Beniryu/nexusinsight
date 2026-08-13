@@ -3,13 +3,13 @@ feature: site-v1
 statut: ready_for_promotion
 branche: forge/site-v1
 base_sha: d9855b66d184c6370fc5c4f3d6ee5a312d3574a8
-head_sha: dd00cfc36c748e8f91a77dfda09f05087b7f9497
+head_sha: ec4df941e12cc25c30d10a09f3f632e6a91b53c9
 cibles:
   - type: cloud-run
-    artefact: "europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@sha256:c4685f21745f0cb9a9d8c4a74c04b3565204c90a1544257f6cb9f846f25dee97"
+    artefact: "europe-west1-docker.pkg.dev/kaan-personal-system/forge/nexusinsight@sha256:e1ab12531766f1f7a59457ad95984f045c6796f80e519194ed180fc08fd45b05"
     acces_test: "https://nexusinsight-test-d6kia6goga-ew.a.run.app"
-    run_id: "31556917649"
-    commande_promotion: "gh workflow run forge-promote-prod.yml -R Beniryu/nexusinsight -f digest=sha256:c4685f21745f0cb9a9d8c4a74c04b3565204c90a1544257f6cb9f846f25dee97 -f confirm=nexusinsight"
+    run_id: "31750031518"
+    commande_promotion: "gh workflow run forge-promote-prod.yml -R Beniryu/nexusinsight -f digest=sha256:e1ab12531766f1f7a59457ad95984f045c6796f80e519194ed180fc08fd45b05 -f confirm=nexusinsight"
 tests:
   total: 45
   pass: 45
