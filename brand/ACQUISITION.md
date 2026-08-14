@@ -1,6 +1,7 @@
 # Plan d'acquisition — NexusInsight
 
 > Créé le 2026-08-14. Exécution via `hub-distribution/` (sujet à créer), mesure UTM → Umami.
+> Canaux d'exposition détaillés (recherche terrain FR/US/UK du 2026-08-14) : voir `CHANNELS.md`.
 > Contraintes de départ assumées : mission CAC40 en journée (quelques heures/semaine), zéro réseau US,
 > zéro case study, marque neuve (SEO = investissement long). Atouts : marque perso FR qui performe
 > (LinkedIn 155 k impressions), preuves CAC40 + produits livrés en propre, site productisé avec prix
