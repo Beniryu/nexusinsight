@@ -13,6 +13,7 @@ export const routes: RoutePair[] = [
   { en: '/method/', fr: '/fr/methode/' },
   { en: '/founder/', fr: '/fr/fondateur/' },
   { en: '/contact/', fr: '/fr/contact/' },
+  { en: '/mvp-cost/', fr: '/fr/cout-mvp/' },
   { en: '/legal/', fr: '/fr/mentions-legales/', noindex: true },
 ];
 

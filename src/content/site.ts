@@ -152,6 +152,27 @@ export interface LegalPage {
   host: string;
 }
 
+interface CostRow {
+  option: string;
+  range: string;
+  tradeoff: string;
+  /** Ligne « nous » — mise en évidence discrète dans le tableau. */
+  us?: boolean;
+}
+
+export interface MvpCostPage {
+  meta: Meta;
+  hero: { kicker: string; title: string; lead: string };
+  tableTitle: string;
+  tableHead: { option: string; range: string; tradeoff: string };
+  rows: CostRow[];
+  factors: TitledText & { items: string[] };
+  explode: TitledText;
+  position: TitledText & { ctaSprint: string; ctaBuild: string };
+  faqTitle: string;
+  faq: FaqItem[];
+}
+
 interface NotFoundPage {
   meta: Meta;
   title: string;
@@ -190,6 +211,7 @@ export interface Copy {
     founder: FounderPage;
     contact: ContactPage;
     legal: LegalPage;
+    mvpCost: MvpCostPage;
     notFound: NotFoundPage;
   };
 }
@@ -643,6 +665,92 @@ export const site: Record<Locale, Copy> = {
         ],
         hostTitle: 'Hosting',
         host: 'Google Cloud — Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland',
+      },
+      mvpCost: {
+        meta: {
+          title: 'How much does an MVP cost in 2026? — NexusInsight',
+          description:
+            'Between $5,000 and $150,000, depending on who builds it and how the scope is held. The honest breakdown by option — agencies, studios, freelancers, offshore, no-code — including where we sit.',
+        },
+        hero: {
+          kicker: 'Pricing, in the open',
+          title: 'How much does an MVP cost in 2026?',
+          lead: 'Between $5,000 and $150,000. The spread has less to do with code than with who builds it and whether the scope holds. Here is the honest breakdown, including where we sit.',
+        },
+        tableTitle: 'The realistic ranges, by option',
+        tableHead: { option: 'Who builds it', range: 'Typical range', tradeoff: 'The trade-off nobody prints' },
+        rows: [
+          {
+            option: 'US or UK agency',
+            range: '$80,000 – $150,000+',
+            tradeoff: 'A full team and real process — you pay for the layers between you and the people building.',
+          },
+          {
+            option: 'EU product studio (us)',
+            range: '$25,000 – $60,000',
+            tradeoff: 'Senior work at EU cost. Ours starts from $29,000, firm after an $11,000 scoping sprint.',
+            us: true,
+          },
+          {
+            option: 'Senior freelancer',
+            range: '$15,000 – $50,000',
+            tradeoff: 'The cheapest senior path — one person, one point of failure, and the scope discipline is on you.',
+          },
+          {
+            option: 'Offshore team',
+            range: '$10,000 – $30,000',
+            tradeoff: 'The rate looks low; the management time and rework usually eat the difference.',
+          },
+          {
+            option: 'No-code build',
+            range: '$5,000 – $15,000',
+            tradeoff: 'Fast to validate an idea. The ceiling and the lock-in show up with traction.',
+          },
+        ],
+        factors: {
+          title: 'What actually moves the number',
+          text: 'Feature lists don\'t price a product — flows do. The same five questions drive most of the spread:',
+          items: [
+            'How many user-facing flows (a marketplace is not a landing page with a form)',
+            'Auth, payments and third-party integrations — each one is real surface area',
+            'Platforms: web only, or iOS too',
+            'Admin and back-office, the part everyone forgets to scope',
+            'Compliance and data constraints (EU hosting, GDPR, retention)',
+          ],
+        },
+        explode: {
+          title: 'What makes budgets explode',
+          text: 'Not the daily rate — the unfrozen scope. Specs that grow mid-build without repricing are how a $40,000 project quietly becomes an $80,000 one. It is the reason we freeze scope in writing before the build and quote any change as a 48-hour amendment: brutal on both sides, and the reason the number holds.',
+        },
+        position: {
+          title: 'Where we sit, in plain terms',
+          text: 'We are not the cheapest option on this page. Our Build starts from $29,000 and the number does not move once the Sprint has frozen the scope — that is the deal. If the ranges above are the market, our bet is simple: senior work, prices on the page, no surprise in month two.',
+          ctaSprint: 'See the Discovery Sprint ($11,000, fixed)',
+          ctaBuild: 'See the end-to-end Build (from $29,000)',
+        },
+        faqTitle: 'Frequent questions',
+        faq: [
+          {
+            q: 'Can I get an MVP for under $10,000?',
+            a: 'Yes — with no-code tools and a genuinely narrow scope, or a junior freelancer. You trade robustness, ownership of the code and room to grow. For validating demand before investing, it can be exactly the right call.',
+          },
+          {
+            q: 'Why do agencies quote $100,000+ for the same product?',
+            a: 'You are not only paying developers: you fund account managers, project managers, QA layers and the agency\'s own margin structure. That is not a scam — it is a different cost structure, built for clients who need a large team and formal process.',
+          },
+          {
+            q: 'Fixed price or time & materials?',
+            a: 'Time & materials moves the risk to you: the meter runs regardless of outcome. A fixed price only works when the scope is frozen in writing first — which is exactly what a paid scoping sprint is for.',
+          },
+          {
+            q: 'How long does an MVP take?',
+            a: 'With a frozen scope, 6 to 10 weeks is a realistic build window, with a demo every two weeks. Add 3 weeks upfront for the scoping sprint.',
+          },
+          {
+            q: 'What if my scope changes mid-build?',
+            a: 'Changes go through a written amendment quoted within 48 hours — accepted, it shifts the plan; declined, it goes to the post-V1 backlog. No grey zone, in both directions.',
+          },
+        ],
       },
       notFound: {
         meta: {
@@ -1106,6 +1214,92 @@ export const site: Record<Locale, Copy> = {
         ],
         hostTitle: 'Hébergeur',
         host: 'Google Cloud — Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irlande',
+      },
+      mvpCost: {
+        meta: {
+          title: 'Combien coûte un MVP en 2026 ? — NexusInsight',
+          description:
+            'Entre 5 000 € et 130 000 €, selon qui le construit et si le périmètre tient. La décomposition honnête par option — agences, studios, freelances, offshore, no-code — avec notre position.',
+        },
+        hero: {
+          kicker: 'Les prix, à découvert',
+          title: 'Combien coûte un MVP en 2026 ?',
+          lead: 'Entre 5 000 € et 130 000 €. L\'écart tient moins au code qu\'à qui construit — et à la tenue du périmètre. Voici la décomposition honnête, avec notre position dedans.',
+        },
+        tableTitle: 'Les fourchettes réalistes, par option',
+        tableHead: { option: 'Qui construit', range: 'Fourchette typique', tradeoff: 'Le compromis qu\'on n\'imprime jamais' },
+        rows: [
+          {
+            option: 'Agence (FR/UK/US)',
+            range: '60 000 € – 130 000 €+',
+            tradeoff: 'Une vraie équipe et un vrai process — on paie les étages entre soi et les gens qui construisent.',
+          },
+          {
+            option: 'Studio produit européen (nous)',
+            range: '25 000 € – 55 000 €',
+            tradeoff: 'Du travail senior au coût européen. Chez nous : à partir de 25 000 €, prix ferme après un sprint de cadrage à 9 500 €.',
+            us: true,
+          },
+          {
+            option: 'Freelance senior',
+            range: '12 000 € – 45 000 €',
+            tradeoff: 'Le chemin senior le moins cher — une personne, un point de défaillance unique, et la discipline de périmètre repose sur vous.',
+          },
+          {
+            option: 'Équipe offshore',
+            range: '8 000 € – 25 000 €',
+            tradeoff: 'Le tarif paraît bas ; le temps de pilotage et les reprises mangent souvent la différence.',
+          },
+          {
+            option: 'Build no-code',
+            range: '5 000 € – 12 000 €',
+            tradeoff: 'Rapide pour valider une idée. Le plafond et la dépendance à l\'outil apparaissent avec la traction.',
+          },
+        ],
+        factors: {
+          title: 'Ce qui fait vraiment bouger le chiffre',
+          text: 'Une liste de features ne price pas un produit — les parcours, si. Les mêmes cinq questions expliquent l\'essentiel de l\'écart :',
+          items: [
+            'Le nombre de parcours utilisateur (une marketplace n\'est pas une landing avec un formulaire)',
+            'Auth, paiements, intégrations tierces — chacune est une vraie surface de travail',
+            'Les plateformes : web seul, ou iOS aussi',
+            'L\'admin et le back-office, la partie que tout le monde oublie de cadrer',
+            'Conformité et contraintes de données (hébergement UE, RGPD, rétention)',
+          ],
+        },
+        explode: {
+          title: 'Ce qui fait exploser les budgets',
+          text: 'Pas le taux journalier — le périmètre non gelé. Des specs qui grossissent en cours de build sans re-chiffrage : c\'est comme ça qu\'un projet à 35 000 € devient discrètement un projet à 70 000 €. C\'est la raison pour laquelle nous gelons le périmètre par écrit avant le build et chiffrons tout changement en avenant sous 48 h : brutal des deux côtés, et c\'est ce qui fait tenir le chiffre.',
+        },
+        position: {
+          title: 'Notre position, sans détour',
+          text: 'Nous ne sommes pas l\'option la moins chère de cette page. Notre Build démarre à 25 000 € et le chiffre ne bouge plus une fois le périmètre gelé par le Sprint — c\'est le contrat. Si les fourchettes ci-dessus sont le marché, notre pari est simple : du travail senior, les prix affichés, zéro surprise au deuxième mois.',
+          ctaSprint: 'Voir le Discovery Sprint (9 500 €, prix fixe)',
+          ctaBuild: 'Voir le Build bout en bout (à partir de 25 000 €)',
+        },
+        faqTitle: 'Questions fréquentes',
+        faq: [
+          {
+            q: 'Peut-on avoir un MVP à moins de 10 000 € ?',
+            a: 'Oui — avec du no-code et un périmètre vraiment étroit, ou un freelance junior. On y échange la robustesse, la propriété du code et la marge de croissance. Pour valider une demande avant d\'investir, c\'est parfois exactement le bon choix.',
+          },
+          {
+            q: 'Pourquoi les agences chiffrent-elles 100 000 €+ pour le même produit ?',
+            a: 'On n\'y paie pas que des développeurs : on finance les account managers, les chefs de projet, les couches de QA et la structure de marge de l\'agence. Ce n\'est pas une arnaque — c\'est une autre structure de coûts, faite pour des clients qui ont besoin d\'une grande équipe et d\'un process formel.',
+          },
+          {
+            q: 'Prix fixe ou régie ?',
+            a: 'La régie déplace le risque vers vous : le compteur tourne quel que soit le résultat. Un prix fixe ne fonctionne que si le périmètre est d\'abord gelé par écrit — c\'est exactement à ça que sert un sprint de cadrage payant.',
+          },
+          {
+            q: 'Combien de temps prend un MVP ?',
+            a: 'Avec un périmètre gelé, 6 à 10 semaines de build sont réalistes, avec une démo toutes les deux semaines. Ajoutez 3 semaines en amont pour le sprint de cadrage.',
+          },
+          {
+            q: 'Et si mon périmètre change en cours de build ?',
+            a: 'Tout changement passe par un avenant écrit chiffré sous 48 h — accepté, il décale le plan ; refusé, il va au backlog post-V1. Pas de zone grise, dans les deux sens.',
+          },
+        ],
       },
       notFound: {
         meta: {

@@ -1,0 +1,152 @@
+---
+// Gabarit de la page « Combien coûte un MVP » (EN/FR) — page SEO d'intention.
+// Contrat de testabilité : data-section="hero|cost-table|factors|explode|position|faq",
+// data-cost-row par ligne du tableau, data-faq-item par question.
+import Layout from '../layouts/Layout.astro';
+import CtaBand from './CtaBand.astro';
+import { paire } from '../content/routes';
+import type { Locale, MvpCostPage } from '../content/site';
+
+interface Props {
+  locale: Locale;
+  path: string;
+  page: MvpCostPage;
+}
+
+const { locale, path, page } = Astro.props;
+
+// FAQPage schema.org — construit depuis la même source que le rendu (jamais dupliqué à la main).
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: page.faq.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Layout
+  locale={locale}
+  title={page.meta.title}
+  description={page.meta.description}
+  path={path}
+  jsonLd={[faqLd]}
+>
+  <main>
+    <section class="hero" data-section="hero">
+      <span class="kicker">{page.hero.kicker}</span>
+      <h1>{page.hero.title}</h1>
+      <p class="lead">{page.hero.lead}</p>
+    </section>
+
+    <section class="block" data-section="cost-table">
+      <h2 class="label">{page.tableTitle}</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>{page.tableHead.option}</th>
+              <th>{page.tableHead.range}</th>
+              <th>{page.tableHead.tradeoff}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {page.rows.map((r) => (
+              <tr data-cost-row class={r.us ? 'us' : undefined}>
+                <td class="opt">{r.option}</td>
+                <td class="range">{r.range}</td>
+                <td class="trade">{r.tradeoff}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="block" data-section="factors">
+      <h2 class="label">{page.factors.title}</h2>
+      <p class="text">{page.factors.text}</p>
+      <ul class="factors">
+        {page.factors.items.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+
+    <section class="block" data-section="explode">
+      <h2 class="label">{page.explode.title}</h2>
+      <p class="text emph">{page.explode.text}</p>
+    </section>
+
+    <section class="block" data-section="position">
+      <h2 class="label">{page.position.title}</h2>
+      <p class="text">{page.position.text}</p>
+      <div class="ctas">
+        <a class="go" href={paire('/sprint/')[locale]}>{page.position.ctaSprint} →</a>
+        <a class="go" href={paire('/build/')[locale]}>{page.position.ctaBuild} →</a>
+      </div>
+    </section>
+
+    <section class="block" data-section="faq">
+      <h2 class="label">{page.faqTitle}</h2>
+      <div class="faq">
+        {page.faq.map((f) => (
+          <details data-faq-item>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <div data-section="cta-band">
+      <CtaBand locale={locale} />
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .hero { max-width: var(--nxi-page-max); margin: 0 auto; padding: 96px var(--nxi-gutter) 40px; }
+  .kicker { font: 500 var(--nxi-meta) var(--nxi-mono); letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+  h1 { font: 600 var(--nxi-hero) var(--nxi-display); line-height: 1.08;
+    letter-spacing: var(--nxi-track-display); max-width: 20ch; margin-top: 16px; }
+  .lead { margin-top: 18px; color: var(--nxi-muted-l); max-width: 58ch; }
+
+  .block { max-width: var(--nxi-page-max); margin: 0 auto; padding: 40px var(--nxi-gutter); }
+  .label { font: 500 12.5px var(--nxi-mono); letter-spacing: var(--nxi-track-label);
+    text-transform: uppercase; color: var(--nxi-copper-deep); }
+  .text { margin-top: 16px; max-width: 62ch; line-height: 1.6; }
+  .emph { font-weight: 500; }
+
+  .table-wrap { margin-top: 20px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: var(--nxi-desc); }
+  th { text-align: left; font: 500 var(--nxi-tag) var(--nxi-mono); letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--nxi-muted-l); padding: 10px 14px;
+    border-bottom: 1.5px solid var(--nxi-ink); }
+  td { padding: 14px; border-bottom: 1px solid var(--nxi-line-light); vertical-align: top;
+    line-height: 1.5; }
+  .opt { font-weight: 600; white-space: nowrap; }
+  .range { font: 600 15px var(--nxi-display); white-space: nowrap; }
+  .trade { color: var(--nxi-muted-l); }
+  tr.us td { background: var(--nxi-graphite); color: var(--nxi-fg); }
+  tr.us .range { color: var(--nxi-copper); }
+  tr.us .trade { color: var(--nxi-muted-d); }
+
+  .factors { margin-top: 14px; max-width: 62ch; padding-left: 18px; line-height: 1.7;
+    color: var(--nxi-muted-l); }
+
+  .ctas { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .go { font-weight: 600; font-size: 14.5px; color: var(--nxi-copper-deep);
+    text-decoration: none; align-self: flex-start; }
+
+  .faq { margin-top: 16px; max-width: 72ch; }
+  .faq details { border-bottom: 1px solid var(--nxi-line-light); padding: 14px 0; }
+  .faq summary { font-weight: 600; cursor: pointer; }
+  .faq details p { margin-top: 10px; color: var(--nxi-muted-l); line-height: 1.6; }
+
+  @media (max-width: 900px) {
+    .hero { padding: 48px 20px 24px; }
+    .block { padding: 28px 20px; }
+  }
+</style>

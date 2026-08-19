@@ -305,7 +305,7 @@ describe('CAP-6/7/8/9 — pages secondaires (method, founder, contact, legal) + 
 });
 
 describe('CAP-10 — sitemap, OG, robots et hygiène réseau sur le build complet', () => {
-  it('EARS-44 : le sitemap liste exactement les 14 URLs indexables et exclut les légales', () => {
+  it('EARS-44 : le sitemap liste exactement les URLs indexables du registre et exclut les légales', () => {
     const fichiers = readdirSync('dist').filter((f) => f.startsWith('sitemap') && f.endsWith('.xml'));
     expect(fichiers.length, 'aucun fichier sitemap*.xml dans dist/').toBeGreaterThan(0);
     const contenu = fichiers.map((f) => readFileSync(join('dist', f), 'utf8')).join('');
@@ -320,7 +320,8 @@ describe('CAP-10 — sitemap, OG, robots et hygiène réseau sur le build comple
       .filter((r) => !r.noindex)
       .flatMap((r) => [SITE + r.en, SITE + r.fr])
       .sort();
-    expect(attendues).toHaveLength(14);
+    // Dérivé du registre (2 URLs par paire indexable) — 14 en v1, 16 depuis seo-pages (mvp-cost).
+    expect(attendues).toHaveLength((routes.length - routes.filter((r) => r.noindex).length) * 2);
     expect(locs).toEqual(attendues);
   });
 
@@ -417,5 +418,40 @@ describe('seo-head — Umami', () => {
       expect(html, f).toContain(`src="${UMAMI_SRC}"`);
       expect(html, f).toContain(`data-website-id="${UMAMI_WEBSITE_ID}"`);
     }
+  });
+});
+
+// ————— seo-pages (2026-08-19) : page « MVP cost » EN/FR —————
+describe('seo-pages — /mvp-cost/ et /fr/cout-mvp/', () => {
+  it('les deux pages existent avec leurs 6 sections et le tableau des fourchettes', () => {
+    for (const f of ['mvp-cost/index.html', 'fr/cout-mvp/index.html']) {
+      const html = lirePage(f);
+      for (const s of ['hero', 'cost-table', 'factors', 'explode', 'position', 'faq']) {
+        expect(html, `${f} : section ${s}`).toContain(`data-section="${s}"`);
+      }
+      expect((html.match(/data-cost-row/g) ?? []).length, `${f} : lignes du tableau`).toBe(5);
+      expect((html.match(/data-faq-item/g) ?? []).length, `${f} : items FAQ`).toBe(5);
+    }
+  });
+
+  it('FAQPage JSON-LD présent, aligné sur le rendu (5 questions)', () => {
+    for (const f of ['mvp-cost/index.html', 'fr/cout-mvp/index.html']) {
+      const faq = blocsLd(lirePage(f)).find((b: any) => b['@type'] === 'FAQPage') as any;
+      expect(faq, f).toBeDefined();
+      expect(faq.mainEntity).toHaveLength(5);
+    }
+  });
+
+  it('la position affiche nos prix exacts (devise de la locale) et lie vers sprint et build', () => {
+    const en = lirePage('mvp-cost/index.html');
+    expect(en).toContain('$29,000');
+    expect(en).toContain('$11,000');
+    expect(en).toMatch(/href="\/sprint\/"/);
+    expect(en).toMatch(/href="\/build\/"/);
+    const fr = lirePage('fr/cout-mvp/index.html');
+    expect(fr).toContain('25');
+    expect(fr).toContain('9');
+    expect(fr).toMatch(/href="\/fr\/sprint\/"/);
+    expect(fr).toMatch(/href="\/fr\/build\/"/);
   });
 });
