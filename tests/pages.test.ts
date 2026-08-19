@@ -123,6 +123,9 @@ describe('CAP-2 — nav, footer et sélecteur de langue sur le HTML buildé', ()
       );
       expect(footer).toContain('mailto:kaan@nexusinsight.io');
       expect(footer).toContain('https://kaankarabulut.com');
+      expect(footer, `${path} : lien guide MVP (page non orpheline)`).toContain(
+        `href="${paire('/mvp-cost/')[localeDe(path)]}"`,
+      );
       expect(footer, `${path} : libellé du site personnel du fondateur`).toMatch(
         localeDe(path) === 'en' ? /personal site/ : /personnel du fondateur/,
       );

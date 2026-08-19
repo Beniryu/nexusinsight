@@ -190,7 +190,7 @@ export interface Copy {
     ctaSecondary: string;
   };
   nav: { offers: string; method: string; founder: string; cta: string };
-  footer: { company: string; legal: string; contact: string; founderSite: string };
+  footer: { company: string; legal: string; contact: string; founderSite: string; guide: string };
   home: {
     heroFacts: HeroFact[];
     packagesTitle: string;
@@ -241,6 +241,7 @@ export const site: Record<Locale, Copy> = {
       legal: 'Legal notice',
       contact: 'kaan@nexusinsight.io',
       founderSite: "Founder's personal site",
+      guide: 'How much does an MVP cost?',
     },
     home: {
       heroFacts: [
@@ -790,6 +791,7 @@ export const site: Record<Locale, Copy> = {
       legal: 'Mentions légales',
       contact: 'kaan@nexusinsight.io',
       founderSite: 'Site personnel du fondateur',
+      guide: 'Combien coûte un MVP ?',
     },
     home: {
       heroFacts: [
