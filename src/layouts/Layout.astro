@@ -5,6 +5,7 @@ import '../styles/fonts.css';
 import '../styles/tokens.css';
 import type { Locale } from '../content/site';
 import { paire } from '../content/routes';
+import { organizationLd } from '../content/schema';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
@@ -14,11 +15,20 @@ interface Props {
   description: string;
   /** Chemin canonique de cette page — doit exister dans le registre src/content/routes.ts. */
   path: string;
+  /** Blocs JSON-LD additionnels (ex. Service des pages package). */
+  jsonLd?: object[];
 }
 
-const { locale, title, description, path } = Astro.props;
+const { locale, title, description, path, jsonLd = [] } = Astro.props;
 const site = 'https://nexusinsight.io';
 const r = paire(path);
+const ldBlocks = [organizationLd(), ...jsonLd];
+
+// Umami self-hosted (instance mutualisée kaan-personal-system) — seule requête externe autorisée
+// du site : amendement documenté du no-go NG-2 de site-v1 (2026-08-19, demande Kaan), whitelistée
+// dans tests/pages.test.ts (EARS-4).
+const UMAMI_SRC = 'https://umami-857615578903.europe-west1.run.app/script.js';
+const UMAMI_ID = '61a82e9d-79f0-4f61-bff9-e80dbbbfa395';
 ---
 
 <!doctype html>
@@ -39,6 +49,10 @@ const r = paire(path);
     <meta property="og:type" content="website" />
     <meta property="og:url" content={site + path} />
     <meta property="og:image" content={`${site}/og/og-${locale}.png`} />
+    {ldBlocks.map((block) => (
+      <script type="application/ld+json" set:html={JSON.stringify(block)} />
+    ))}
+    <script defer src={UMAMI_SRC} data-website-id={UMAMI_ID}></script>
   </head>
   <body>
     <Nav locale={locale} path={path} />

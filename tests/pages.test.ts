@@ -354,11 +354,68 @@ describe('CAP-10 — sitemap, OG, robots et hygiène réseau sur le build comple
       expect(html, f).not.toMatch(
         /fonts\.googleapis\.com|api\.fontshare\.com|cdn\.jsdelivr|unpkg\.com/,
       );
-      // Seul le propre domaine est toléré en URL absolue sur <script>/<link> (canonical, hreflang).
+      // Seul le propre domaine est toléré en URL absolue sur <script>/<link> (canonical, hreflang),
+      // plus l'unique exception documentée : Umami self-hosted (amendement NG-2 du 2026-08-19,
+      // instance mutualisée kaan-personal-system — pas un CDN tiers).
+      const UMAMI_ORIGIN = 'https://umami-857615578903.europe-west1.run.app';
       const externes = [...html.matchAll(/<(?:script|link)[^>]+(?:src|href)="(https?:\/\/[^"]+)"/g)]
         .map((m) => m[1])
-        .filter((u) => u !== SITE && !u.startsWith(`${SITE}/`));
+        .filter((u) => u !== SITE && !u.startsWith(`${SITE}/`) && !u.startsWith(`${UMAMI_ORIGIN}/`));
       expect(externes, `${f} : ressources externes`).toEqual([]);
+    }
+  });
+});
+
+// ————— seo-head (2026-08-19) : JSON-LD Organization/Service + Umami self-hosted —————
+const UMAMI_SRC = 'https://umami-857615578903.europe-west1.run.app/script.js';
+const UMAMI_WEBSITE_ID = '61a82e9d-79f0-4f61-bff9-e80dbbbfa395';
+
+function blocsLd(html: string): object[] {
+  return [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)].map((m) =>
+    JSON.parse(m[1]),
+  );
+}
+
+describe('seo-head — JSON-LD', () => {
+  it('Organization présent sur la home EN et FR (nom, legalName, founder)', () => {
+    for (const f of ['index.html', 'fr/index.html']) {
+      const org = blocsLd(lirePage(f)).find((b: any) => b['@type'] === 'Organization') as any;
+      expect(org, f).toBeDefined();
+      expect(org.name).toBe('NexusInsight');
+      expect(org.legalName).toBe('NexusEvo SARL');
+      expect(org.founder.name).toBe('Kaan Karabulut');
+    }
+  });
+
+  it('Service + prix numériques cohérents avec la devise de la locale sur les 6 pages package', () => {
+    const attendus: [string, number | undefined, number, string][] = [
+      ['sprint/index.html', 11000, 11000, 'USD'],
+      ['fr/sprint/index.html', 9500, 9500, 'EUR'],
+      ['build/index.html', undefined, 29000, 'USD'],
+      ['fr/build/index.html', undefined, 25000, 'EUR'],
+      ['delivery/index.html', undefined, 4500, 'USD'],
+      ['fr/delivery/index.html', undefined, 3900, 'EUR'],
+    ];
+    for (const [f, fixe, low, devise] of attendus) {
+      const svc = blocsLd(lirePage(f)).find((b: any) => b['@type'] === 'Service') as any;
+      expect(svc, f).toBeDefined();
+      expect(svc.provider.name).toBe('NexusInsight');
+      expect(svc.offers.priceCurrency, f).toBe(devise);
+      expect(fixe !== undefined ? svc.offers.price : svc.offers.lowPrice, f).toBe(low);
+    }
+  });
+
+  it("aucun Service hors pages package (la home n'en porte pas)", () => {
+    expect(blocsLd(lirePage('index.html')).some((b: any) => b['@type'] === 'Service')).toBe(false);
+  });
+});
+
+describe('seo-head — Umami', () => {
+  it('script Umami self-hosted + website-id sur home EN/FR et une page package', () => {
+    for (const f of ['index.html', 'fr/index.html', 'sprint/index.html']) {
+      const html = lirePage(f);
+      expect(html, f).toContain(`src="${UMAMI_SRC}"`);
+      expect(html, f).toContain(`data-website-id="${UMAMI_WEBSITE_ID}"`);
     }
   });
 });

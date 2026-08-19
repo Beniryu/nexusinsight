@@ -6,6 +6,7 @@
 // Ces attributs ne doivent jamais apparaître dans le CSS (les tests comptent leurs occurrences HTML).
 import Layout from '../layouts/Layout.astro';
 import CtaBand from './CtaBand.astro';
+import { packageLd } from '../content/schema';
 import type { Locale, PackageContent } from '../content/site';
 
 interface Props {
@@ -29,7 +30,13 @@ const scopeRule = 'scopeRule' in page ? page.scopeRule : null;
 const commitment = 'commitment' in page ? page.commitment : null;
 ---
 
-<Layout locale={locale} title={page.meta.title} description={page.meta.description} path={path}>
+<Layout
+  locale={locale}
+  title={page.meta.title}
+  description={page.meta.description}
+  path={path}
+  jsonLd={[packageLd(path, locale)].filter((b): b is object => b !== null)}
+>
   <main>
     <section class="hero" data-section="hero">
       <span class="kicker">{page.hero.kicker}</span>
